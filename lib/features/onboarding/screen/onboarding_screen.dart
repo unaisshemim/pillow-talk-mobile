@@ -13,34 +13,36 @@ class OnBoardingScreen extends StatelessWidget {
       body: OnboardingWidget(
         pages: [
           OnboardingPageModel(
-            title: 'Fast, Fluid and Secure',
+            title: 'Welcome to Pillow Talk',
             description:
-                'Enjoy the best of the world in the palm of your hands.',
+                'Building stronger relationships through better communication and shared experiences.',
             imageUrl: 'https://i.ibb.co/cJqsPSB/scooter.png',
-            bgColor: Colors.indigo,
+            bgColor: const Color(0xFFFBA63A), // Your primary color
           ),
           OnboardingPageModel(
-            title: 'Connect with your friends.',
-            description: 'Connect with your friends anytime anywhere.',
+            title: 'Connect with Your Partner',
+            description:
+                'Find and connect with your partner to start your relationship journey together.',
             imageUrl: 'https://i.ibb.co/LvmZypG/storefront-illustration-2.png',
-            bgColor: const Color(0xff1eb090),
+            bgColor: const Color(0xFF6EA7D3), // Your secondary color
           ),
           OnboardingPageModel(
-            title: 'Bookmark your favourites',
+            title: 'Track Your Relationship',
             description:
-                'Bookmark your favourite quotes to read at a leisure time.',
+                'Monitor your mood, set goals, and celebrate milestones in your relationship journey.',
             imageUrl: 'https://i.ibb.co/420D7VP/building.png',
-            bgColor: const Color(0xfffeae4f),
+            bgColor: const Color(0xFF009530), // Your success color
           ),
           OnboardingPageModel(
-            title: 'Follow creators',
-            description: 'Follow your favourite creators to stay in the loop.',
+            title: 'Communicate Better',
+            description:
+                'Share voice messages, get conversation insights, and strengthen your bond through meaningful dialogue.',
             imageUrl: 'https://i.ibb.co/cJqsPSB/scooter.png',
-            bgColor: Colors.purple,
+            bgColor: const Color(0xFF6EA7D3), // Your secondary color
           ),
         ],
-        onSkip: () => context.goNamed(PRouter.home.name),
-        onFinish: () => context.goNamed(PRouter.home.name),
+        onSkip: () => context.go(PRouter.auth.path),
+        onFinish: () => context.go(PRouter.auth.path),
       ),
     );
   }

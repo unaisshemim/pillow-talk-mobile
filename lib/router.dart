@@ -1,6 +1,8 @@
 // GoRouter configuration
 import 'package:go_router/go_router.dart';
 import 'package:pillow_talk/common/layout/main_layout.dart';
+import 'package:pillow_talk/features/auth/screen/auth_screen.dart';
+import 'package:pillow_talk/features/auth/screen/otp_screen.dart';
 import 'package:pillow_talk/features/chat/screen/chat_screen.dart';
 import 'package:pillow_talk/features/home/screen/home_screen.dart';
 import 'package:pillow_talk/features/notification/screen/notification_screen.dart';
@@ -21,6 +23,22 @@ final router = GoRouter(
       name: PRouter.notification.name,
       path: PRouter.notification.path,
       builder: (context, state) => const NotificationScreen(),
+    ),
+    GoRoute(
+      name: PRouter.auth.name,
+      path: PRouter.auth.path,
+      builder: (context, state) => const AuthScreen(),
+    ),
+    GoRoute(
+      name: PRouter.otp.name,
+      path: PRouter.otp.path,
+      builder: (context, state) {
+        final extra = state.extra as Map<String, dynamic>?;
+        return OtpScreen(
+          phoneNumber: extra?['phoneNumber'] ?? '',
+          maskedNumber: extra?['maskedNumber'] ?? '',
+        );
+      },
     ),
     ShellRoute(
         builder: (context, state, child) {

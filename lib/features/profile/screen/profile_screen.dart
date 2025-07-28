@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:pillow_talk/utils/theme/theme_extension.dart';
 import 'package:pillow_talk/utils/constant/sizes.dart';
 import 'package:pillow_talk/utils/helpers/responsive_size.dart';
@@ -658,8 +659,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     _showSuccessSnackBar('Signed out successfully');
 
-    // Example navigation to login/onboarding
-    // Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
+    // Navigate to auth screen
+    context.go('/auth');
   }
 
   void _showRelationshipDialog() {
