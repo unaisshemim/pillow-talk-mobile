@@ -29,7 +29,7 @@ Pillow Talk is a comprehensive mobile application designed to enhance communicat
 
 | Technology | Version | Purpose |
 |------------|---------|---------|
-| **Flutter** | SDK ^3.8.1 | Cross-platform mobile development |
+| **Flutter** | SDK ^3.32.7 | Cross-platform mobile development |
 ---
 
 ## 📋 Prerequisites
