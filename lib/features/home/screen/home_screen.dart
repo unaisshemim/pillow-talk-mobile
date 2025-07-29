@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pillow_talk/router.dart';
 import 'package:pillow_talk/utils/constant/router.dart';
 import 'package:pillow_talk/utils/theme/theme_extension.dart';
 import 'package:pillow_talk/utils/constant/sizes.dart';
 import 'package:pillow_talk/utils/helpers/responsive_size.dart';
+import 'package:pillow_talk/common/widgets_test/notification_test_widget.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -246,6 +246,9 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
+
+            // Notification Testing Widget (for development)
+            const NotificationTestWidget(),
           ],
         ),
       ),

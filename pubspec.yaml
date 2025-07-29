@@ -7,11 +7,13 @@ environment:
   sdk: ^3.5.1
 
 dependencies:
+  awesome_notifications: ^0.10.1
   flutter:
     sdk: flutter
   flutter_launcher_icons: ^0.14.4
   flutter_svg: ^2.2.0
   go_router: ^16.0.0
+  permission_handler: ^12.0.1
 
 dev_dependencies:
   flutter_test:

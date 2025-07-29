@@ -11,7 +11,7 @@ class PartnerScreen extends StatefulWidget {
 }
 
 class _PartnerScreenState extends State<PartnerScreen> {
-  bool isConnected = true; // Set to false to show search/connect UI
+  bool isConnected = false; // Set to false to show search/connect UI
   final TextEditingController _searchController = TextEditingController();
 
   @override
