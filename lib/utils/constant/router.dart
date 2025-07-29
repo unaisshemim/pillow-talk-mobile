@@ -19,6 +19,7 @@ abstract class PRouter {
   static const PRouterDetail partner = PRouterDetail('Partner', '/partner');
   static const PRouterDetail notification =
       PRouterDetail('Notification', '/notification');
+  static const PRouterDetail dev = PRouterDetail('Dev', '/dev');
 }
 
 class PRouterDetail {

@@ -4,6 +4,7 @@ import 'package:pillow_talk/common/layout/main_layout.dart';
 import 'package:pillow_talk/features/auth/screen/auth_screen.dart';
 import 'package:pillow_talk/features/auth/screen/otp_screen.dart';
 import 'package:pillow_talk/features/chat/screen/chat_screen.dart';
+import 'package:pillow_talk/features/dev/screen/dev_screen.dart';
 import 'package:pillow_talk/features/home/screen/home_screen.dart';
 import 'package:pillow_talk/features/notification/screen/notification_screen.dart';
 import 'package:pillow_talk/features/onboarding/screen/onboarding_screen.dart';
@@ -65,6 +66,9 @@ final router = GoRouter(
               name: PRouter.home.name,
               path: PRouter.home.path,
               builder: (context, state) => const HomeScreen()),
+          GoRoute(
+              path: PRouter.dev.path,
+              builder: (context, state) => const DevScreen())
         ])
   ],
   // redirect: (context, state) async {

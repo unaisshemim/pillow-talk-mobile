@@ -10,7 +10,6 @@ class NotificationTestWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.all(PSizes.s16),
       padding: const EdgeInsets.all(PSizes.s16),
       decoration: BoxDecoration(
         color: context.pColor.neutral.n20,

@@ -32,7 +32,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   awesome_notifications: 0f432b28098d193920b11a44cfa9d2d9313a3888
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_native_splash: 6cad9122ea0fad137d23137dd14b937f3e90b145
+  flutter_native_splash: c32d145d68aeda5502d5f543ee38c192065986cf
   IosAwnCore: 653786a911089012092ce831f2945cd339855a89
   permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
 

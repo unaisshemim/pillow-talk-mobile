@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:isolate';
 import 'dart:ui';
 
@@ -123,15 +124,15 @@ class PillowTalkNotificationService {
       ReceivedAction receivedAction) async {
     if (receivedAction.actionType == ActionType.SilentAction ||
         receivedAction.actionType == ActionType.SilentBackgroundAction) {
-      print('Silent notification action: ${receivedAction.buttonKeyInput}');
+      log('Silent notification action: ${receivedAction.buttonKeyInput}');
       await _executeSilentAction(receivedAction);
     } else {
       if (receivePort == null) {
-        print('onActionReceivedMethod called in parallel isolate.');
+        log('onActionReceivedMethod called in parallel isolate.');
         SendPort? sendPort =
             IsolateNameServer.lookupPortByName('pillow_talk_notification_port');
         if (sendPort != null) {
-          print('Redirecting to main isolate process.');
+          log('Redirecting to main isolate process.');
           sendPort.send(receivedAction);
           return;
         }
@@ -172,28 +173,28 @@ class PillowTalkNotificationService {
   @pragma('vm:entry-point')
   static Future<void> _onNotificationCreatedMethod(
       ReceivedNotification receivedNotification) async {
-    print('Notification created: ${receivedNotification.title}');
+    log('Notification created: ${receivedNotification.title}');
   }
 
   /// Handle notification displayed
   @pragma('vm:entry-point')
   static Future<void> _onNotificationDisplayedMethod(
       ReceivedNotification receivedNotification) async {
-    print('Notification displayed: ${receivedNotification.title}');
+    log('Notification displayed: ${receivedNotification.title}');
   }
 
   /// Handle notification dismissed
   @pragma('vm:entry-point')
   static Future<void> _onDismissActionReceivedMethod(
       ReceivedAction receivedAction) async {
-    print('Notification dismissed: ${receivedAction.title}');
+    log('Notification dismissed: ${receivedAction.title}');
   }
 
   /// Execute silent actions
   static Future<void> _executeSilentAction(
       ReceivedAction receivedAction) async {
     // Handle silent actions like quick replies, mood updates, etc.
-    print('Executing silent action: ${receivedAction.buttonKeyPressed}');
+    log('Executing silent action: ${receivedAction.buttonKeyPressed}');
   }
 
   /// Request notification permissions with custom dialog
@@ -208,8 +209,10 @@ class PillowTalkNotificationService {
 
     if (permission.isDenied) {
       // Show custom permission dialog
-      bool userWantsToEnable = await _showPermissionDialog(context);
-      if (!userWantsToEnable) return false;
+      if (context.mounted) {
+        bool userWantsToEnable = await _showPermissionDialog(context);
+        if (!userWantsToEnable) return false;
+      }
 
       // Request permission
       permission = await Permission.notification.request();

@@ -41,7 +41,7 @@ abstract class PIcons {
   static const String percentage = "assets/icons/percentage.svg";
   static const String back = "assets/icons/back.svg";
   static const String share = "assets/icons/share.svg";
-  static const String notification_success =
+  static const String notificationSuccess =
       "assets/icons/notification_success.svg";
   static const String warning = "assets/icons/notification_warning.svg";
   static const String fail = "assets/icons/notification_fail.svg";

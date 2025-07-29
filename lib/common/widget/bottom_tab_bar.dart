@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:pillow_talk/common/config/env_config.dart';
 import 'package:pillow_talk/common/widget/svg.dart';
 import 'package:pillow_talk/utils/constant/icons.dart';
 import 'package:pillow_talk/utils/helpers/device_utility.dart';
@@ -9,8 +10,9 @@ import 'package:pillow_talk/utils/constant/sizes.dart';
 class BottomTabBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
+  final dev = EnvConfig.isDev;
 
-  const BottomTabBar({
+  BottomTabBar({
     super.key,
     required this.currentIndex,
     required this.onTap,
@@ -18,6 +20,7 @@ class BottomTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(dev);
     final items = [
       _NavBarItem(
         label: 'Home',
@@ -43,6 +46,13 @@ class BottomTabBar extends StatelessWidget {
         isActive: currentIndex == 3,
         onTap: () => onTap(3),
       ),
+      if (dev)
+        _NavBarItem(
+          label: 'DEV',
+          iconUrl: PIcons.earphone,
+          isActive: currentIndex == 4,
+          onTap: () => onTap(4),
+        ),
     ];
 
     return SafeArea(

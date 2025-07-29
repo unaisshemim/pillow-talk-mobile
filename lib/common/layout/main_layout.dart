@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:pillow_talk/common/widget/bottom_tab_bar.dart';
 import 'package:pillow_talk/features/chat/screen/chat_screen.dart';
+import 'package:pillow_talk/features/dev/screen/dev_screen.dart';
 import 'package:pillow_talk/features/home/screen/home_screen.dart';
 import 'package:pillow_talk/features/partner/screen/partner_screen.dart';
 import 'package:pillow_talk/features/profile/screen/profile_screen.dart';
@@ -26,6 +27,7 @@ class _PMainLayoutState extends State<PMainLayout> {
       ChatScreen(),
       PartnerScreen(),
       ProfileScreen(),
+      DevScreen()
     ];
   }
 
