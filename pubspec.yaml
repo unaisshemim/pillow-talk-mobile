@@ -21,6 +21,9 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  dio: ^5.8.0+1
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -38,9 +41,9 @@ flutter:
 
 flutter_native_splash:
   color: "#ffffff"
-  image: assets/logo/web-app-manifest-512x512.png
+  image: assets/logo/logo.png
   android_12:
-    image: assets/logo/web-app-manifest-512x512.png
+    image: assets/logo/logo.png
     color: "#ffffff"
 
 # app icon
