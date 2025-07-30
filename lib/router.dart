@@ -1,16 +1,16 @@
 // GoRouter configuration
 import 'package:go_router/go_router.dart';
-import 'package:pillow_talk/common/layout/main_layout.dart';
-import 'package:pillow_talk/features/auth/screen/auth_screen.dart';
-import 'package:pillow_talk/features/auth/screen/otp_screen.dart';
-import 'package:pillow_talk/features/chat/screen/chat_screen.dart';
-import 'package:pillow_talk/features/dev/screen/dev_screen.dart';
-import 'package:pillow_talk/features/home/screen/home_screen.dart';
-import 'package:pillow_talk/features/notification/screen/notification_screen.dart';
-import 'package:pillow_talk/features/onboarding/screen/onboarding_screen.dart';
-import 'package:pillow_talk/features/partner/screen/partner_screen.dart';
-import 'package:pillow_talk/features/profile/screen/profile_screen.dart';
-import 'package:pillow_talk/utils/constant/router.dart';
+import 'package:pillowtalk/common/layout/main_layout.dart';
+import 'package:pillowtalk/features/auth/screen/auth_screen.dart';
+import 'package:pillowtalk/features/auth/screen/otp_screen.dart';
+import 'package:pillowtalk/features/chat/screen/chat_screen.dart';
+import 'package:pillowtalk/features/dev/screen/dev_screen.dart';
+import 'package:pillowtalk/features/home/screen/home_screen.dart';
+import 'package:pillowtalk/features/notification/screen/notification_screen.dart';
+import 'package:pillowtalk/features/onboarding/screen/onboarding_screen.dart';
+import 'package:pillowtalk/features/partner/screen/partner_screen.dart';
+import 'package:pillowtalk/features/profile/screen/profile_screen.dart';
+import 'package:pillowtalk/utils/constant/router.dart';
 
 final router = GoRouter(
   initialLocation: PRouter.onBoarding.path,
@@ -42,34 +42,37 @@ final router = GoRouter(
       },
     ),
     ShellRoute(
-        builder: (context, state, child) {
-          // Pass down the `child` widget from the current route
-          return const PMainLayout();
-        },
-        routes: [
-          GoRoute(
-            name: PRouter.chat.name,
-            path: PRouter.chat.path,
-            builder: (context, state) => const ChatScreen(),
-          ),
-          GoRoute(
-            name: PRouter.profile.name,
-            path: PRouter.profile.path,
-            builder: (context, state) => const ProfileScreen(),
-          ),
-          GoRoute(
-            name: PRouter.partner.name,
-            path: PRouter.partner.path,
-            builder: (context, state) => const PartnerScreen(),
-          ),
-          GoRoute(
-              name: PRouter.home.name,
-              path: PRouter.home.path,
-              builder: (context, state) => const HomeScreen()),
-          GoRoute(
-              path: PRouter.dev.path,
-              builder: (context, state) => const DevScreen())
-        ])
+      builder: (context, state, child) {
+        // Pass down the `child` widget from the current route
+        return const PMainLayout();
+      },
+      routes: [
+        GoRoute(
+          name: PRouter.chat.name,
+          path: PRouter.chat.path,
+          builder: (context, state) => const ChatScreen(),
+        ),
+        GoRoute(
+          name: PRouter.profile.name,
+          path: PRouter.profile.path,
+          builder: (context, state) => const ProfileScreen(),
+        ),
+        GoRoute(
+          name: PRouter.partner.name,
+          path: PRouter.partner.path,
+          builder: (context, state) => const PartnerScreen(),
+        ),
+        GoRoute(
+          name: PRouter.home.name,
+          path: PRouter.home.path,
+          builder: (context, state) => const HomeScreen(),
+        ),
+        GoRoute(
+          path: PRouter.dev.path,
+          builder: (context, state) => const DevScreen(),
+        ),
+      ],
+    ),
   ],
   // redirect: (context, state) async {
   //   final bool isGoingToOnBoarding =

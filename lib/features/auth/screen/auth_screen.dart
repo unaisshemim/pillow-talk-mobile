@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pillow_talk/utils/theme/theme_extension.dart';
-import 'package:pillow_talk/utils/constant/sizes.dart';
-import 'package:pillow_talk/utils/helpers/responsive_size.dart';
+import 'package:pillowtalk/utils/constant/sizes.dart';
+import 'package:pillowtalk/utils/helpers/responsive_size.dart';
+import 'package:pillowtalk/utils/theme/theme_extension.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -165,8 +165,10 @@ class _AuthScreenState extends State<AuthScreen> {
                                     Text(
                                       country['country']!,
                                       style: TextStyle(
-                                        fontSize:
-                                            responsive(context, PSizes.s14),
+                                        fontSize: responsive(
+                                          context,
+                                          PSizes.s14,
+                                        ),
                                         color: context.pColor.neutral.n70,
                                       ),
                                     ),
@@ -174,8 +176,10 @@ class _AuthScreenState extends State<AuthScreen> {
                                     Text(
                                       country['code']!,
                                       style: TextStyle(
-                                        fontSize:
-                                            responsive(context, PSizes.s16),
+                                        fontSize: responsive(
+                                          context,
+                                          PSizes.s16,
+                                        ),
                                         fontWeight: FontWeight.w500,
                                         color: context.pColor.neutral.n90,
                                       ),
@@ -283,7 +287,8 @@ class _AuthScreenState extends State<AuthScreen> {
                       ),
                       children: [
                         const TextSpan(
-                            text: 'By continuing, you agree to our '),
+                          text: 'By continuing, you agree to our ',
+                        ),
                         TextSpan(
                           text: 'Terms of Service',
                           style: TextStyle(
@@ -368,10 +373,13 @@ class _AuthScreenState extends State<AuthScreen> {
 
     // Navigate to OTP screen
     if (mounted) {
-      context.push('/otp', extra: {
-        'phoneNumber': fullPhoneNumber,
-        'maskedNumber': _getMaskedNumber(),
-      });
+      context.push(
+        '/otp',
+        extra: {
+          'phoneNumber': fullPhoneNumber,
+          'maskedNumber': _getMaskedNumber(),
+        },
+      );
     }
   }
 

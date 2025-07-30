@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pillow_talk/utils/theme/theme_extension.dart';
-import 'package:pillow_talk/utils/constant/sizes.dart';
-import 'package:pillow_talk/utils/helpers/responsive_size.dart';
+import 'package:pillowtalk/utils/helpers/responsive_size.dart';
+import 'package:pillowtalk/utils/theme/theme_extension.dart';
+import 'package:pillowtalk/utils/constant/sizes.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -32,10 +32,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         elevation: 0,
         actions: [
           IconButton(
-            icon: Icon(
-              Icons.edit_outlined,
-              color: context.pColor.neutral.n10,
-            ),
+            icon: Icon(Icons.edit_outlined, color: context.pColor.neutral.n10),
             onPressed: () => _showEditProfileDialog(),
           ),
         ],
@@ -131,7 +128,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: PSizes.s16, vertical: PSizes.s16),
+                    horizontal: PSizes.s16,
+                    vertical: PSizes.s16,
+                  ),
                   child: Text(
                     'Personal Information',
                     style: TextStyle(
@@ -176,7 +175,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: PSizes.s16, vertical: PSizes.s16),
+                    horizontal: PSizes.s16,
+                    vertical: PSizes.s16,
+                  ),
                   child: Text(
                     'App Settings',
                     style: TextStyle(
@@ -236,7 +237,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: PSizes.s16, vertical: PSizes.s16),
+                    horizontal: PSizes.s16,
+                    vertical: PSizes.s16,
+                  ),
                   child: Text(
                     'Privacy & Security',
                     style: TextStyle(
@@ -281,7 +284,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                 Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: PSizes.s16, vertical: PSizes.s16),
+                    horizontal: PSizes.s16,
+                    vertical: PSizes.s16,
+                  ),
                   child: Text(
                     'Support',
                     style: TextStyle(
@@ -377,10 +382,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Container(
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(
-            color: context.pColor.neutral.n20,
-            width: 0.5,
-          ),
+          bottom: BorderSide(color: context.pColor.neutral.n20, width: 0.5),
         ),
       ),
       child: ListTile(
@@ -431,10 +433,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Container(
       decoration: BoxDecoration(
         border: Border(
-          bottom: BorderSide(
-            color: context.pColor.neutral.n20,
-            width: 0.5,
-          ),
+          bottom: BorderSide(color: context.pColor.neutral.n20, width: 0.5),
         ),
       ),
       child: ListTile(
@@ -473,10 +472,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _showEditProfileDialog() {
     final nameController = TextEditingController(text: 'Sarah Johnson');
-    final emailController =
-        TextEditingController(text: 'sarah.johnson@email.com');
-    final bioController =
-        TextEditingController(text: 'Love spending quality time together');
+    final emailController = TextEditingController(
+      text: 'sarah.johnson@email.com',
+    );
+    final bioController = TextEditingController(
+      text: 'Love spending quality time together',
+    );
 
     showDialog(
       context: context,
@@ -664,43 +665,59 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _showRelationshipDialog() {
-    _showInfoDialog('Relationship Status',
-        'You are connected with John Smith since January 2023.');
+    _showInfoDialog(
+      'Relationship Status',
+      'You are connected with John Smith since January 2023.',
+    );
   }
 
   void _showLoveLanguageDialog() {
-    _showInfoDialog('Love Language',
-        'Your primary love language is Words of Affirmation. This means you feel most loved when receiving affirming words and encouragement.');
+    _showInfoDialog(
+      'Love Language',
+      'Your primary love language is Words of Affirmation. This means you feel most loved when receiving affirming words and encouragement.',
+    );
   }
 
   void _showChangePasswordDialog() {
-    _showInfoDialog('Change Password',
-        'Password change functionality will be implemented here.');
+    _showInfoDialog(
+      'Change Password',
+      'Password change functionality will be implemented here.',
+    );
   }
 
   void _show2FADialog() {
-    _showInfoDialog('Two-Factor Authentication',
-        '2FA setup will enhance your account security.');
+    _showInfoDialog(
+      'Two-Factor Authentication',
+      '2FA setup will enhance your account security.',
+    );
   }
 
   void _showPrivacyDialog() {
-    _showInfoDialog('Privacy Settings',
-        'Manage your data privacy and sharing preferences.');
+    _showInfoDialog(
+      'Privacy Settings',
+      'Manage your data privacy and sharing preferences.',
+    );
   }
 
   void _showHelpDialog() {
-    _showInfoDialog('Help & Support',
-        'Contact our support team at support@pillowtalk.com or visit our FAQ section.');
+    _showInfoDialog(
+      'Help & Support',
+      'Contact our support team at support@pillowtalk.com or visit our FAQ section.',
+    );
   }
 
   void _showAboutDialog() {
-    _showInfoDialog('About Pillow Talk',
-        'Pillow Talk v1.0.0\nBuilding stronger relationships through better communication.');
+    _showInfoDialog(
+      'About Pillow Talk',
+      'Pillow Talk v1.0.0\nBuilding stronger relationships through better communication.',
+    );
   }
 
   void _showRateAppDialog() {
-    _showInfoDialog('Rate the App',
-        'We would love your feedback! Please rate us on the App Store or Google Play.');
+    _showInfoDialog(
+      'Rate the App',
+      'We would love your feedback! Please rate us on the App Store or Google Play.',
+    );
   }
 
   void _showInfoDialog(String title, String content) {

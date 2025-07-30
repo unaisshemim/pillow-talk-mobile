@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pillow_talk/app.dart';
-import 'package:pillow_talk/common/services/notification_service.dart';
+import 'package:pillowtalk/app.dart';
+import 'package:pillowtalk/common/services/notification_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

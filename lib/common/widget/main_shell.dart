@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:pillow_talk/common/widget/bottom_tab_bar.dart';
-import 'package:pillow_talk/features/chat/screen/chat_screen.dart';
-import 'package:pillow_talk/features/home/screen/home_screen.dart';
-import 'package:pillow_talk/features/partner/screen/partner_screen.dart';
-import 'package:pillow_talk/features/profile/screen/profile_screen.dart';
+import 'package:pillowtalk/common/widget/bottom_tab_bar.dart';
+import 'package:pillowtalk/features/chat/screen/chat_screen.dart';
+import 'package:pillowtalk/features/home/screen/home_screen.dart';
+import 'package:pillowtalk/features/partner/screen/partner_screen.dart';
+import 'package:pillowtalk/features/profile/screen/profile_screen.dart';
 
 class MainShell extends StatefulWidget {
   const MainShell({super.key});
@@ -30,10 +30,7 @@ class _MainShellState extends State<MainShell> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
-      ),
+      body: IndexedStack(index: _currentIndex, children: _screens),
       bottomNavigationBar: BottomTabBar(
         currentIndex: _currentIndex,
         onTap: _onTap,

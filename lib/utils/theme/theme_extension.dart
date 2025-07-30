@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pillow_talk/utils/constant/colors.dart';
+import 'package:pillowtalk/utils/constant/colors.dart';
 
 extension PTheme on BuildContext {
   /// Access current brightness

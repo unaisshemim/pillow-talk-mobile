@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pillow_talk/utils/constant/router.dart';
-import 'package:pillow_talk/utils/theme/theme_extension.dart';
-import 'package:pillow_talk/utils/constant/sizes.dart';
-import 'package:pillow_talk/utils/helpers/responsive_size.dart';
+import 'package:pillowtalk/utils/constant/router.dart';
+import 'package:pillowtalk/utils/constant/sizes.dart';
+import 'package:pillowtalk/utils/helpers/responsive_size.dart';
+
 import 'dart:async';
+
+import 'package:pillowtalk/utils/theme/theme_extension.dart';
 
 class OtpScreen extends StatefulWidget {
   final String phoneNumber;
@@ -26,10 +28,7 @@ class _OtpScreenState extends State<OtpScreen> {
     6,
     (index) => TextEditingController(),
   );
-  final List<FocusNode> _focusNodes = List.generate(
-    6,
-    (index) => FocusNode(),
-  );
+  final List<FocusNode> _focusNodes = List.generate(6, (index) => FocusNode());
 
   bool _isLoading = false;
   bool _isResending = false;
@@ -78,10 +77,7 @@ class _OtpScreenState extends State<OtpScreen> {
         backgroundColor: context.pColor.neutral.n10,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: context.pColor.neutral.n80,
-          ),
+          icon: Icon(Icons.arrow_back, color: context.pColor.neutral.n80),
           onPressed: () => context.goNamed(PRouter.home.name),
         ),
         title: Text(
@@ -424,8 +420,9 @@ class _OtpScreenState extends State<OtpScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor:
-            isError ? context.pColor.error.base : context.pColor.success.base,
+        backgroundColor: isError
+            ? context.pColor.error.base
+            : context.pColor.success.base,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(PSizes.s8),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pillow_talk/utils/theme/theme_extension.dart';
-import 'package:pillow_talk/utils/constant/sizes.dart';
-import 'package:pillow_talk/utils/helpers/responsive_size.dart';
+import 'package:pillowtalk/utils/helpers/responsive_size.dart';
+import 'package:pillowtalk/utils/theme/theme_extension.dart';
+import 'package:pillowtalk/utils/constant/sizes.dart';
 
 class PartnerScreen extends StatefulWidget {
   const PartnerScreen({super.key});
@@ -95,10 +95,7 @@ class _PartnerScreenState extends State<PartnerScreen> {
             controller: _searchController,
             decoration: InputDecoration(
               hintText: 'Enter partner\'s email or username',
-              prefixIcon: Icon(
-                Icons.search,
-                color: context.pColor.neutral.n60,
-              ),
+              prefixIcon: Icon(Icons.search, color: context.pColor.neutral.n60),
               suffixIcon: IconButton(
                 icon: Icon(
                   Icons.qr_code_scanner,
@@ -406,8 +403,13 @@ class _PartnerScreenState extends State<PartnerScreen> {
     );
   }
 
-  Widget _buildConnectionOption(BuildContext context, IconData icon,
-      String title, String description, Color color) {
+  Widget _buildConnectionOption(
+    BuildContext context,
+    IconData icon,
+    String title,
+    String description,
+    Color color,
+  ) {
     return Container(
       padding: const EdgeInsets.all(PSizes.s16),
       decoration: BoxDecoration(
@@ -460,7 +462,10 @@ class _PartnerScreenState extends State<PartnerScreen> {
   }
 
   Widget _buildConnectionStat(
-      BuildContext context, String value, String label) {
+    BuildContext context,
+    String value,
+    String label,
+  ) {
     return Column(
       children: [
         Text(
@@ -483,7 +488,11 @@ class _PartnerScreenState extends State<PartnerScreen> {
   }
 
   Widget _buildQuickActionCard(
-      BuildContext context, IconData icon, String title, Color color) {
+    BuildContext context,
+    IconData icon,
+    String title,
+    Color color,
+  ) {
     return Container(
       padding: const EdgeInsets.all(PSizes.s16),
       decoration: BoxDecoration(
@@ -508,8 +517,14 @@ class _PartnerScreenState extends State<PartnerScreen> {
     );
   }
 
-  Widget _buildTaskCard(BuildContext context, String title, String description,
-      String status, double progress, Color color) {
+  Widget _buildTaskCard(
+    BuildContext context,
+    String title,
+    String description,
+    String status,
+    double progress,
+    Color color,
+  ) {
     return Container(
       padding: const EdgeInsets.all(PSizes.s16),
       decoration: BoxDecoration(
@@ -561,8 +576,14 @@ class _PartnerScreenState extends State<PartnerScreen> {
     );
   }
 
-  Widget _buildGoalCard(BuildContext context, String title, String description,
-      String percentage, double progress, Color color) {
+  Widget _buildGoalCard(
+    BuildContext context,
+    String title,
+    String description,
+    String percentage,
+    double progress,
+    Color color,
+  ) {
     return Container(
       padding: const EdgeInsets.all(PSizes.s16),
       decoration: BoxDecoration(
@@ -615,8 +636,13 @@ class _PartnerScreenState extends State<PartnerScreen> {
     );
   }
 
-  Widget _buildAnalyticsCard(BuildContext context, String title, String value,
-      IconData icon, Color color) {
+  Widget _buildAnalyticsCard(
+    BuildContext context,
+    String title,
+    String value,
+    IconData icon,
+    Color color,
+  ) {
     return Container(
       padding: const EdgeInsets.all(PSizes.s16),
       decoration: BoxDecoration(
@@ -649,8 +675,13 @@ class _PartnerScreenState extends State<PartnerScreen> {
     );
   }
 
-  Widget _buildInsightCard(BuildContext context, String title, String insight,
-      IconData icon, Color color) {
+  Widget _buildInsightCard(
+    BuildContext context,
+    String title,
+    String insight,
+    IconData icon,
+    Color color,
+  ) {
     return Container(
       padding: const EdgeInsets.all(PSizes.s16),
       decoration: BoxDecoration(

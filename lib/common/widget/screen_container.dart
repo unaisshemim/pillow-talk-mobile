@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:pillow_talk/common/layout/regular_layout.dart';
-import 'package:pillow_talk/common/widget/appbar.dart';
-import 'package:pillow_talk/utils/theme/theme_extension.dart';
+import 'package:pillowtalk/common/layout/regular_layout.dart';
+import 'package:pillowtalk/common/widget/appbar.dart';
+import 'package:pillowtalk/utils/theme/theme_extension.dart';
 
 class PScreenContainer extends StatelessWidget {
-  const PScreenContainer(
-      {super.key, this.appBar, required this.child, this.backgroundColor});
+  const PScreenContainer({
+    super.key,
+    this.appBar,
+    required this.child,
+    this.backgroundColor,
+  });
 
   final Widget? appBar;
   final Widget child;

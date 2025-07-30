@@ -3,9 +3,9 @@ import 'dart:developer';
 import 'dart:isolate';
 import 'dart:ui';
 
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 
 /// Notification Service for Pillow Talk - Couple Wellbeing App
 class PillowTalkNotificationService {
@@ -94,18 +94,22 @@ class PillowTalkNotificationService {
     );
 
     // Get initial notification action
-    initialAction = await AwesomeNotifications()
-        .getInitialNotificationAction(removeFromActionEvents: false);
+    initialAction = await AwesomeNotifications().getInitialNotificationAction(
+      removeFromActionEvents: false,
+    );
   }
 
   /// Initialize isolate receive port for background notifications
   static Future<void> _initializeIsolateReceivePort() async {
     receivePort = ReceivePort('Notification action port in main isolate')
       ..listen(
-          (silentData) => _onActionReceivedImplementationMethod(silentData));
+        (silentData) => _onActionReceivedImplementationMethod(silentData),
+      );
 
     IsolateNameServer.registerPortWithName(
-        receivePort!.sendPort, 'pillow_talk_notification_port');
+      receivePort!.sendPort,
+      'pillow_talk_notification_port',
+    );
   }
 
   /// Start listening to notification events
@@ -121,7 +125,8 @@ class PillowTalkNotificationService {
   /// Handle notification action received
   @pragma('vm:entry-point')
   static Future<void> _onActionReceivedMethod(
-      ReceivedAction receivedAction) async {
+    ReceivedAction receivedAction,
+  ) async {
     if (receivedAction.actionType == ActionType.SilentAction ||
         receivedAction.actionType == ActionType.SilentBackgroundAction) {
       log('Silent notification action: ${receivedAction.buttonKeyInput}');
@@ -129,8 +134,9 @@ class PillowTalkNotificationService {
     } else {
       if (receivePort == null) {
         log('onActionReceivedMethod called in parallel isolate.');
-        SendPort? sendPort =
-            IsolateNameServer.lookupPortByName('pillow_talk_notification_port');
+        SendPort? sendPort = IsolateNameServer.lookupPortByName(
+          'pillow_talk_notification_port',
+        );
         if (sendPort != null) {
           log('Redirecting to main isolate process.');
           sendPort.send(receivedAction);
@@ -143,7 +149,8 @@ class PillowTalkNotificationService {
 
   /// Implementation method for action received
   static Future<void> _onActionReceivedImplementationMethod(
-      ReceivedAction receivedAction) async {
+    ReceivedAction receivedAction,
+  ) async {
     // Handle different notification actions based on channel and action key
     switch (receivedAction.channelKey) {
       case 'chat_messages':
@@ -172,34 +179,39 @@ class PillowTalkNotificationService {
   /// Handle notification created
   @pragma('vm:entry-point')
   static Future<void> _onNotificationCreatedMethod(
-      ReceivedNotification receivedNotification) async {
+    ReceivedNotification receivedNotification,
+  ) async {
     log('Notification created: ${receivedNotification.title}');
   }
 
   /// Handle notification displayed
   @pragma('vm:entry-point')
   static Future<void> _onNotificationDisplayedMethod(
-      ReceivedNotification receivedNotification) async {
+    ReceivedNotification receivedNotification,
+  ) async {
     log('Notification displayed: ${receivedNotification.title}');
   }
 
   /// Handle notification dismissed
   @pragma('vm:entry-point')
   static Future<void> _onDismissActionReceivedMethod(
-      ReceivedAction receivedAction) async {
+    ReceivedAction receivedAction,
+  ) async {
     log('Notification dismissed: ${receivedAction.title}');
   }
 
   /// Execute silent actions
   static Future<void> _executeSilentAction(
-      ReceivedAction receivedAction) async {
+    ReceivedAction receivedAction,
+  ) async {
     // Handle silent actions like quick replies, mood updates, etc.
     log('Executing silent action: ${receivedAction.buttonKeyPressed}');
   }
 
   /// Request notification permissions with custom dialog
   static Future<bool> requestNotificationPermissions(
-      BuildContext context) async {
+    BuildContext context,
+  ) async {
     // Check if notifications are already allowed
     bool isAllowed = await AwesomeNotifications().isNotificationAllowed();
     if (isAllowed) return true;
@@ -217,8 +229,8 @@ class PillowTalkNotificationService {
       // Request permission
       permission = await Permission.notification.request();
       if (permission.isGranted) {
-        isAllowed =
-            await AwesomeNotifications().requestPermissionToSendNotifications();
+        isAllowed = await AwesomeNotifications()
+            .requestPermissionToSendNotifications();
       }
     }
 
@@ -255,10 +267,7 @@ class PillowTalkNotificationService {
               const Expanded(
                 child: Text(
                   'Stay Connected',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 ),
               ),
             ],
@@ -273,13 +282,21 @@ class PillowTalkNotificationService {
               ),
               const SizedBox(height: 16),
               _buildPermissionFeature(
-                  Icons.favorite, 'Love notes and sweet reminders'),
+                Icons.favorite,
+                'Love notes and sweet reminders',
+              ),
               _buildPermissionFeature(
-                  Icons.chat_bubble, 'New messages from your partner'),
+                Icons.chat_bubble,
+                'New messages from your partner',
+              ),
               _buildPermissionFeature(
-                  Icons.emoji_emotions, 'Daily mood check-in reminders'),
-              _buildPermissionFeature(Icons.celebration,
-                  'Relationship milestones and achievements'),
+                Icons.emoji_emotions,
+                'Daily mood check-in reminders',
+              ),
+              _buildPermissionFeature(
+                Icons.celebration,
+                'Relationship milestones and achievements',
+              ),
               const SizedBox(height: 16),
               Container(
                 padding: const EdgeInsets.all(12),
@@ -289,11 +306,7 @@ class PillowTalkNotificationService {
                 ),
                 child: const Row(
                   children: [
-                    Icon(
-                      Icons.security,
-                      color: Color(0xFF6EA7D3),
-                      size: 20,
-                    ),
+                    Icon(Icons.security, color: Color(0xFF6EA7D3), size: 20),
                     SizedBox(width: 8),
                     Expanded(
                       child: Text(
@@ -353,18 +366,9 @@ class PillowTalkNotificationService {
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         children: [
-          Icon(
-            icon,
-            size: 20,
-            color: const Color(0xFFFBA63A),
-          ),
+          Icon(icon, size: 20, color: const Color(0xFFFBA63A)),
           const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              text,
-              style: const TextStyle(fontSize: 14),
-            ),
-          ),
+          Expanded(child: Text(text, style: const TextStyle(fontSize: 14))),
         ],
       ),
     );
@@ -386,12 +390,10 @@ class PillowTalkNotificationService {
         title: '💕 $title',
         body: partnerName != null ? '$partnerName, $message' : message,
         notificationLayout: NotificationLayout.Default,
-        payload: {
-          'type': 'love_note',
-          'partner': partnerName ?? '',
-        },
-        icon: 'resource://drawable/ic_notification',
-        largeIcon: 'asset://assets/logo/icon.png',
+        payload: {'type': 'love_note', 'partner': partnerName ?? ''},
+        // Remove problematic icon references
+        // icon: 'resource://drawable/ic_notification',
+        // largeIcon: 'asset://assets/logo/icon.png',
       ),
       actionButtons: [
         NotificationActionButton(
@@ -424,12 +426,10 @@ class PillowTalkNotificationService {
         title: senderName,
         body: message,
         notificationLayout: NotificationLayout.Messaging,
-        payload: {
-          'type': 'chat_message',
-          'sender': senderName,
-        },
-        icon: 'resource://drawable/ic_notification',
-        largeIcon: avatarUrl ?? 'asset://assets/logo/icon.png',
+        payload: {'type': 'chat_message', 'sender': senderName},
+        // Remove problematic icon references
+        // icon: 'resource://drawable/ic_notification',
+        // largeIcon: avatarUrl ?? 'asset://assets/logo/icon.png',
       ),
       actionButtons: [
         NotificationActionButton(
@@ -463,11 +463,9 @@ class PillowTalkNotificationService {
         title: '🎯 $title',
         body: message,
         notificationLayout: NotificationLayout.Default,
-        payload: {
-          'type': 'reminder',
-          'activity_type': activityType ?? '',
-        },
-        icon: 'resource://drawable/ic_notification',
+        payload: {'type': 'reminder', 'activity_type': activityType ?? ''},
+        // Remove problematic icon reference
+        // icon: 'resource://drawable/ic_notification',
       ),
       actionButtons: [
         NotificationActionButton(
@@ -503,10 +501,9 @@ class PillowTalkNotificationService {
             ? NotificationLayout.BigPicture
             : NotificationLayout.Default,
         bigPicture: imageUrl,
-        payload: {
-          'type': 'milestone',
-        },
-        icon: 'resource://drawable/ic_notification',
+        payload: {'type': 'milestone'},
+        // Remove problematic icon reference
+        // icon: 'resource://drawable/ic_notification',
       ),
       actionButtons: [
         NotificationActionButton(
@@ -546,10 +543,9 @@ class PillowTalkNotificationService {
         title: '💭 Daily Mood Check-in',
         body: randomMessage,
         notificationLayout: NotificationLayout.Default,
-        payload: {
-          'type': 'mood_checkin',
-        },
-        icon: 'resource://drawable/ic_notification',
+        payload: {'type': 'mood_checkin'},
+        // Remove problematic icon reference
+        // icon: 'resource://drawable/ic_notification',
       ),
       actionButtons: [
         NotificationActionButton(
@@ -605,10 +601,7 @@ class PillowTalkNotificationService {
           title: '💕 Daily Love Note',
           body: message,
           notificationLayout: NotificationLayout.Default,
-          payload: {
-            'type': 'daily_love_note',
-            'day': i.toString(),
-          },
+          payload: {'type': 'daily_love_note', 'day': i.toString()},
         ),
       );
     }

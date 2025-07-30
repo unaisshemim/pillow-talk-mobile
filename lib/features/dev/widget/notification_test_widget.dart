@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pillow_talk/common/services/notification_service.dart';
-import 'package:pillow_talk/utils/theme/theme_extension.dart';
-import 'package:pillow_talk/utils/constant/sizes.dart';
+import 'package:pillowtalk/common/services/notification_service.dart';
+import 'package:pillowtalk/utils/constant/sizes.dart';
+import 'package:pillowtalk/utils/theme/theme_extension.dart';
 
 /// Widget to test different notification types in Pillow Talk app
 class NotificationTestWidget extends StatelessWidget {
@@ -47,8 +47,9 @@ class NotificationTestWidget extends StatelessWidget {
             width: double.infinity,
             child: ElevatedButton.icon(
               onPressed: () async {
-                await PillowTalkNotificationService
-                    .requestNotificationPermissions(context);
+                await PillowTalkNotificationService.requestNotificationPermissions(
+                  context,
+                );
               },
               icon: const Icon(Icons.security, size: 18),
               label: const Text('Request Permissions'),
@@ -141,8 +142,9 @@ class NotificationTestWidget extends StatelessWidget {
                 if (context.mounted) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
-                      content:
-                          const Text('Daily love notes scheduled for 9:00 AM!'),
+                      content: const Text(
+                        'Daily love notes scheduled for 9:00 AM!',
+                      ),
                       backgroundColor: context.pColor.success.base,
                     ),
                   );
@@ -177,20 +179,13 @@ class NotificationTestWidget extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(PSizes.s8),
           decoration: BoxDecoration(
-            border: Border.all(
-              color: context.pColor.neutral.n30,
-              width: 1,
-            ),
+            border: Border.all(color: context.pColor.neutral.n30, width: 1),
             borderRadius: BorderRadius.circular(PSizes.s8),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                icon,
-                size: 18,
-                color: context.pColor.primary.base,
-              ),
+              Icon(icon, size: 18, color: context.pColor.primary.base),
               const SizedBox(height: PSizes.s4),
               Text(
                 label,

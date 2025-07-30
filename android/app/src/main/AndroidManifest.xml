@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="Pillow Talk"
+        android:label="pillowtalk"
         android:name="${applicationName}"
         android:icon="@mipmap/launcher_icon">
         <activity

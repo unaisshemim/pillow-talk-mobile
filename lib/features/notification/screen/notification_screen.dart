@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pillow_talk/utils/theme/theme_extension.dart';
-import 'package:pillow_talk/utils/constant/sizes.dart';
-import 'package:pillow_talk/utils/helpers/responsive_size.dart';
+import 'package:pillowtalk/utils/helpers/responsive_size.dart';
+import 'package:pillowtalk/utils/theme/theme_extension.dart';
+import 'package:pillowtalk/utils/constant/sizes.dart';
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({super.key});
@@ -180,8 +180,9 @@ class NotificationScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(PSizes.s16),
       decoration: BoxDecoration(
-        color:
-            isUnread ? context.pColor.primary.p10 : context.pColor.neutral.n10,
+        color: isUnread
+            ? context.pColor.primary.p10
+            : context.pColor.neutral.n10,
         borderRadius: BorderRadius.circular(PSizes.s12),
         border: Border.all(
           color: isUnread
@@ -200,11 +201,7 @@ class NotificationScreen extends StatelessWidget {
               color: iconColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(PSizes.s12),
             ),
-            child: Icon(
-              icon,
-              color: iconColor,
-              size: PSizes.s24,
-            ),
+            child: Icon(icon, color: iconColor, size: PSizes.s24),
           ),
 
           const SizedBox(width: PSizes.s16),

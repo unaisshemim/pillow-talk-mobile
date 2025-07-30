@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pillow_talk/utils/theme/theme_extension.dart';
-import 'package:pillow_talk/utils/constant/sizes.dart';
-import 'package:pillow_talk/utils/helpers/responsive_size.dart';
+import 'package:pillowtalk/utils/helpers/responsive_size.dart';
+import 'package:pillowtalk/utils/theme/theme_extension.dart';
+import 'package:pillowtalk/utils/constant/sizes.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -125,7 +125,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     _buildStatItem(
-                        context, '${chatSessions.length}', 'Conversations'),
+                      context,
+                      '${chatSessions.length}',
+                      'Conversations',
+                    ),
                     _buildStatItem(context, '77', 'Total Messages'),
                     _buildStatItem(context, '92%', 'Positive Tone'),
                   ],
@@ -194,8 +197,10 @@ class _ChatScreenState extends State<ChatScreen> {
         elevation: 0,
         actions: [
           IconButton(
-            icon: Icon(Icons.analytics_outlined,
-                color: context.pColor.neutral.n10),
+            icon: Icon(
+              Icons.analytics_outlined,
+              color: context.pColor.neutral.n10,
+            ),
             onPressed: () => _showChatAnalytics(),
           ),
           IconButton(
@@ -287,13 +292,15 @@ class _ChatScreenState extends State<ChatScreen> {
                       hintText: 'Type your message...',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(PSizes.s20),
-                        borderSide:
-                            BorderSide(color: context.pColor.neutral.n40),
+                        borderSide: BorderSide(
+                          color: context.pColor.neutral.n40,
+                        ),
                       ),
                       focusedBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(PSizes.s20),
-                        borderSide:
-                            BorderSide(color: context.pColor.primary.base),
+                        borderSide: BorderSide(
+                          color: context.pColor.primary.base,
+                        ),
                       ),
                       contentPadding: const EdgeInsets.symmetric(
                         horizontal: PSizes.s16,
@@ -478,8 +485,9 @@ class _ChatScreenState extends State<ChatScreen> {
           maxWidth: MediaQuery.of(context).size.width * 0.75,
         ),
         decoration: BoxDecoration(
-          color:
-              isMe ? context.pColor.primary.base : context.pColor.neutral.n20,
+          color: isMe
+              ? context.pColor.primary.base
+              : context.pColor.neutral.n20,
           borderRadius: BorderRadius.circular(PSizes.s16).copyWith(
             bottomRight: isMe ? const Radius.circular(4) : null,
             bottomLeft: !isMe ? const Radius.circular(4) : null,
@@ -523,8 +531,9 @@ class _ChatScreenState extends State<ChatScreen> {
           maxWidth: MediaQuery.of(context).size.width * 0.6,
         ),
         decoration: BoxDecoration(
-          color:
-              isMe ? context.pColor.primary.base : context.pColor.neutral.n20,
+          color: isMe
+              ? context.pColor.primary.base
+              : context.pColor.neutral.n20,
           borderRadius: BorderRadius.circular(PSizes.s16).copyWith(
             bottomRight: isMe ? const Radius.circular(4) : null,
             bottomLeft: !isMe ? const Radius.circular(4) : null,
@@ -817,7 +826,11 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Widget _buildAnalyticsCard(
-      String title, String value, IconData icon, Color color) {
+    String title,
+    String value,
+    IconData icon,
+    Color color,
+  ) {
     return Container(
       padding: const EdgeInsets.all(PSizes.s12),
       decoration: BoxDecoration(

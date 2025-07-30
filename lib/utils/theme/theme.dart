@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pillow_talk/utils/constant/colors.dart';
+import 'package:pillowtalk/utils/constant/colors.dart';
 
 final ThemeData lightTheme = ThemeData(
   scaffoldBackgroundColor: PColors.light.neutral.n10,
@@ -9,9 +9,7 @@ final ThemeData lightTheme = ThemeData(
     secondary: PColors.light.secondary.base,
     error: PColors.light.error.base,
   ),
-  textTheme: TextTheme(
-    bodyLarge: TextStyle(color: PColors.light.neutral.n90),
-  ),
+  textTheme: TextTheme(bodyLarge: TextStyle(color: PColors.light.neutral.n90)),
 );
 
 final ThemeData darkTheme = ThemeData(
@@ -22,7 +20,5 @@ final ThemeData darkTheme = ThemeData(
     secondary: PColors.dark.secondary.base,
     error: PColors.dark.error.base,
   ),
-  textTheme: TextTheme(
-    bodyLarge: TextStyle(color: PColors.dark.neutral.n100),
-  ),
+  textTheme: TextTheme(bodyLarge: TextStyle(color: PColors.dark.neutral.n100)),
 );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pillow_talk/features/onboarding/model/onboarding_model.dart';
+import 'package:pillowtalk/features/onboarding/model/onboarding_model.dart';
 
 class OnboardingWidget extends StatefulWidget {
   final List<OnboardingPageModel> pages;
@@ -56,9 +56,7 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                                 padding: const EdgeInsets.all(16.0),
                                 child: Text(
                                   item.title,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .titleMedium
+                                  style: Theme.of(context).textTheme.titleMedium
                                       ?.copyWith(
                                         fontWeight: FontWeight.bold,
                                         color: item.textColor,
@@ -66,19 +64,18 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                                 ),
                               ),
                               Container(
-                                constraints:
-                                    const BoxConstraints(maxWidth: 280),
+                                constraints: const BoxConstraints(
+                                  maxWidth: 280,
+                                ),
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 24.0, vertical: 8.0),
+                                  horizontal: 24.0,
+                                  vertical: 8.0,
+                                ),
                                 child: Text(
                                   item.description,
                                   textAlign: TextAlign.center,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium
-                                      ?.copyWith(
-                                        color: item.textColor,
-                                      ),
+                                  style: Theme.of(context).textTheme.bodyMedium
+                                      ?.copyWith(color: item.textColor),
                                 ),
                               ),
                             ],
@@ -118,7 +115,9 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.white,
                         textStyle: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       onPressed: widget.onSkip,
                       child: const Text("Skip"),
@@ -127,7 +126,9 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.white,
                         textStyle: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                       onPressed: () {
                         if (_currentPage == widget.pages.length - 1) {
@@ -142,9 +143,11 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
                       },
                       child: Row(
                         children: [
-                          Text(_currentPage == widget.pages.length - 1
-                              ? "Finish"
-                              : "Next"),
+                          Text(
+                            _currentPage == widget.pages.length - 1
+                                ? "Finish"
+                                : "Next",
+                          ),
                           const SizedBox(width: 8),
                           Icon(
                             _currentPage == widget.pages.length - 1

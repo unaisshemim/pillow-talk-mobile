@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pillow_talk/features/dev/widget/notification_test_widget.dart';
-import 'package:pillow_talk/utils/theme/theme_extension.dart';
-import 'package:pillow_talk/utils/constant/sizes.dart';
-import 'package:pillow_talk/utils/helpers/responsive_size.dart';
+import 'package:pillowtalk/features/dev/widget/notification_test_widget.dart';
+import 'package:pillowtalk/utils/helpers/responsive_size.dart';
+import 'package:pillowtalk/utils/theme/theme_extension.dart';
+import 'package:pillowtalk/utils/constant/sizes.dart';
 
 class DevScreen extends StatelessWidget {
   const DevScreen({super.key});
@@ -22,10 +22,7 @@ class DevScreen extends StatelessWidget {
         backgroundColor: context.pColor.primary.base,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: context.pColor.neutral.n10,
-          ),
+          icon: Icon(Icons.arrow_back, color: context.pColor.neutral.n10),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -35,27 +32,20 @@ class DevScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // App Info Section
-            _buildInfoSection(
-              context,
-              'App Information',
-              Icons.info_outline,
-              [
-                _buildInfoRow('App Name', 'Pillow Talk'),
-                _buildInfoRow('Version', '1.0.0'),
-                _buildInfoRow('Build', 'Development'),
-                _buildInfoRow('Flutter Version', '3.5.1'),
-                _buildInfoRow('Environment', 'Debug'),
-              ],
-            ),
+            _buildInfoSection(context, 'App Information', Icons.info_outline, [
+              _buildInfoRow('App Name', 'Pillow Talk'),
+              _buildInfoRow('Version', '1.0.0'),
+              _buildInfoRow('Build', 'Development'),
+              _buildInfoRow('Flutter Version', '3.5.1'),
+              _buildInfoRow('Environment', 'Debug'),
+            ]),
 
             const SizedBox(height: PSizes.s24),
 
             // Notification Testing Section
-
             const NotificationTestWidget(),
 
             // Debug Tools Section
-
             const SizedBox(height: PSizes.s24),
 
             // Performance Section
@@ -98,11 +88,7 @@ class DevScreen extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Icon(
-                  icon,
-                  color: context.pColor.secondary.base,
-                  size: 20,
-                ),
+                Icon(icon, color: context.pColor.secondary.base, size: 20),
                 const SizedBox(width: PSizes.s12),
                 Text(
                   title,
@@ -118,9 +104,7 @@ class DevScreen extends StatelessWidget {
           // Content
           Padding(
             padding: const EdgeInsets.all(PSizes.s16),
-            child: Column(
-              children: infoRows,
-            ),
+            child: Column(children: infoRows),
           ),
         ],
       ),

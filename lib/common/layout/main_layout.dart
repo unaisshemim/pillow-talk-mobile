@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:pillow_talk/common/widget/bottom_tab_bar.dart';
-import 'package:pillow_talk/features/chat/screen/chat_screen.dart';
-import 'package:pillow_talk/features/dev/screen/dev_screen.dart';
-import 'package:pillow_talk/features/home/screen/home_screen.dart';
-import 'package:pillow_talk/features/partner/screen/partner_screen.dart';
-import 'package:pillow_talk/features/profile/screen/profile_screen.dart';
+import 'package:pillowtalk/common/widget/bottom_tab_bar.dart';
+import 'package:pillowtalk/features/chat/screen/chat_screen.dart';
+import 'package:pillowtalk/features/dev/screen/dev_screen.dart';
+import 'package:pillowtalk/features/home/screen/home_screen.dart';
+import 'package:pillowtalk/features/partner/screen/partner_screen.dart';
+import 'package:pillowtalk/features/profile/screen/profile_screen.dart';
 
 class PMainLayout extends StatefulWidget {
   const PMainLayout({super.key});
@@ -27,7 +27,7 @@ class _PMainLayoutState extends State<PMainLayout> {
       ChatScreen(),
       PartnerScreen(),
       ProfileScreen(),
-      DevScreen()
+      DevScreen(),
     ];
   }
 
@@ -43,10 +43,7 @@ class _PMainLayoutState extends State<PMainLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _screens,
-      ),
+      body: IndexedStack(index: _currentIndex, children: _screens),
       bottomNavigationBar: BottomTabBar(
         currentIndex: _currentIndex,
         onTap: _onTap,

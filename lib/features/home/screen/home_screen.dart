@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pillow_talk/utils/constant/router.dart';
-import 'package:pillow_talk/utils/theme/theme_extension.dart';
-import 'package:pillow_talk/utils/constant/sizes.dart';
-import 'package:pillow_talk/utils/helpers/responsive_size.dart';
+import 'package:pillowtalk/utils/constant/router.dart';
+import 'package:pillowtalk/utils/helpers/responsive_size.dart';
+import 'package:pillowtalk/utils/theme/theme_extension.dart';
+import 'package:pillowtalk/utils/constant/sizes.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -262,8 +262,13 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildMoodCard(BuildContext context, String title, String emoji,
-      String mood, Color color) {
+  Widget _buildMoodCard(
+    BuildContext context,
+    String title,
+    String emoji,
+    String mood,
+    Color color,
+  ) {
     return Container(
       padding: const EdgeInsets.all(PSizes.s16),
       decoration: BoxDecoration(
@@ -299,7 +304,11 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildQuickAction(
-      BuildContext context, IconData icon, String label, Color color) {
+    BuildContext context,
+    IconData icon,
+    String label,
+    Color color,
+  ) {
     return Column(
       children: [
         Container(
@@ -309,11 +318,7 @@ class HomeScreen extends StatelessWidget {
             color: color.withOpacity(0.1),
             borderRadius: BorderRadius.circular(PSizes.s16),
           ),
-          child: Icon(
-            icon,
-            color: color,
-            size: PSizes.s24,
-          ),
+          child: Icon(icon, color: color, size: PSizes.s24),
         ),
         const SizedBox(height: PSizes.s8),
         Text(
@@ -327,8 +332,14 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildActivityCard(BuildContext context, String title,
-      String description, IconData icon, Color color, String duration) {
+  Widget _buildActivityCard(
+    BuildContext context,
+    String title,
+    String description,
+    IconData icon,
+    Color color,
+    String duration,
+  ) {
     return Container(
       padding: const EdgeInsets.all(PSizes.s16),
       decoration: BoxDecoration(
@@ -345,11 +356,7 @@ class HomeScreen extends StatelessWidget {
               color: color.withOpacity(0.1),
               borderRadius: BorderRadius.circular(PSizes.s12),
             ),
-            child: Icon(
-              icon,
-              color: color,
-              size: PSizes.s24,
-            ),
+            child: Icon(icon, color: color, size: PSizes.s24),
           ),
           const SizedBox(width: PSizes.s16),
           Expanded(

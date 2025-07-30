@@ -1,22 +1,18 @@
 import 'package:flutter/widgets.dart';
-import 'package:pillow_talk/common/config/env_config.dart';
-import 'package:pillow_talk/common/widget/svg.dart';
-import 'package:pillow_talk/utils/constant/icons.dart';
-import 'package:pillow_talk/utils/helpers/device_utility.dart';
-import 'package:pillow_talk/utils/helpers/responsive_size.dart';
-import 'package:pillow_talk/utils/theme/theme_extension.dart';
-import 'package:pillow_talk/utils/constant/sizes.dart';
+import 'package:pillowtalk/common/config/env_config.dart';
+import 'package:pillowtalk/common/widget/svg.dart';
+import 'package:pillowtalk/utils/constant/icons.dart';
+import 'package:pillowtalk/utils/constant/sizes.dart';
+import 'package:pillowtalk/utils/helpers/device_utility.dart';
+import 'package:pillowtalk/utils/helpers/responsive_size.dart';
+import 'package:pillowtalk/utils/theme/theme_extension.dart';
 
 class BottomTabBar extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
   final dev = EnvConfig.isDev;
 
-  BottomTabBar({
-    super.key,
-    required this.currentIndex,
-    required this.onTap,
-  });
+  BottomTabBar({super.key, required this.currentIndex, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +58,8 @@ class BottomTabBar extends StatelessWidget {
         decoration: BoxDecoration(
           color: context.pColor.neutral.n10,
           border: Border(
-              top: BorderSide(color: context.pColor.secondary.s40, width: 1)),
+            top: BorderSide(color: context.pColor.secondary.s40, width: 1),
+          ),
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -108,12 +105,15 @@ class _NavBarItem extends StatelessWidget {
               ),
             ),
             const SizedBox(height: PSizes.s2),
-            Text(label,
-                style: TextStyle(
-                    fontSize: responsive(context, PSizes.s10),
-                    color: isActive
-                        ? context.pColor.primary.base
-                        : context.pColor.neutral.n80)),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: responsive(context, PSizes.s10),
+                color: isActive
+                    ? context.pColor.primary.base
+                    : context.pColor.neutral.n80,
+              ),
+            ),
           ],
         ),
       ),

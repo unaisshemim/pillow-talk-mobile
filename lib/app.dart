@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pillow_talk/router.dart';
-import 'package:pillow_talk/utils/theme/theme.dart';
-import 'package:pillow_talk/common/services/notification_service.dart';
+import 'package:pillowtalk/common/services/notification_service.dart';
+import 'package:pillowtalk/router.dart';
+import 'package:pillowtalk/utils/theme/theme.dart';
 
 class MainApp extends StatefulWidget {
   const MainApp({super.key});

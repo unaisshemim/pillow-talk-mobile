@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pillow_talk/features/onboarding/model/onboarding_model.dart';
-import 'package:pillow_talk/features/onboarding/widget/onboarding_widget.dart';
-import 'package:pillow_talk/utils/constant/router.dart';
+import 'package:pillowtalk/features/onboarding/model/onboarding_model.dart';
+import 'package:pillowtalk/features/onboarding/widget/onboarding_widget.dart';
+import 'package:pillowtalk/utils/constant/router.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({super.key});
