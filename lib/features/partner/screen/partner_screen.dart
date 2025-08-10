@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pillowtalk/common/widget/app_bar_title.dart';
+import 'package:pillowtalk/common/widget/screen_container.dart';
 import 'package:pillowtalk/utils/helpers/responsive_size.dart';
 import 'package:pillowtalk/utils/theme/theme_extension.dart';
 import 'package:pillowtalk/utils/constant/sizes.dart';
@@ -11,37 +13,28 @@ class PartnerScreen extends StatefulWidget {
 }
 
 class _PartnerScreenState extends State<PartnerScreen> {
-  bool isConnected = false; // Set to false to show search/connect UI
+  bool isConnected = true; // Set to false to show search/connect UI
   final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PScreenContainer(
       backgroundColor: context.pColor.neutral.n10,
-      appBar: AppBar(
-        title: Text(
-          'Partner',
-          style: TextStyle(
-            color: context.pColor.neutral.n10,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        backgroundColor: context.pColor.primary.base,
-        elevation: 0,
-        actions: [
-          if (isConnected)
-            IconButton(
-              icon: Icon(
-                Icons.settings_outlined,
-                color: context.pColor.neutral.n10,
-              ),
-              onPressed: () {
-                // Partner settings
-              },
-            ),
-        ],
+      appBar: PAppBarTitle(
+        title: 'Partner',
+        trailingAction: isConnected
+            ? IconButton(
+                icon: Icon(
+                  Icons.settings_outlined,
+                  color: context.pColor.neutral.n70,
+                ),
+                onPressed: () {
+                  // Partner settings
+                },
+              )
+            : null,
       ),
-      body: isConnected ? _buildConnectedView() : _buildSearchView(),
+      child: isConnected ? _buildConnectedView() : _buildSearchView(),
     );
   }
 
@@ -53,6 +46,7 @@ class _PartnerScreenState extends State<PartnerScreen> {
         children: [
           // Search Section
           Container(
+            width: double.infinity,
             padding: const EdgeInsets.all(PSizes.s20),
             decoration: BoxDecoration(
               gradient: LinearGradient(

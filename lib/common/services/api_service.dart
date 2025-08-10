@@ -7,12 +7,10 @@ class ApiService {
 
   Future<dynamic> get(String path, {Map<String, dynamic>? queryParams}) async {
     final response = await _dio.get(path, queryParameters: queryParams);
-
     if (response.statusCode == 200) {
-      final dynamic resp = response.data!;
-      return resp['data'];
+      return response.data['data'];
     } else {
-      throw Exception('Failed to fetch properties');
+      throw Exception('GET failed');
     }
   }
 
@@ -27,25 +25,17 @@ class ApiService {
       queryParameters: queryParams,
     );
     if (response.statusCode == 200) {
-      final dynamic resp = response.data!;
-      return resp;
+      return response.data;
     } else {
-      throw Exception('Failed to fetch properties');
+      throw Exception('POST failed');
     }
   }
 
-  Future<Response<T>> put<T>(
-    String path, {
-    dynamic data,
-    Map<String, dynamic>? queryParams,
-  }) async {
-    return _dio.put<T>(path, data: data, queryParameters: queryParams);
+  Future<Response<T>> put<T>(String path, {dynamic data}) async {
+    return _dio.put<T>(path, data: data);
   }
 
-  Future<Response<T>> delete<T>(
-    String path, {
-    Map<String, dynamic>? queryParams,
-  }) async {
-    return _dio.delete<T>(path, queryParameters: queryParams);
+  Future<Response<T>> delete<T>(String path) async {
+    return _dio.delete<T>(path);
   }
 }

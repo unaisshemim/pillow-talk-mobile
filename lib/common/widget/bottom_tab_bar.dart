@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pillowtalk/common/config/env_config.dart';
 import 'package:pillowtalk/common/widget/svg.dart';
@@ -16,7 +17,6 @@ class BottomTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(dev);
     final items = [
       _NavBarItem(
         label: 'Home',
@@ -42,7 +42,7 @@ class BottomTabBar extends StatelessWidget {
         isActive: currentIndex == 3,
         onTap: () => onTap(3),
       ),
-      if (dev)
+      if (!kReleaseMode)
         _NavBarItem(
           label: 'DEV',
           iconUrl: PIcons.earphone,

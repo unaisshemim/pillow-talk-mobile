@@ -1,58 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pillowtalk/common/widget/app_bar_title.dart';
+import 'package:pillowtalk/common/widget/screen_container.dart';
+import 'package:pillowtalk/common/widget/cards/mood_card.dart';
+import 'package:pillowtalk/common/widget/cards/quick_action_card.dart';
+import 'package:pillowtalk/common/widget/cards/activtiy_card.dart';
 import 'package:pillowtalk/utils/constant/router.dart';
 import 'package:pillowtalk/utils/helpers/responsive_size.dart';
 import 'package:pillowtalk/utils/theme/theme_extension.dart';
 import 'package:pillowtalk/utils/constant/sizes.dart';
+import 'package:pillowtalk/common/widget/cards/progress_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PScreenContainer(
       backgroundColor: context.pColor.neutral.n10,
-      appBar: AppBar(
-        title: Row(
-          children: [
-            Container(
-              width: 32,
-              height: 32,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                color: context.pColor.primary.base,
-              ),
-              child: Icon(
-                Icons.favorite,
-                size: 20,
-                color: context.pColor.neutral.n10,
-              ),
-            ),
-            const SizedBox(width: 10),
-            Text(
-              'Pillow Talk',
-              style: TextStyle(
-                color: context.pColor.neutral.n10,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ],
-        ),
-        backgroundColor: context.pColor.primary.base,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.notifications_outlined,
-              color: context.pColor.neutral.n10,
-            ),
-            onPressed: () {
-              context.pushNamed(PRouter.notification.name);
-            },
+      appBar: PAppBarTitle(
+        title: 'Pillow Talk',
+        leadingIcon: Icons.favorite,
+        trailingAction: IconButton(
+          icon: Icon(
+            Icons.notifications_outlined,
+            color: context.pColor.neutral.n70,
           ),
-        ],
+          onPressed: () {
+            context.pushNamed(PRouter.notification.name);
+          },
+        ),
       ),
-      body: SingleChildScrollView(
+      child: SingleChildScrollView(
         padding: const EdgeInsets.all(PSizes.s16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,22 +82,20 @@ class HomeScreen extends StatelessWidget {
             Row(
               children: [
                 Expanded(
-                  child: _buildMoodCard(
-                    context,
-                    'Your Mood',
-                    '😊',
-                    'Happy',
-                    context.pColor.success.base,
+                  child: MoodCard(
+                    title: 'Your Mood',
+                    emoji: '😊',
+                    mood: 'Happy',
+                    color: context.pColor.success.base,
                   ),
                 ),
                 const SizedBox(width: PSizes.s12),
                 Expanded(
-                  child: _buildMoodCard(
-                    context,
-                    'Partner\'s Mood',
-                    '💭',
-                    'Thoughtful',
-                    context.pColor.secondary.base,
+                  child: MoodCard(
+                    title: 'Partner\'s Mood',
+                    emoji: '💭',
+                    mood: 'Thoughtful',
+                    color: context.pColor.secondary.base,
                   ),
                 ),
               ],
@@ -132,29 +109,25 @@ class HomeScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _buildQuickAction(
-                  context,
-                  Icons.chat_bubble_outline,
-                  'Chat',
-                  context.pColor.primary.base,
+                QuickActionCard(
+                  icon: Icons.chat_bubble_outline,
+                  label: 'Chat',
+                  color: context.pColor.primary.base,
                 ),
-                _buildQuickAction(
-                  context,
-                  Icons.favorite_outline,
-                  'Send Love',
-                  context.pColor.error.base,
+                QuickActionCard(
+                  icon: Icons.favorite_outline,
+                  label: 'Send Love',
+                  color: context.pColor.error.base,
                 ),
-                _buildQuickAction(
-                  context,
-                  Icons.psychology_outlined,
-                  'Exercises',
-                  context.pColor.secondary.base,
+                QuickActionCard(
+                  icon: Icons.psychology_outlined,
+                  label: 'Exercises',
+                  color: context.pColor.secondary.base,
                 ),
-                _buildQuickAction(
-                  context,
-                  Icons.insights_outlined,
-                  'Insights',
-                  context.pColor.success.base,
+                QuickActionCard(
+                  icon: Icons.insights_outlined,
+                  label: 'Insights',
+                  color: context.pColor.success.base,
                 ),
               ],
             ),
@@ -164,31 +137,28 @@ class HomeScreen extends StatelessWidget {
             // Today's Activities
             _buildSectionTitle(context, 'Today\'s Activities'),
             const SizedBox(height: PSizes.s12),
-            _buildActivityCard(
-              context,
-              'Gratitude Exercise',
-              'Share 3 things you\'re grateful for today',
-              Icons.auto_awesome,
-              context.pColor.primary.base,
-              '10 min',
+            ActivityCard(
+              title: 'Gratitude Exercise',
+              description: 'Share 3 things you\'re grateful for today',
+              icon: Icons.auto_awesome,
+              color: context.pColor.primary.base,
+              duration: '10 min',
             ),
             const SizedBox(height: PSizes.s12),
-            _buildActivityCard(
-              context,
-              'Communication Exercise',
-              'Practice active listening with your partner',
-              Icons.hearing,
-              context.pColor.secondary.base,
-              '15 min',
+            ActivityCard(
+              title: 'Communication Exercise',
+              description: 'Practice active listening with your partner',
+              icon: Icons.hearing,
+              color: context.pColor.secondary.base,
+              duration: '15 min',
             ),
             const SizedBox(height: PSizes.s12),
-            _buildActivityCard(
-              context,
-              'Mindful Moment',
-              'Take a moment to breathe together',
-              Icons.self_improvement,
-              context.pColor.success.base,
-              '5 min',
+            ActivityCard(
+              title: 'Mindful Moment',
+              description: 'Take a moment to breathe together',
+              icon: Icons.self_improvement,
+              color: context.pColor.success.base,
+              duration: '5 min',
             ),
 
             const SizedBox(height: PSizes.s24),
@@ -196,54 +166,12 @@ class HomeScreen extends StatelessWidget {
             // Relationship Progress
             _buildSectionTitle(context, 'Your Progress'),
             const SizedBox(height: PSizes.s12),
-            Container(
-              padding: const EdgeInsets.all(PSizes.s16),
-              decoration: BoxDecoration(
-                color: context.pColor.neutral.n10,
-                borderRadius: BorderRadius.circular(PSizes.s12),
-                border: Border.all(color: context.pColor.neutral.n30),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Connection Score',
-                        style: TextStyle(
-                          fontSize: responsive(context, PSizes.s16),
-                          fontWeight: FontWeight.w600,
-                          color: context.pColor.neutral.n80,
-                        ),
-                      ),
-                      Text(
-                        '85%',
-                        style: TextStyle(
-                          fontSize: responsive(context, PSizes.s16),
-                          fontWeight: FontWeight.bold,
-                          color: context.pColor.primary.base,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: PSizes.s8),
-                  LinearProgressIndicator(
-                    value: 0.85,
-                    backgroundColor: context.pColor.neutral.n30,
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      context.pColor.primary.base,
-                    ),
-                  ),
-                  const SizedBox(height: PSizes.s8),
-                  Text(
-                    'Great job! You\'ve completed 12 activities this week.',
-                    style: TextStyle(
-                      fontSize: responsive(context, PSizes.s14),
-                      color: context.pColor.neutral.n60,
-                    ),
-                  ),
-                ],
-              ),
+            ProgressCard(
+              title: 'Connection Score',
+              progressValue: 0.85,
+              percentageText: '85%',
+              description:
+                  'Great job! You\'ve completed 12 activities this week.',
             ),
           ],
         ),
@@ -258,149 +186,6 @@ class HomeScreen extends StatelessWidget {
         fontSize: responsive(context, PSizes.s20),
         fontWeight: FontWeight.bold,
         color: context.pColor.neutral.n80,
-      ),
-    );
-  }
-
-  Widget _buildMoodCard(
-    BuildContext context,
-    String title,
-    String emoji,
-    String mood,
-    Color color,
-  ) {
-    return Container(
-      padding: const EdgeInsets.all(PSizes.s16),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(PSizes.s12),
-        border: Border.all(color: color.withOpacity(0.3)),
-      ),
-      child: Column(
-        children: [
-          Text(
-            emoji,
-            style: TextStyle(fontSize: responsive(context, PSizes.s24)),
-          ),
-          const SizedBox(height: PSizes.s8),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: responsive(context, PSizes.s12),
-              color: context.pColor.neutral.n60,
-            ),
-          ),
-          Text(
-            mood,
-            style: TextStyle(
-              fontSize: responsive(context, PSizes.s14),
-              fontWeight: FontWeight.w600,
-              color: color,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildQuickAction(
-    BuildContext context,
-    IconData icon,
-    String label,
-    Color color,
-  ) {
-    return Column(
-      children: [
-        Container(
-          width: 60,
-          height: 60,
-          decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(PSizes.s16),
-          ),
-          child: Icon(icon, color: color, size: PSizes.s24),
-        ),
-        const SizedBox(height: PSizes.s8),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: responsive(context, PSizes.s12),
-            color: context.pColor.neutral.n70,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildActivityCard(
-    BuildContext context,
-    String title,
-    String description,
-    IconData icon,
-    Color color,
-    String duration,
-  ) {
-    return Container(
-      padding: const EdgeInsets.all(PSizes.s16),
-      decoration: BoxDecoration(
-        color: context.pColor.neutral.n10,
-        borderRadius: BorderRadius.circular(PSizes.s12),
-        border: Border.all(color: context.pColor.neutral.n30),
-      ),
-      child: Row(
-        children: [
-          Container(
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(PSizes.s12),
-            ),
-            child: Icon(icon, color: color, size: PSizes.s24),
-          ),
-          const SizedBox(width: PSizes.s16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: TextStyle(
-                    fontSize: responsive(context, PSizes.s16),
-                    fontWeight: FontWeight.w600,
-                    color: context.pColor.neutral.n80,
-                  ),
-                ),
-                const SizedBox(height: PSizes.s4),
-                Text(
-                  description,
-                  style: TextStyle(
-                    fontSize: responsive(context, PSizes.s14),
-                    color: context.pColor.neutral.n60,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: PSizes.s8,
-              vertical: PSizes.s4,
-            ),
-            decoration: BoxDecoration(
-              color: color.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(PSizes.s8),
-            ),
-            child: Text(
-              duration,
-              style: TextStyle(
-                fontSize: responsive(context, PSizes.s12),
-                fontWeight: FontWeight.w500,
-                color: color,
-              ),
-            ),
-          ),
-        ],
       ),
     );
   }

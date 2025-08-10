@@ -1,4 +1,5 @@
 // GoRouter configuration
+import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pillowtalk/common/layout/main_layout.dart';
 import 'package:pillowtalk/features/auth/screen/auth_screen.dart';
@@ -67,6 +68,7 @@ final router = GoRouter(
           path: PRouter.home.path,
           builder: (context, state) => const HomeScreen(),
         ),
+
         GoRoute(
           path: PRouter.dev.path,
           builder: (context, state) => const DevScreen(),

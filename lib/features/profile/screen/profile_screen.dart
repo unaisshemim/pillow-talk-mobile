@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pillowtalk/common/widget/app_bar_title.dart';
+import 'package:pillowtalk/common/widget/screen_container.dart';
 import 'package:pillowtalk/utils/helpers/responsive_size.dart';
 import 'package:pillowtalk/utils/theme/theme_extension.dart';
 import 'package:pillowtalk/utils/constant/sizes.dart';
@@ -18,26 +20,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PScreenContainer(
       backgroundColor: context.pColor.neutral.n20,
-      appBar: AppBar(
-        title: Text(
-          'Profile',
-          style: TextStyle(
-            color: context.pColor.neutral.n10,
-            fontWeight: FontWeight.bold,
-          ),
+      appBar: PAppBarTitle(
+        title: 'Profile',
+        trailingAction: IconButton(
+          icon: Icon(Icons.edit_outlined, color: context.pColor.neutral.n70),
+          onPressed: () => _showEditProfileDialog(),
         ),
-        backgroundColor: context.pColor.primary.base,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: Icon(Icons.edit_outlined, color: context.pColor.neutral.n10),
-            onPressed: () => _showEditProfileDialog(),
-          ),
-        ],
       ),
-      body: SingleChildScrollView(
+      child: SingleChildScrollView(
         child: Column(
           children: [
             // Profile Header

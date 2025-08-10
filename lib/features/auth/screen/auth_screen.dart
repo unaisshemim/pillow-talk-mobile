@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pillowtalk/features/auth/widget/auth_header.dart';
+import 'package:pillowtalk/features/auth/widget/phonenumber_form.dart';
 import 'package:pillowtalk/utils/constant/sizes.dart';
 import 'package:pillowtalk/utils/helpers/responsive_size.dart';
 import 'package:pillowtalk/utils/theme/theme_extension.dart';
 
-class AuthScreen extends StatefulWidget {
+class AuthScreen extends ConsumerStatefulWidget {
   const AuthScreen({super.key});
 
   @override
-  State<AuthScreen> createState() => _AuthScreenState();
+  ConsumerState<AuthScreen> createState() => _AuthScreenState();
 }
 
-class _AuthScreenState extends State<AuthScreen> {
+class _AuthScreenState extends ConsumerState<AuthScreen> {
   final _phoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
-  String _selectedCountryCode = '+1';
+  late String _selectedCountryCode = '+1';
 
   final List<Map<String, String>> _countryCodes = [
     {'code': '+1', 'country': 'US/CA'},
@@ -52,52 +55,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 const SizedBox(height: PSizes.s48),
 
                 // Logo and Header
-                Center(
-                  child: Column(
-                    children: [
-                      Container(
-                        width: 120,
-                        height: 120,
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                              context.pColor.primary.base,
-                              context.pColor.secondary.base,
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
-                          borderRadius: BorderRadius.circular(PSizes.s24),
-                        ),
-                        child: Icon(
-                          Icons.favorite,
-                          size: 60,
-                          color: context.pColor.neutral.n10,
-                        ),
-                      ),
-                      const SizedBox(height: PSizes.s24),
-                      Text(
-                        'Welcome to Pillow Talk',
-                        style: TextStyle(
-                          fontSize: responsive(context, PSizes.s24),
-                          fontWeight: FontWeight.bold,
-                          color: context.pColor.neutral.n90,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: PSizes.s8),
-                      Text(
-                        'Building stronger relationships through\nbetter communication',
-                        style: TextStyle(
-                          fontSize: responsive(context, PSizes.s16),
-                          color: context.pColor.neutral.n60,
-                          height: 1.5,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ],
-                  ),
-                ),
+                AuthHeader(),
 
                 const SizedBox(height: PSizes.s48),
 
@@ -131,108 +89,15 @@ class _AuthScreenState extends State<AuthScreen> {
                     ),
                     borderRadius: BorderRadius.circular(PSizes.s12),
                   ),
-                  child: Row(
-                    children: [
-                      // Country Code Dropdown
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: PSizes.s16,
-                          vertical: PSizes.s16,
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border(
-                            right: BorderSide(
-                              color: context.pColor.neutral.n30,
-                              width: 1,
-                            ),
-                          ),
-                        ),
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            value: _selectedCountryCode,
-                            isDense: true,
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                _selectedCountryCode = newValue!;
-                              });
-                            },
-                            items: _countryCodes.map((country) {
-                              return DropdownMenuItem<String>(
-                                value: country['code'],
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    Text(
-                                      country['country']!,
-                                      style: TextStyle(
-                                        fontSize: responsive(
-                                          context,
-                                          PSizes.s14,
-                                        ),
-                                        color: context.pColor.neutral.n70,
-                                      ),
-                                    ),
-                                    const SizedBox(width: PSizes.s8),
-                                    Text(
-                                      country['code']!,
-                                      style: TextStyle(
-                                        fontSize: responsive(
-                                          context,
-                                          PSizes.s16,
-                                        ),
-                                        fontWeight: FontWeight.w500,
-                                        color: context.pColor.neutral.n90,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      ),
-
-                      // Phone Number Input
-                      Expanded(
-                        child: TextFormField(
-                          onTapOutside: (PointerDownEvent event) {
-                            FocusManager.instance.primaryFocus?.unfocus();
-                          },
-                          controller: _phoneController,
-                          keyboardType: TextInputType.phone,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                            LengthLimitingTextInputFormatter(15),
-                          ],
-                          style: TextStyle(
-                            fontSize: responsive(context, PSizes.s18),
-                            fontWeight: FontWeight.w500,
-                            color: context.pColor.neutral.n90,
-                          ),
-                          decoration: InputDecoration(
-                            hintText: 'Phone number',
-                            hintStyle: TextStyle(
-                              color: context.pColor.neutral.n50,
-                              fontWeight: FontWeight.normal,
-                            ),
-                            border: InputBorder.none,
-                            contentPadding: const EdgeInsets.symmetric(
-                              horizontal: PSizes.s16,
-                              vertical: PSizes.s16,
-                            ),
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Please enter your phone number';
-                            }
-                            if (value.length < 10) {
-                              return 'Please enter a valid phone number';
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ],
+                  child: PhoneNumberForm(
+                    controller: _phoneController,
+                    selectedCode: _selectedCountryCode,
+                    countryCodes: _countryCodes,
+                    onCountryChanged: (value) {
+                      setState(() {
+                        _selectedCountryCode = value;
+                      });
+                    },
                   ),
                 ),
 

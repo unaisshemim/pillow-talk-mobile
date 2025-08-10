@@ -25,10 +25,10 @@ class OtpScreen extends StatefulWidget {
 
 class _OtpScreenState extends State<OtpScreen> {
   final List<TextEditingController> _otpControllers = List.generate(
-    6,
+    4,
     (index) => TextEditingController(),
   );
-  final List<FocusNode> _focusNodes = List.generate(6, (index) => FocusNode());
+  final List<FocusNode> _focusNodes = List.generate(4, (index) => FocusNode());
 
   bool _isLoading = false;
   bool _isResending = false;
@@ -142,7 +142,7 @@ class _OtpScreenState extends State<OtpScreen> {
                     height: 1.5,
                   ),
                   children: [
-                    const TextSpan(text: 'We sent a 6-digit code to\n'),
+                    const TextSpan(text: 'We sent a 4-digit code to\n'),
                     TextSpan(
                       text: widget.maskedNumber,
                       style: TextStyle(
@@ -159,7 +159,7 @@ class _OtpScreenState extends State<OtpScreen> {
               // OTP Input Fields
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: List.generate(6, (index) {
+                children: List.generate(4, (index) {
                   return SizedBox(
                     width: 48,
                     height: 56,
@@ -205,14 +205,14 @@ class _OtpScreenState extends State<OtpScreen> {
                         contentPadding: EdgeInsets.zero,
                       ),
                       onChanged: (value) {
-                        if (value.isNotEmpty && index < 5) {
+                        if (value.isNotEmpty && index < 3) {
                           _focusNodes[index + 1].requestFocus();
                         } else if (value.isEmpty && index > 0) {
                           _focusNodes[index - 1].requestFocus();
                         }
 
                         // Auto-verify when all fields are filled
-                        if (index == 5 && value.isNotEmpty) {
+                        if (index == 3 && value.isNotEmpty) {
                           _verifyOTP();
                         }
                       },
@@ -366,8 +366,8 @@ class _OtpScreenState extends State<OtpScreen> {
   void _verifyOTP() async {
     final otp = _otpControllers.map((controller) => controller.text).join();
 
-    if (otp.length != 6) {
-      _showSnackBar('Please enter the complete 6-digit code', isError: true);
+    if (otp.length != 4) {
+      _showSnackBar('Please enter the complete 4-digit code', isError: true);
       return;
     }
 
@@ -382,7 +382,7 @@ class _OtpScreenState extends State<OtpScreen> {
       _isLoading = false;
     });
 
-    // For demo purposes, accept any 6-digit code
+    // For demo purposes, accept any 4-digit code
     if (mounted) {
       _showSnackBar('Phone number verified successfully!', isError: false);
 

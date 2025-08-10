@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:pillowtalk/common/widget/app_bar_title.dart';
+import 'package:pillowtalk/common/widget/screen_container.dart';
 import 'package:pillowtalk/utils/helpers/responsive_size.dart';
 import 'package:pillowtalk/utils/theme/theme_extension.dart';
 import 'package:pillowtalk/utils/constant/sizes.dart';
@@ -70,86 +72,7 @@ class _ChatScreenState extends State<ChatScreen> {
 
   Widget _buildChatListView() {
     return Scaffold(
-      backgroundColor: context.pColor.neutral.n10,
-      appBar: AppBar(
-        title: Text(
-          'Conversations',
-          style: TextStyle(
-            color: context.pColor.neutral.n10,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        backgroundColor: context.pColor.primary.base,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.search_outlined,
-              color: context.pColor.neutral.n10,
-            ),
-            onPressed: () {
-              // Search conversations
-            },
-          ),
-        ],
-      ),
-      body: Column(
-        children: [
-          // Header Stats
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(PSizes.s16),
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [
-                  context.pColor.primary.base,
-                  context.pColor.secondary.base,
-                ],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Your Conversation Journey 💬',
-                  style: TextStyle(
-                    fontSize: responsive(context, PSizes.s20),
-                    fontWeight: FontWeight.bold,
-                    color: context.pColor.neutral.n10,
-                  ),
-                ),
-                const SizedBox(height: PSizes.s8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _buildStatItem(
-                      context,
-                      '${chatSessions.length}',
-                      'Conversations',
-                    ),
-                    _buildStatItem(context, '77', 'Total Messages'),
-                    _buildStatItem(context, '92%', 'Positive Tone'),
-                  ],
-                ),
-              ],
-            ),
-          ),
-
-          // Chat Sessions List
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(PSizes.s16),
-              itemCount: chatSessions.length,
-              itemBuilder: (context, index) {
-                final session = chatSessions[index];
-                return _buildChatSessionCard(session);
-              },
-            ),
-          ),
-        ],
-      ),
+      backgroundColor: Colors.transparent,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _showNewChatDialog(),
         backgroundColor: context.pColor.primary.base,
@@ -157,61 +80,119 @@ class _ChatScreenState extends State<ChatScreen> {
         icon: const Icon(Icons.add_comment_outlined),
         label: const Text('New Chat'),
       ),
-    );
-  }
-
-  Widget _buildChatView() {
-    return Scaffold(
-      backgroundColor: context.pColor.neutral.n10,
-      appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: context.pColor.neutral.n10),
-          onPressed: () {
-            setState(() {
-              currentChatId = null;
-              currentTopic = null;
-            });
-          },
+      body: PScreenContainer(
+        backgroundColor: context.pColor.neutral.n10,
+        appBar: PAppBarTitle(
+          title: 'Conversations',
+          trailingAction: IconButton(
+            icon: Icon(
+              Icons.search_outlined,
+              color: context.pColor.neutral.n70,
+            ),
+            onPressed: () {
+              // Search conversations
+            },
+          ),
         ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Column(
           children: [
-            Text(
-              'Sarah & John',
-              style: TextStyle(
-                color: context.pColor.neutral.n10,
-                fontWeight: FontWeight.bold,
-                fontSize: responsive(context, PSizes.s16),
+            // Header Stats
+            Padding(
+              padding: EdgeInsets.all(20),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(PSizes.s20),
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      context.pColor.primary.base,
+                      context.pColor.secondary.base,
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(PSizes.s16),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Your Conversation Journey 💬',
+                      style: TextStyle(
+                        fontSize: responsive(context, PSizes.s24),
+                        fontWeight: FontWeight.bold,
+                        color: context.pColor.neutral.n10,
+                      ),
+                    ),
+                    const SizedBox(height: PSizes.s8),
+                    Text(
+                      'How are you feeling as a couple today?',
+                      style: TextStyle(
+                        fontSize: responsive(context, PSizes.s16),
+                        color: context.pColor.neutral.n10.withOpacity(0.9),
+                      ),
+                    ),
+                    const SizedBox(height: PSizes.s16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        _buildStatItem(
+                          context,
+                          '${chatSessions.length}',
+                          'Conversations',
+                        ),
+                        _buildStatItem(context, '77', 'Total Messages'),
+                        _buildStatItem(context, '92%', 'Positive Tone'),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
-            Text(
-              currentTopic ?? 'Chat',
-              style: TextStyle(
-                color: context.pColor.neutral.n10.withOpacity(0.8),
-                fontSize: responsive(context, PSizes.s12),
+
+            // Chat Sessions List
+            Expanded(
+              child: ListView.builder(
+                padding: const EdgeInsets.all(PSizes.s16),
+                itemCount: chatSessions.length,
+                itemBuilder: (context, index) {
+                  final session = chatSessions[index];
+                  return _buildChatSessionCard(session);
+                },
               ),
             ),
           ],
         ),
-        backgroundColor: context.pColor.primary.base,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: Icon(
-              Icons.analytics_outlined,
-              color: context.pColor.neutral.n10,
-            ),
-            onPressed: () => _showChatAnalytics(),
-          ),
-          IconButton(
-            icon: Icon(Icons.more_vert, color: context.pColor.neutral.n10),
-            onPressed: () {
-              // More options
-            },
-          ),
-        ],
       ),
-      body: Column(
+    );
+  }
+
+  Widget _buildChatView() {
+    return PScreenContainer(
+      backgroundColor: context.pColor.neutral.n10,
+      appBar: PAppBarTitle(
+        title: 'Sarah & John',
+        isBackButtonNeeded: true,
+        trailingAction: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: Icon(
+                Icons.analytics_outlined,
+                color: context.pColor.neutral.n70,
+              ),
+              onPressed: () => _showChatAnalytics(),
+            ),
+            IconButton(
+              icon: Icon(Icons.more_vert, color: context.pColor.neutral.n70),
+              onPressed: () {
+                // More options
+              },
+            ),
+          ],
+        ),
+      ),
+      child: Column(
         children: [
           // Messages
           Expanded(

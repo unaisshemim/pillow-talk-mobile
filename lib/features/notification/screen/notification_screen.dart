@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pillowtalk/common/widget/screen_container.dart';
 import 'package:pillowtalk/utils/helpers/responsive_size.dart';
 import 'package:pillowtalk/utils/theme/theme_extension.dart';
 import 'package:pillowtalk/utils/constant/sizes.dart';
@@ -8,23 +9,28 @@ class NotificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return PScreenContainer(
       backgroundColor: context.pColor.neutral.n10,
-      appBar: AppBar(
-        title: Text(
-          'Notifications',
-          style: TextStyle(
-            color: context.pColor.neutral.n10,
-            fontWeight: FontWeight.bold,
+      appBar: Row(
+        children: [
+          IconButton(
+            icon: Icon(Icons.arrow_back, color: context.pColor.neutral.n90),
+            onPressed: () => Navigator.of(context).pop(),
           ),
-        ),
-        backgroundColor: context.pColor.primary.base,
-        elevation: 0,
-        actions: [
+          const SizedBox(width: PSizes.s8),
+          Text(
+            'Notifications',
+            style: TextStyle(
+              color: context.pColor.neutral.n90,
+              fontWeight: FontWeight.bold,
+              fontSize: responsive(context, PSizes.s18),
+            ),
+          ),
+          const Spacer(),
           IconButton(
             icon: Icon(
               Icons.mark_email_read_outlined,
-              color: context.pColor.neutral.n10,
+              color: context.pColor.neutral.n70,
             ),
             onPressed: () {
               // Mark all as read
@@ -32,7 +38,7 @@ class NotificationScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView(
+      child: ListView(
         padding: const EdgeInsets.all(PSizes.s16),
         children: [
           // Today Section
