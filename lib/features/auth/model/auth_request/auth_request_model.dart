@@ -6,7 +6,7 @@ part 'auth_request_model.g.dart';
 @freezed
 abstract class SendOtpRequest with _$SendOtpRequest {
   const factory SendOtpRequest({
-    required String phone, // e.g. +91XXXXXXXXXX
+    required String phoneNumber, // e.g. +91XXXXXXXXXX
   }) = _SendOtpRequest;
 
   factory SendOtpRequest.fromJson(Map<String, dynamic> json) =>

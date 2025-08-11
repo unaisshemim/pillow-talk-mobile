@@ -1,8 +1,12 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:pillowtalk/common/providers/token_provider.dart';
+
+part 'auth_interceptor.g.dart';
 
 class AuthInterceptor extends Interceptor {
   final Future<String?> Function() tokenProvider;
-
   AuthInterceptor({required this.tokenProvider});
 
   @override
@@ -10,16 +14,21 @@ class AuthInterceptor extends Interceptor {
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    // Skip auth for login/signup
     if (options.path.contains('/auth')) {
-      options.headers['web-api-key'] = 'your-api-key'; // Only if needed
+      options.headers['web-api-key'] = 'your-api-key';
     } else {
       final token = await tokenProvider();
       if (token != null && token.isNotEmpty) {
         options.headers['Authorization'] = 'Bearer $token';
       }
     }
-
-    return handler.next(options);
+    handler.next(options);
   }
+}
+
+@riverpod
+AuthInterceptor networkServiceInterceptor(Ref ref) {
+  Future<String?> tokenFn() =>
+      ref.read(tokenProvider.future); // generated token()
+  return AuthInterceptor(tokenProvider: tokenFn);
 }

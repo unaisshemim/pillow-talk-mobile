@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SendOtpRequest {
 
- String get phone;
+ String get phoneNumber;
 /// Create a copy of SendOtpRequest
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $SendOtpRequestCopyWith<SendOtpRequest> get copyWith => _$SendOtpRequestCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SendOtpRequest&&(identical(other.phone, phone) || other.phone == phone));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SendOtpRequest&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,phone);
+int get hashCode => Object.hash(runtimeType,phoneNumber);
 
 @override
 String toString() {
-  return 'SendOtpRequest(phone: $phone)';
+  return 'SendOtpRequest(phoneNumber: $phoneNumber)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $SendOtpRequestCopyWith<$Res>  {
   factory $SendOtpRequestCopyWith(SendOtpRequest value, $Res Function(SendOtpRequest) _then) = _$SendOtpRequestCopyWithImpl;
 @useResult
 $Res call({
- String phone
+ String phoneNumber
 });
 
 
@@ -65,9 +65,9 @@ class _$SendOtpRequestCopyWithImpl<$Res>
 
 /// Create a copy of SendOtpRequest
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? phone = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? phoneNumber = null,}) {
   return _then(_self.copyWith(
-phone: null == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
+phoneNumber: null == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }
@@ -153,10 +153,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String phone)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String phoneNumber)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SendOtpRequest() when $default != null:
-return $default(_that.phone);case _:
+return $default(_that.phoneNumber);case _:
   return orElse();
 
 }
@@ -174,10 +174,10 @@ return $default(_that.phone);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String phone)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String phoneNumber)  $default,) {final _that = this;
 switch (_that) {
 case _SendOtpRequest():
-return $default(_that.phone);case _:
+return $default(_that.phoneNumber);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -194,10 +194,10 @@ return $default(_that.phone);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String phone)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String phoneNumber)?  $default,) {final _that = this;
 switch (_that) {
 case _SendOtpRequest() when $default != null:
-return $default(_that.phone);case _:
+return $default(_that.phoneNumber);case _:
   return null;
 
 }
@@ -209,10 +209,10 @@ return $default(_that.phone);case _:
 @JsonSerializable()
 
 class _SendOtpRequest implements SendOtpRequest {
-  const _SendOtpRequest({required this.phone});
+  const _SendOtpRequest({required this.phoneNumber});
   factory _SendOtpRequest.fromJson(Map<String, dynamic> json) => _$SendOtpRequestFromJson(json);
 
-@override final  String phone;
+@override final  String phoneNumber;
 
 /// Create a copy of SendOtpRequest
 /// with the given fields replaced by the non-null parameter values.
@@ -227,16 +227,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SendOtpRequest&&(identical(other.phone, phone) || other.phone == phone));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SendOtpRequest&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,phone);
+int get hashCode => Object.hash(runtimeType,phoneNumber);
 
 @override
 String toString() {
-  return 'SendOtpRequest(phone: $phone)';
+  return 'SendOtpRequest(phoneNumber: $phoneNumber)';
 }
 
 
@@ -247,7 +247,7 @@ abstract mixin class _$SendOtpRequestCopyWith<$Res> implements $SendOtpRequestCo
   factory _$SendOtpRequestCopyWith(_SendOtpRequest value, $Res Function(_SendOtpRequest) _then) = __$SendOtpRequestCopyWithImpl;
 @override @useResult
 $Res call({
- String phone
+ String phoneNumber
 });
 
 
@@ -264,9 +264,9 @@ class __$SendOtpRequestCopyWithImpl<$Res>
 
 /// Create a copy of SendOtpRequest
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? phone = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? phoneNumber = null,}) {
   return _then(_SendOtpRequest(
-phone: null == phone ? _self.phone : phone // ignore: cast_nullable_to_non_nullable
+phoneNumber: null == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
 as String,
   ));
 }

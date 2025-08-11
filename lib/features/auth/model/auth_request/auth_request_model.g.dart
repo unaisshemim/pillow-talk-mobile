@@ -7,7 +7,7 @@ part of 'auth_request_model.dart';
 // **************************************************************************
 
 _SendOtpRequest _$SendOtpRequestFromJson(Map<String, dynamic> json) =>
-    _SendOtpRequest(phone: json['phone'] as String);
+    _SendOtpRequest(phoneNumber: json['phoneNumber'] as String);
 
 Map<String, dynamic> _$SendOtpRequestToJson(_SendOtpRequest instance) =>
-    <String, dynamic>{'phone': instance.phone};
+    <String, dynamic>{'phoneNumber': instance.phoneNumber};

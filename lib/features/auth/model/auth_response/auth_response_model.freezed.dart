@@ -15,9 +15,8 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SendOtpResponse {
 
- String get requestId;// your backend/Firebase session id
- String get maskedNumber;// e.g. +91 ******1234
- int get retryAfter;
+ String get phoneNumber;// e.g. +91 ******1234
+ String get otp;
 /// Create a copy of SendOtpResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -30,16 +29,16 @@ $SendOtpResponseCopyWith<SendOtpResponse> get copyWith => _$SendOtpResponseCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SendOtpResponse&&(identical(other.requestId, requestId) || other.requestId == requestId)&&(identical(other.maskedNumber, maskedNumber) || other.maskedNumber == maskedNumber)&&(identical(other.retryAfter, retryAfter) || other.retryAfter == retryAfter));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SendOtpResponse&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.otp, otp) || other.otp == otp));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,requestId,maskedNumber,retryAfter);
+int get hashCode => Object.hash(runtimeType,phoneNumber,otp);
 
 @override
 String toString() {
-  return 'SendOtpResponse(requestId: $requestId, maskedNumber: $maskedNumber, retryAfter: $retryAfter)';
+  return 'SendOtpResponse(phoneNumber: $phoneNumber, otp: $otp)';
 }
 
 
@@ -50,7 +49,7 @@ abstract mixin class $SendOtpResponseCopyWith<$Res>  {
   factory $SendOtpResponseCopyWith(SendOtpResponse value, $Res Function(SendOtpResponse) _then) = _$SendOtpResponseCopyWithImpl;
 @useResult
 $Res call({
- String requestId, String maskedNumber, int retryAfter
+ String phoneNumber, String otp
 });
 
 
@@ -67,12 +66,11 @@ class _$SendOtpResponseCopyWithImpl<$Res>
 
 /// Create a copy of SendOtpResponse
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? requestId = null,Object? maskedNumber = null,Object? retryAfter = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? phoneNumber = null,Object? otp = null,}) {
   return _then(_self.copyWith(
-requestId: null == requestId ? _self.requestId : requestId // ignore: cast_nullable_to_non_nullable
-as String,maskedNumber: null == maskedNumber ? _self.maskedNumber : maskedNumber // ignore: cast_nullable_to_non_nullable
-as String,retryAfter: null == retryAfter ? _self.retryAfter : retryAfter // ignore: cast_nullable_to_non_nullable
-as int,
+phoneNumber: null == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
+as String,otp: null == otp ? _self.otp : otp // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
@@ -157,10 +155,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String requestId,  String maskedNumber,  int retryAfter)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String phoneNumber,  String otp)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SendOtpResponse() when $default != null:
-return $default(_that.requestId,_that.maskedNumber,_that.retryAfter);case _:
+return $default(_that.phoneNumber,_that.otp);case _:
   return orElse();
 
 }
@@ -178,10 +176,10 @@ return $default(_that.requestId,_that.maskedNumber,_that.retryAfter);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String requestId,  String maskedNumber,  int retryAfter)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String phoneNumber,  String otp)  $default,) {final _that = this;
 switch (_that) {
 case _SendOtpResponse():
-return $default(_that.requestId,_that.maskedNumber,_that.retryAfter);case _:
+return $default(_that.phoneNumber,_that.otp);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +196,10 @@ return $default(_that.requestId,_that.maskedNumber,_that.retryAfter);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String requestId,  String maskedNumber,  int retryAfter)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String phoneNumber,  String otp)?  $default,) {final _that = this;
 switch (_that) {
 case _SendOtpResponse() when $default != null:
-return $default(_that.requestId,_that.maskedNumber,_that.retryAfter);case _:
+return $default(_that.phoneNumber,_that.otp);case _:
   return null;
 
 }
@@ -213,14 +211,12 @@ return $default(_that.requestId,_that.maskedNumber,_that.retryAfter);case _:
 @JsonSerializable()
 
 class _SendOtpResponse implements SendOtpResponse {
-  const _SendOtpResponse({required this.requestId, required this.maskedNumber, this.retryAfter = 30});
+  const _SendOtpResponse({required this.phoneNumber, required this.otp});
   factory _SendOtpResponse.fromJson(Map<String, dynamic> json) => _$SendOtpResponseFromJson(json);
 
-@override final  String requestId;
-// your backend/Firebase session id
-@override final  String maskedNumber;
+@override final  String phoneNumber;
 // e.g. +91 ******1234
-@override@JsonKey() final  int retryAfter;
+@override final  String otp;
 
 /// Create a copy of SendOtpResponse
 /// with the given fields replaced by the non-null parameter values.
@@ -235,16 +231,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SendOtpResponse&&(identical(other.requestId, requestId) || other.requestId == requestId)&&(identical(other.maskedNumber, maskedNumber) || other.maskedNumber == maskedNumber)&&(identical(other.retryAfter, retryAfter) || other.retryAfter == retryAfter));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SendOtpResponse&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.otp, otp) || other.otp == otp));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,requestId,maskedNumber,retryAfter);
+int get hashCode => Object.hash(runtimeType,phoneNumber,otp);
 
 @override
 String toString() {
-  return 'SendOtpResponse(requestId: $requestId, maskedNumber: $maskedNumber, retryAfter: $retryAfter)';
+  return 'SendOtpResponse(phoneNumber: $phoneNumber, otp: $otp)';
 }
 
 
@@ -255,7 +251,7 @@ abstract mixin class _$SendOtpResponseCopyWith<$Res> implements $SendOtpResponse
   factory _$SendOtpResponseCopyWith(_SendOtpResponse value, $Res Function(_SendOtpResponse) _then) = __$SendOtpResponseCopyWithImpl;
 @override @useResult
 $Res call({
- String requestId, String maskedNumber, int retryAfter
+ String phoneNumber, String otp
 });
 
 
@@ -272,12 +268,11 @@ class __$SendOtpResponseCopyWithImpl<$Res>
 
 /// Create a copy of SendOtpResponse
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? requestId = null,Object? maskedNumber = null,Object? retryAfter = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? phoneNumber = null,Object? otp = null,}) {
   return _then(_SendOtpResponse(
-requestId: null == requestId ? _self.requestId : requestId // ignore: cast_nullable_to_non_nullable
-as String,maskedNumber: null == maskedNumber ? _self.maskedNumber : maskedNumber // ignore: cast_nullable_to_non_nullable
-as String,retryAfter: null == retryAfter ? _self.retryAfter : retryAfter // ignore: cast_nullable_to_non_nullable
-as int,
+phoneNumber: null == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
+as String,otp: null == otp ? _self.otp : otp // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 

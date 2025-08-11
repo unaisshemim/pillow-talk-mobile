@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pillowtalk/features/auth/provider/auth_provider.dart';
 import 'package:pillowtalk/features/auth/widget/auth_header.dart';
 import 'package:pillowtalk/features/auth/widget/phonenumber_form.dart';
 import 'package:pillowtalk/utils/constant/sizes.dart';
@@ -221,23 +224,23 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
   }
 
   void _sendOTP() async {
+    log("helow");
     if (!_formKey.currentState!.validate()) return;
 
     setState(() {
       _isLoading = true;
     });
 
-    // Simulate API call
-    await Future.delayed(const Duration(seconds: 2));
-
-    setState(() {
-      _isLoading = false;
-    });
-
     final fullPhoneNumber = '$_selectedCountryCode${_phoneController.text}';
 
-    // Navigate to OTP screen
-    if (mounted) {
+    try {
+      log("helow");
+      // 🟢 Call the sendOtp method from AuthNotifier
+      await ref.read(authNotifierProvider.notifier).sendOtp(fullPhoneNumber);
+      log('hellow');
+      if (!mounted) return;
+
+      // ✅ On success, navigate to OTP screen
       context.push(
         '/otp',
         extra: {
@@ -245,6 +248,20 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
           'maskedNumber': _getMaskedNumber(),
         },
       );
+    } catch (e) {
+      log(e.toString());
+      // ❌ Optional: show error using SnackBar or Dialog
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Failed to send OTP: $e')));
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 

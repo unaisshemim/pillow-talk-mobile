@@ -8,14 +8,9 @@ part of 'auth_response_model.dart';
 
 _SendOtpResponse _$SendOtpResponseFromJson(Map<String, dynamic> json) =>
     _SendOtpResponse(
-      requestId: json['requestId'] as String,
-      maskedNumber: json['maskedNumber'] as String,
-      retryAfter: (json['retryAfter'] as num?)?.toInt() ?? 30,
+      phoneNumber: json['phoneNumber'] as String,
+      otp: json['otp'] as String,
     );
 
 Map<String, dynamic> _$SendOtpResponseToJson(_SendOtpResponse instance) =>
-    <String, dynamic>{
-      'requestId': instance.requestId,
-      'maskedNumber': instance.maskedNumber,
-      'retryAfter': instance.retryAfter,
-    };
+    <String, dynamic>{'phoneNumber': instance.phoneNumber, 'otp': instance.otp};
