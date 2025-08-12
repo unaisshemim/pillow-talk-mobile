@@ -1,9 +1,11 @@
+import 'dart:developer';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pillowtalk/utils/constant/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:dio/dio.dart';
 import 'package:pillowtalk/common/services/dio_service.dart';
-import 'package:pillowtalk/features/auth/model/auth_request/auth_request_model.dart';
+import 'package:pillowtalk/features/auth/model/auth/auth_model.dart';
 
 part 'auth_repository.g.dart';
 
@@ -25,6 +27,19 @@ class AuthRepository {
       ApiEndpoints.sendOtp,
       data: request.toJson(),
     );
+    log(response.toString());
+
     return response.data;
+  }
+
+  Future<SendOtpResponse> verifyOtp(String phone, String otp) async {
+    final request = VerifyOtpRequest(phoneNumber: phone, otp: otp);
+    final response = await api.post(
+      ApiEndpoints.verifyOtp,
+      data: request.toJson(),
+    );
+    log(response.toString());
+
+    return SendOtpResponse.fromJson(response.data);
   }
 }

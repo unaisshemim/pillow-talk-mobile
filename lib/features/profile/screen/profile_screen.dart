@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pillowtalk/common/widget/app_bar_title.dart';
 import 'package:pillowtalk/common/widget/screen_container.dart';
+import 'package:pillowtalk/features/auth/provider/auth_provider.dart';
+import 'package:pillowtalk/utils/constant/router.dart';
 import 'package:pillowtalk/utils/helpers/responsive_size.dart';
 import 'package:pillowtalk/utils/theme/theme_extension.dart';
 import 'package:pillowtalk/utils/constant/sizes.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  ConsumerState<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileScreenState extends ConsumerState<ProfileScreen> {
   bool notificationsEnabled = true;
   bool voiceMessagesEnabled = true;
   bool analyticsEnabled = true;
@@ -643,17 +646,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  void _performSignOut() {
-    // Add your sign out logic here:
-    // 1. Clear user session
-    // 2. Clear stored tokens
-    // 3. Clear user data
-    // 4. Navigate to login screen
+  void _performSignOut() async {
+    try {
+      // Show loading state
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(child: CircularProgressIndicator()),
+      );
 
-    _showSuccessSnackBar('Signed out successfully');
+      // Use auth provider to logout
+      final authNotifier = ref.read(authNotifierProvider.notifier);
+      await authNotifier.logout();
 
-    // Navigate to auth screen
-    context.go('/auth');
+      // Close loading dialog
+      if (mounted) Navigator.pop(context);
+
+      _showSuccessSnackBar('Signed out successfully');
+
+      // Navigate to auth screen
+      if (mounted) context.pushNamed(PRouter.auth.path);
+    } catch (e) {
+      // Close loading dialog if still open
+      if (mounted) Navigator.pop(context);
+
+      // Show error message
+      _showErrorSnackBar('Failed to sign out. Please try again.');
+    }
   }
 
   void _showRelationshipDialog() {
@@ -739,6 +758,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
       SnackBar(
         content: Text(message),
         backgroundColor: context.pColor.success.base,
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(PSizes.s8),
+        ),
+      ),
+    );
+  }
+
+  void _showErrorSnackBar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: context.pColor.error.base,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(PSizes.s8),

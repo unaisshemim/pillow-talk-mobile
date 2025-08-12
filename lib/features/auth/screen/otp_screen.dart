@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pillowtalk/common/widget/snackBar.dart';
+import 'package:pillowtalk/features/auth/provider/auth_provider.dart';
+import 'package:pillowtalk/features/auth/utils/valid_otp.dart';
 import 'package:pillowtalk/utils/constant/router.dart';
 import 'package:pillowtalk/utils/constant/sizes.dart';
 import 'package:pillowtalk/utils/helpers/responsive_size.dart';
@@ -9,7 +13,7 @@ import 'dart:async';
 
 import 'package:pillowtalk/utils/theme/theme_extension.dart';
 
-class OtpScreen extends StatefulWidget {
+class OtpScreen extends ConsumerStatefulWidget {
   final String phoneNumber;
   final String maskedNumber;
 
@@ -20,10 +24,10 @@ class OtpScreen extends StatefulWidget {
   });
 
   @override
-  State<OtpScreen> createState() => _OtpScreenState();
+  ConsumerState<OtpScreen> createState() => _OtpScreenState();
 }
 
-class _OtpScreenState extends State<OtpScreen> {
+class _OtpScreenState extends ConsumerState<OtpScreen> {
   final List<TextEditingController> _otpControllers = List.generate(
     4,
     (index) => TextEditingController(),
@@ -69,8 +73,103 @@ class _OtpScreenState extends State<OtpScreen> {
     });
   }
 
+  void _verifyOTP() async {
+    final otp = _otpControllers.map((controller) => controller.text).join();
+
+    if (!isValidOtp(otp)) {
+      _showSnackBar(
+        'Please enter a valid 4-digit verification code',
+        isError: true,
+      );
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      // Call the verifyOtp method from AuthNotifier
+      final isVerified = await ref
+          .read(authNotifierProvider.notifier)
+          .verifyOtp(widget.phoneNumber, otp);
+
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+
+        if (isVerified) {
+          _showSnackBar('Phone number verified successfully!', isError: false);
+
+          // Navigate to home after successful verification
+          await Future.delayed(const Duration(seconds: 1));
+          if (mounted) {
+            context.go(PRouter.home.path);
+          }
+        } else {
+          _showSnackBar(
+            'Invalid verification code. Please try again.',
+            isError: true,
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+        _showSnackBar('Verification failed: ${e.toString()}', isError: true);
+      }
+    }
+  }
+
+  void _resendOTP() async {
+    setState(() {
+      _isResending = true;
+    });
+
+    try {
+      // Call the sendOtp method from AuthNotifier to resend OTP
+      await ref.read(authNotifierProvider.notifier).sendOtp(widget.phoneNumber);
+
+      if (mounted) {
+        setState(() {
+          _isResending = false;
+        });
+
+        _showSnackBar('Verification code sent!', isError: false);
+        _startResendCountdown();
+
+        // Clear existing OTP inputs
+        for (var controller in _otpControllers) {
+          controller.clear();
+        }
+        _focusNodes[0].requestFocus();
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isResending = false;
+        });
+        _showSnackBar('Failed to resend code: ${e.toString()}', isError: true);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Listen to auth state changes
+    ref.listen<AsyncValue<String?>>(authNotifierProvider, (previous, next) {
+      next.whenOrNull(
+        error: (error, stackTrace) {
+          if (mounted) {
+            _showSnackBar('Wrong Otp ', isError: true);
+          }
+        },
+      );
+    });
+
     return Scaffold(
       backgroundColor: context.pColor.neutral.n10,
       appBar: AppBar(
@@ -78,7 +177,7 @@ class _OtpScreenState extends State<OtpScreen> {
         elevation: 0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: context.pColor.neutral.n80),
-          onPressed: () => context.goNamed(PRouter.home.name),
+          onPressed: () => context.pop(),
         ),
         title: Text(
           'Verify Phone',
@@ -363,71 +462,11 @@ class _OtpScreenState extends State<OtpScreen> {
     );
   }
 
-  void _verifyOTP() async {
-    final otp = _otpControllers.map((controller) => controller.text).join();
-
-    if (otp.length != 4) {
-      _showSnackBar('Please enter the complete 4-digit code', isError: true);
-      return;
-    }
-
-    setState(() {
-      _isLoading = true;
-    });
-
-    // Simulate API call
-    await Future.delayed(const Duration(seconds: 2));
-
-    setState(() {
-      _isLoading = false;
-    });
-
-    // For demo purposes, accept any 4-digit code
-    if (mounted) {
-      _showSnackBar('Phone number verified successfully!', isError: false);
-
-      // Navigate to onboarding or home based on user state
-      await Future.delayed(const Duration(seconds: 1));
-      if (mounted) {
-        context.go(PRouter.home.path);
-      }
-    }
-  }
-
-  void _resendOTP() async {
-    setState(() {
-      _isResending = true;
-    });
-
-    // Simulate API call
-    await Future.delayed(const Duration(seconds: 1));
-
-    setState(() {
-      _isResending = false;
-    });
-
-    _showSnackBar('Verification code sent!', isError: false);
-    _startResendCountdown();
-
-    // Clear existing OTP inputs
-    for (var controller in _otpControllers) {
-      controller.clear();
-    }
-    _focusNodes[0].requestFocus();
-  }
-
   void _showSnackBar(String message, {required bool isError}) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: isError
-            ? context.pColor.error.base
-            : context.pColor.success.base,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(PSizes.s8),
-        ),
-      ),
+    PSnackBar.show(
+      context,
+      message: message,
+      type: isError ? SnackBarType.error : SnackBarType.success,
     );
   }
 }

@@ -456,11 +456,11 @@ class _SnackBarWidgetState extends State<_SnackBarWidget>
   Color _getBackgroundColor(BuildContext context) {
     switch (widget.type) {
       case SnackBarType.success:
-        return context.pColor.secondary.base.withOpacity(0.1);
+        return context.pColor.secondary.base.withOpacity(0.9);
       case SnackBarType.error:
-        return context.pColor.primary.base.withOpacity(0.1);
+        return context.pColor.primary.base.withOpacity(0.9);
       case SnackBarType.warning:
-        return context.pColor.neutral.n40.withOpacity(0.1);
+        return context.pColor.neutral.n40.withOpacity(0.85);
       case SnackBarType.info:
         return context.pColor.neutral.n10;
     }
@@ -469,9 +469,9 @@ class _SnackBarWidgetState extends State<_SnackBarWidget>
   Color _getTextColor(BuildContext context) {
     switch (widget.type) {
       case SnackBarType.success:
-        return context.pColor.neutral.n90;
+        return Colors.white;
       case SnackBarType.error:
-        return context.pColor.neutral.n90;
+        return Colors.white;
       case SnackBarType.warning:
         return context.pColor.neutral.n90;
       case SnackBarType.info:
@@ -482,9 +482,9 @@ class _SnackBarWidgetState extends State<_SnackBarWidget>
   Color _getIconColor(BuildContext context) {
     switch (widget.type) {
       case SnackBarType.success:
-        return context.pColor.secondary.base;
+        return Colors.white;
       case SnackBarType.error:
-        return context.pColor.primary.base;
+        return Colors.white;
       case SnackBarType.warning:
         return context.pColor.neutral.n80;
       case SnackBarType.info:
@@ -495,9 +495,9 @@ class _SnackBarWidgetState extends State<_SnackBarWidget>
   Color _getIconBackgroundColor(BuildContext context) {
     switch (widget.type) {
       case SnackBarType.success:
-        return context.pColor.secondary.base.withOpacity(0.2);
+        return Colors.white.withOpacity(0.2);
       case SnackBarType.error:
-        return context.pColor.primary.base.withOpacity(0.2);
+        return Colors.white.withOpacity(0.2);
       case SnackBarType.warning:
         return context.pColor.neutral.n40.withOpacity(0.2);
       case SnackBarType.info:
@@ -508,9 +508,9 @@ class _SnackBarWidgetState extends State<_SnackBarWidget>
   Color _getActionColor(BuildContext context) {
     switch (widget.type) {
       case SnackBarType.success:
-        return context.pColor.secondary.base;
+        return Colors.white;
       case SnackBarType.error:
-        return context.pColor.primary.base;
+        return Colors.white;
       case SnackBarType.warning:
         return context.pColor.neutral.n80;
       case SnackBarType.info:

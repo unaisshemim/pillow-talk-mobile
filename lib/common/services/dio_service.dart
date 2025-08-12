@@ -16,7 +16,6 @@ Dio networkService(Ref ref) {
     headers: {'accept': '*/*', 'Content-Type': 'application/json'},
 
     // Optional but nice: sets request body content-type for JSON
-    contentType: 'application/json',
   );
 
   final dio = Dio(options);

@@ -1,12 +1,15 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pillowtalk/common/widget/snackBar.dart';
 import 'package:pillowtalk/features/auth/provider/auth_provider.dart';
+import 'package:pillowtalk/features/auth/utils/phone_mask.dart';
 import 'package:pillowtalk/features/auth/widget/auth_header.dart';
 import 'package:pillowtalk/features/auth/widget/phonenumber_form.dart';
+import 'package:pillowtalk/utils/constant/router.dart';
 import 'package:pillowtalk/utils/constant/sizes.dart';
 import 'package:pillowtalk/utils/helpers/responsive_size.dart';
 import 'package:pillowtalk/utils/theme/theme_extension.dart';
@@ -36,6 +39,62 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
     {'code': '+34', 'country': 'ES'},
     {'code': '+61', 'country': 'AU'},
   ];
+
+  void _sendOTP() async {
+    if (!_formKey.currentState!.validate()) return;
+
+    setState(() {
+      _isLoading = true;
+    });
+
+    final fullPhoneNumber = '$_selectedCountryCode${_phoneController.text}';
+    try {
+      // Call the sendOtp method from AuthNotifier
+      await ref.read(authNotifierProvider.notifier).sendOtp(fullPhoneNumber);
+
+      // Check if the operation was successful by checking the provider state
+      final authState = ref.read(authNotifierProvider);
+
+      if (authState.hasError) {
+        // Show error message if there was an error
+        if (mounted) {
+          PSnackBar.showError(
+            context,
+            message: 'Failed to send OTP. Please try again.',
+          );
+        }
+        return;
+      }
+
+      // If successful, navigate to OTP screen
+      if (!mounted) return;
+      context.push(
+        PRouter.otp.path,
+        extra: {
+          'phoneNumber': fullPhoneNumber,
+          'maskedNumber': maskPhone(
+            _selectedCountryCode,
+            _phoneController.text,
+          ),
+        },
+      );
+    } catch (e) {
+      log('SendOTP error: $e');
+
+      if (mounted) {
+        PSnackBar.showError(
+          context,
+          message: 'Failed to send OTP. Please try again.',
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
 
   @override
   void dispose() {
@@ -221,56 +280,5 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
         ),
       ),
     );
-  }
-
-  void _sendOTP() async {
-    log("helow");
-    if (!_formKey.currentState!.validate()) return;
-
-    setState(() {
-      _isLoading = true;
-    });
-
-    final fullPhoneNumber = '$_selectedCountryCode${_phoneController.text}';
-
-    try {
-      log("helow");
-      // 🟢 Call the sendOtp method from AuthNotifier
-      await ref.read(authNotifierProvider.notifier).sendOtp(fullPhoneNumber);
-      log('hellow');
-      if (!mounted) return;
-
-      // ✅ On success, navigate to OTP screen
-      context.push(
-        '/otp',
-        extra: {
-          'phoneNumber': fullPhoneNumber,
-          'maskedNumber': _getMaskedNumber(),
-        },
-      );
-    } catch (e) {
-      log(e.toString());
-      // ❌ Optional: show error using SnackBar or Dialog
-      if (mounted) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('Failed to send OTP: $e')));
-      }
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
-  }
-
-  String _getMaskedNumber() {
-    final phone = _phoneController.text;
-    if (phone.length <= 4) return phone;
-
-    final visible = phone.substring(phone.length - 4);
-    final masked = '*' * (phone.length - 4);
-    return '$_selectedCountryCode $masked$visible';
   }
 }

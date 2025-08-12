@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pillowtalk/common/services/notification_service.dart';
 import 'package:pillowtalk/router.dart';
 import 'package:pillowtalk/utils/theme/theme.dart';
 
-class MainApp extends StatefulWidget {
+class MainApp extends ConsumerStatefulWidget {
   const MainApp({super.key});
 
   // Global navigator key for navigation from notifications
@@ -11,10 +12,10 @@ class MainApp extends StatefulWidget {
       GlobalKey<NavigatorState>();
 
   @override
-  State<MainApp> createState() => _MainAppState();
+  ConsumerState<MainApp> createState() => _MainAppState();
 }
 
-class _MainAppState extends State<MainApp> {
+class _MainAppState extends ConsumerState<MainApp> {
   @override
   void initState() {
     super.initState();
@@ -24,13 +25,14 @@ class _MainAppState extends State<MainApp> {
 
   @override
   Widget build(BuildContext context) {
+    final goRouter = ref.watch(goRouterProvider);
     return MaterialApp.router(
       title: 'Pillow Talk',
       debugShowCheckedModeBanner: false,
       theme: lightTheme,
       darkTheme: darkTheme,
       themeMode: ThemeMode.system,
-      routerConfig: router,
+      routerConfig: goRouter,
     );
   }
 }
