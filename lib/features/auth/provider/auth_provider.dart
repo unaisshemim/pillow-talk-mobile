@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:pillowtalk/utils/constant/router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'package:pillowtalk/common/providers/hive_provider.dart';
@@ -112,7 +113,6 @@ class AuthNotifier extends _$AuthNotifier {
       final hiveService = ref.read(hiveServiceProvider);
       await hiveService.delete('accessToken');
       await hiveService.delete('refreshToken');
-      state = const AsyncData(null);
       log('User logged out successfully');
     } catch (e, st) {
       log('logout error: $e');

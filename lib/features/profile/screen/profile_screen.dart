@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -665,10 +667,11 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       _showSuccessSnackBar('Signed out successfully');
 
       // Navigate to auth screen
-      if (mounted) context.pushNamed(PRouter.auth.path);
+      if (mounted) context.go(PRouter.auth.path);
     } catch (e) {
       // Close loading dialog if still open
       if (mounted) Navigator.pop(context);
+      log(e.toString());
 
       // Show error message
       _showErrorSnackBar('Failed to sign out. Please try again.');
