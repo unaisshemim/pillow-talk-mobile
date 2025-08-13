@@ -38,3 +38,17 @@ Map<String, dynamic> _$SendOtpResponseToJson(_SendOtpResponse instance) =>
       'isNewUser': instance.isNewUser,
       'user': instance.user,
     };
+
+_RefreshTokenResponse _$RefreshTokenResponseFromJson(
+  Map<String, dynamic> json,
+) => _RefreshTokenResponse(
+  accessToken: json['accessToken'] as String,
+  refreshToken: json['refreshToken'] as String,
+);
+
+Map<String, dynamic> _$RefreshTokenResponseToJson(
+  _RefreshTokenResponse instance,
+) => <String, dynamic>{
+  'accessToken': instance.accessToken,
+  'refreshToken': instance.refreshToken,
+};

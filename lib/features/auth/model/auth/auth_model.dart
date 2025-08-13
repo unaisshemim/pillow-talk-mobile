@@ -38,3 +38,14 @@ sealed class SendOtpResponse with _$SendOtpResponse {
   factory SendOtpResponse.fromJson(Map<String, dynamic> json) =>
       _$SendOtpResponseFromJson(json);
 }
+
+@freezed
+sealed class RefreshTokenResponse with _$RefreshTokenResponse {
+  const factory RefreshTokenResponse({
+    required String accessToken,
+    required String refreshToken,
+  }) = _RefreshTokenResponse;
+
+  factory RefreshTokenResponse.fromJson(Map<String, dynamic> json) =>
+      _$RefreshTokenResponseFromJson(json);
+}

@@ -28,6 +28,7 @@ dependencies:
   riverpod_annotation: ^2.6.1
   freezed_annotation: ^3.1.0
   json_annotation: ^4.9.0
+  dart_jsonwebtoken: ^2.14.0
 
 
 
@@ -42,6 +43,8 @@ dev_dependencies:
   riverpod_lint: ^2.6.5
   freezed: ^3.1.0
   json_serializable: ^6.9.5
+  mockito: ^5.4.4
+  patrol: ^3.11.1
   
 
 

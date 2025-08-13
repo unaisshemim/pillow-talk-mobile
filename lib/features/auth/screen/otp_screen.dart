@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pillowtalk/common/widget/snackBar.dart';
+import 'package:pillowtalk/features/auth/model/auth/auth_model.dart';
 import 'package:pillowtalk/features/auth/provider/auth_provider.dart';
 import 'package:pillowtalk/features/auth/utils/valid_otp.dart';
 import 'package:pillowtalk/utils/constant/router.dart';
@@ -93,6 +94,12 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
       final isVerified = await ref
           .read(authNotifierProvider.notifier)
           .verifyOtp(widget.phoneNumber, otp);
+      final isNewUser = ref
+          .read(authNotifierProvider)
+          .maybeWhen(
+            data: (session) => session?.isNewUser ?? false,
+            orElse: () => false,
+          );
 
       if (mounted) {
         setState(() {
@@ -105,7 +112,11 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
           // Navigate to home after successful verification
           await Future.delayed(const Duration(seconds: 1));
           if (mounted) {
-            context.go(PRouter.home.path);
+            if (isNewUser) {
+              context.go(PRouter.profileOnboarding.path);
+            } else {
+              context.go(PRouter.home.path);
+            }
           }
         } else {
           _showSnackBar(
@@ -160,7 +171,10 @@ class _OtpScreenState extends ConsumerState<OtpScreen> {
   @override
   Widget build(BuildContext context) {
     // Listen to auth state changes
-    ref.listen<AsyncValue<String?>>(authNotifierProvider, (previous, next) {
+    ref.listen<AsyncValue<SendOtpResponse?>>(authNotifierProvider, (
+      previous,
+      next,
+    ) {
       next.whenOrNull(
         error: (error, stackTrace) {
           if (mounted) {

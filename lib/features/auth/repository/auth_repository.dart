@@ -42,4 +42,13 @@ class AuthRepository {
 
     return SendOtpResponse.fromJson(response.data);
   }
+
+  Future<RefreshTokenResponse> refreshToken(String refreshToken) async {
+    final response = await api.post(
+      ApiEndpoints.refreshToken,
+      data: {'refreshToken': refreshToken},
+    );
+
+    return RefreshTokenResponse.fromJson(response.data);
+  }
 }

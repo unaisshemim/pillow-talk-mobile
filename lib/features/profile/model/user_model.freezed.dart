@@ -13,9 +13,276 @@ part of 'user_model.dart';
 T _$identity<T>(T value) => value;
 
 /// @nodoc
+mixin _$ProfileModel {
+
+ String? get name; int? get age; String? get gender; String? get email;
+/// Create a copy of ProfileModel
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ProfileModelCopyWith<ProfileModel> get copyWith => _$ProfileModelCopyWithImpl<ProfileModel>(this as ProfileModel, _$identity);
+
+  /// Serializes this ProfileModel to a JSON map.
+  Map<String, dynamic> toJson();
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileModel&&(identical(other.name, name) || other.name == name)&&(identical(other.age, age) || other.age == age)&&(identical(other.gender, gender) || other.gender == gender)&&(identical(other.email, email) || other.email == email));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,name,age,gender,email);
+
+@override
+String toString() {
+  return 'ProfileModel(name: $name, age: $age, gender: $gender, email: $email)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ProfileModelCopyWith<$Res>  {
+  factory $ProfileModelCopyWith(ProfileModel value, $Res Function(ProfileModel) _then) = _$ProfileModelCopyWithImpl;
+@useResult
+$Res call({
+ String? name, int? age, String? gender, String? email
+});
+
+
+
+
+}
+/// @nodoc
+class _$ProfileModelCopyWithImpl<$Res>
+    implements $ProfileModelCopyWith<$Res> {
+  _$ProfileModelCopyWithImpl(this._self, this._then);
+
+  final ProfileModel _self;
+  final $Res Function(ProfileModel) _then;
+
+/// Create a copy of ProfileModel
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? name = freezed,Object? age = freezed,Object? gender = freezed,Object? email = freezed,}) {
+  return _then(_self.copyWith(
+name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String?,age: freezed == age ? _self.age : age // ignore: cast_nullable_to_non_nullable
+as int?,gender: freezed == gender ? _self.gender : gender // ignore: cast_nullable_to_non_nullable
+as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [ProfileModel].
+extension ProfileModelPatterns on ProfileModel {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _ProfileModel value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _ProfileModel() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _ProfileModel value)  $default,){
+final _that = this;
+switch (_that) {
+case _ProfileModel():
+return $default(_that);}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _ProfileModel value)?  $default,){
+final _that = this;
+switch (_that) {
+case _ProfileModel() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? name,  int? age,  String? gender,  String? email)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _ProfileModel() when $default != null:
+return $default(_that.name,_that.age,_that.gender,_that.email);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? name,  int? age,  String? gender,  String? email)  $default,) {final _that = this;
+switch (_that) {
+case _ProfileModel():
+return $default(_that.name,_that.age,_that.gender,_that.email);}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? name,  int? age,  String? gender,  String? email)?  $default,) {final _that = this;
+switch (_that) {
+case _ProfileModel() when $default != null:
+return $default(_that.name,_that.age,_that.gender,_that.email);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+@JsonSerializable()
+
+class _ProfileModel implements ProfileModel {
+  const _ProfileModel({this.name, this.age, this.gender, this.email});
+  factory _ProfileModel.fromJson(Map<String, dynamic> json) => _$ProfileModelFromJson(json);
+
+@override final  String? name;
+@override final  int? age;
+@override final  String? gender;
+@override final  String? email;
+
+/// Create a copy of ProfileModel
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$ProfileModelCopyWith<_ProfileModel> get copyWith => __$ProfileModelCopyWithImpl<_ProfileModel>(this, _$identity);
+
+@override
+Map<String, dynamic> toJson() {
+  return _$ProfileModelToJson(this, );
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileModel&&(identical(other.name, name) || other.name == name)&&(identical(other.age, age) || other.age == age)&&(identical(other.gender, gender) || other.gender == gender)&&(identical(other.email, email) || other.email == email));
+}
+
+@JsonKey(includeFromJson: false, includeToJson: false)
+@override
+int get hashCode => Object.hash(runtimeType,name,age,gender,email);
+
+@override
+String toString() {
+  return 'ProfileModel(name: $name, age: $age, gender: $gender, email: $email)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$ProfileModelCopyWith<$Res> implements $ProfileModelCopyWith<$Res> {
+  factory _$ProfileModelCopyWith(_ProfileModel value, $Res Function(_ProfileModel) _then) = __$ProfileModelCopyWithImpl;
+@override @useResult
+$Res call({
+ String? name, int? age, String? gender, String? email
+});
+
+
+
+
+}
+/// @nodoc
+class __$ProfileModelCopyWithImpl<$Res>
+    implements _$ProfileModelCopyWith<$Res> {
+  __$ProfileModelCopyWithImpl(this._self, this._then);
+
+  final _ProfileModel _self;
+  final $Res Function(_ProfileModel) _then;
+
+/// Create a copy of ProfileModel
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? name = freezed,Object? age = freezed,Object? gender = freezed,Object? email = freezed,}) {
+  return _then(_ProfileModel(
+name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String?,age: freezed == age ? _self.age : age // ignore: cast_nullable_to_non_nullable
+as int?,gender: freezed == gender ? _self.gender : gender // ignore: cast_nullable_to_non_nullable
+as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+
+}
+
+
+/// @nodoc
 mixin _$UserModel {
 
- String get id; String get phoneNumber; String? get name; int? get age; String? get gender; String? get email; String get role;
+ String get id; String get phoneNumber; String get role;// nest the shared object
+ ProfileModel? get profile;
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +295,16 @@ $UserModelCopyWith<UserModel> get copyWith => _$UserModelCopyWithImpl<UserModel>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.name, name) || other.name == name)&&(identical(other.age, age) || other.age == age)&&(identical(other.gender, gender) || other.gender == gender)&&(identical(other.email, email) || other.email == email)&&(identical(other.role, role) || other.role == role));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.role, role) || other.role == role)&&(identical(other.profile, profile) || other.profile == profile));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,phoneNumber,name,age,gender,email,role);
+int get hashCode => Object.hash(runtimeType,id,phoneNumber,role,profile);
 
 @override
 String toString() {
-  return 'UserModel(id: $id, phoneNumber: $phoneNumber, name: $name, age: $age, gender: $gender, email: $email, role: $role)';
+  return 'UserModel(id: $id, phoneNumber: $phoneNumber, role: $role, profile: $profile)';
 }
 
 
@@ -48,11 +315,11 @@ abstract mixin class $UserModelCopyWith<$Res>  {
   factory $UserModelCopyWith(UserModel value, $Res Function(UserModel) _then) = _$UserModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String phoneNumber, String? name, int? age, String? gender, String? email, String role
+ String id, String phoneNumber, String role, ProfileModel? profile
 });
 
 
-
+$ProfileModelCopyWith<$Res>? get profile;
 
 }
 /// @nodoc
@@ -65,19 +332,28 @@ class _$UserModelCopyWithImpl<$Res>
 
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? phoneNumber = null,Object? name = freezed,Object? age = freezed,Object? gender = freezed,Object? email = freezed,Object? role = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? phoneNumber = null,Object? role = null,Object? profile = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,phoneNumber: null == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
-as String,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String?,age: freezed == age ? _self.age : age // ignore: cast_nullable_to_non_nullable
-as int?,gender: freezed == gender ? _self.gender : gender // ignore: cast_nullable_to_non_nullable
-as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
-as String?,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
-as String,
+as String,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
+as String,profile: freezed == profile ? _self.profile : profile // ignore: cast_nullable_to_non_nullable
+as ProfileModel?,
   ));
 }
+/// Create a copy of UserModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ProfileModelCopyWith<$Res>? get profile {
+    if (_self.profile == null) {
+    return null;
+  }
 
+  return $ProfileModelCopyWith<$Res>(_self.profile!, (value) {
+    return _then(_self.copyWith(profile: value));
+  });
+}
 }
 
 
@@ -156,10 +432,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String phoneNumber,  String? name,  int? age,  String? gender,  String? email,  String role)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String phoneNumber,  String role,  ProfileModel? profile)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserModel() when $default != null:
-return $default(_that.id,_that.phoneNumber,_that.name,_that.age,_that.gender,_that.email,_that.role);case _:
+return $default(_that.id,_that.phoneNumber,_that.role,_that.profile);case _:
   return orElse();
 
 }
@@ -177,10 +453,10 @@ return $default(_that.id,_that.phoneNumber,_that.name,_that.age,_that.gender,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String phoneNumber,  String? name,  int? age,  String? gender,  String? email,  String role)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String phoneNumber,  String role,  ProfileModel? profile)  $default,) {final _that = this;
 switch (_that) {
 case _UserModel():
-return $default(_that.id,_that.phoneNumber,_that.name,_that.age,_that.gender,_that.email,_that.role);}
+return $default(_that.id,_that.phoneNumber,_that.role,_that.profile);}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -194,10 +470,10 @@ return $default(_that.id,_that.phoneNumber,_that.name,_that.age,_that.gender,_th
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String phoneNumber,  String? name,  int? age,  String? gender,  String? email,  String role)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String phoneNumber,  String role,  ProfileModel? profile)?  $default,) {final _that = this;
 switch (_that) {
 case _UserModel() when $default != null:
-return $default(_that.id,_that.phoneNumber,_that.name,_that.age,_that.gender,_that.email,_that.role);case _:
+return $default(_that.id,_that.phoneNumber,_that.role,_that.profile);case _:
   return null;
 
 }
@@ -209,16 +485,14 @@ return $default(_that.id,_that.phoneNumber,_that.name,_that.age,_that.gender,_th
 @JsonSerializable()
 
 class _UserModel implements UserModel {
-  const _UserModel({required this.id, required this.phoneNumber, this.name, this.age, this.gender, this.email, required this.role});
+  const _UserModel({required this.id, required this.phoneNumber, required this.role, this.profile});
   factory _UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
 
 @override final  String id;
 @override final  String phoneNumber;
-@override final  String? name;
-@override final  int? age;
-@override final  String? gender;
-@override final  String? email;
 @override final  String role;
+// nest the shared object
+@override final  ProfileModel? profile;
 
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
@@ -233,16 +507,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.name, name) || other.name == name)&&(identical(other.age, age) || other.age == age)&&(identical(other.gender, gender) || other.gender == gender)&&(identical(other.email, email) || other.email == email)&&(identical(other.role, role) || other.role == role));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserModel&&(identical(other.id, id) || other.id == id)&&(identical(other.phoneNumber, phoneNumber) || other.phoneNumber == phoneNumber)&&(identical(other.role, role) || other.role == role)&&(identical(other.profile, profile) || other.profile == profile));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,phoneNumber,name,age,gender,email,role);
+int get hashCode => Object.hash(runtimeType,id,phoneNumber,role,profile);
 
 @override
 String toString() {
-  return 'UserModel(id: $id, phoneNumber: $phoneNumber, name: $name, age: $age, gender: $gender, email: $email, role: $role)';
+  return 'UserModel(id: $id, phoneNumber: $phoneNumber, role: $role, profile: $profile)';
 }
 
 
@@ -253,11 +527,11 @@ abstract mixin class _$UserModelCopyWith<$Res> implements $UserModelCopyWith<$Re
   factory _$UserModelCopyWith(_UserModel value, $Res Function(_UserModel) _then) = __$UserModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String phoneNumber, String? name, int? age, String? gender, String? email, String role
+ String id, String phoneNumber, String role, ProfileModel? profile
 });
 
 
-
+@override $ProfileModelCopyWith<$Res>? get profile;
 
 }
 /// @nodoc
@@ -270,20 +544,29 @@ class __$UserModelCopyWithImpl<$Res>
 
 /// Create a copy of UserModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? phoneNumber = null,Object? name = freezed,Object? age = freezed,Object? gender = freezed,Object? email = freezed,Object? role = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? phoneNumber = null,Object? role = null,Object? profile = freezed,}) {
   return _then(_UserModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,phoneNumber: null == phoneNumber ? _self.phoneNumber : phoneNumber // ignore: cast_nullable_to_non_nullable
-as String,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String?,age: freezed == age ? _self.age : age // ignore: cast_nullable_to_non_nullable
-as int?,gender: freezed == gender ? _self.gender : gender // ignore: cast_nullable_to_non_nullable
-as String?,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
-as String?,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
-as String,
+as String,role: null == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
+as String,profile: freezed == profile ? _self.profile : profile // ignore: cast_nullable_to_non_nullable
+as ProfileModel?,
   ));
 }
 
+/// Create a copy of UserModel
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ProfileModelCopyWith<$Res>? get profile {
+    if (_self.profile == null) {
+    return null;
+  }
 
+  return $ProfileModelCopyWith<$Res>(_self.profile!, (value) {
+    return _then(_self.copyWith(profile: value));
+  });
+}
 }
 
 // dart format on

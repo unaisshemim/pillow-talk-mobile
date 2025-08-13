@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pillowtalk/common/layout/main_layout.dart';
@@ -13,6 +15,7 @@ import 'package:pillowtalk/features/notification/screen/notification_screen.dart
 import 'package:pillowtalk/features/onboarding/screen/onboarding_screen.dart';
 import 'package:pillowtalk/features/partner/screen/partner_screen.dart';
 import 'package:pillowtalk/features/profile/screen/profile_screen.dart';
+import 'package:pillowtalk/features/profile/screen/profile_onboarding_screen.dart';
 import 'package:pillowtalk/utils/constant/router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -45,6 +48,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             maskedNumber: extra?['maskedNumber'] ?? '',
           );
         },
+      ),
+      GoRoute(
+        name: PRouter.profileOnboarding.name,
+        path: PRouter.profileOnboarding.path,
+        builder: (context, state) => const ProfileOnboardingScreen(),
       ),
       ShellRoute(
         builder: (context, state, child) => PMainLayout(),
@@ -79,26 +87,28 @@ final goRouterProvider = Provider<GoRouter>((ref) {
     ],
     redirect: (context, state) async {
       final authState = ref.read(authNotifierProvider.notifier);
-      final isAuthenticated = await authState.isAuthenticated();
       final isOnBoardingWatched = await authState.hasWatchedOnboarding();
+      final isValidAuthenticated = await authState.isValidTokenAuthenticated();
 
       final bool isGoingToOnBoarding =
           state.uri.toString() == PRouter.onBoarding.path;
+
+      log("isGoingToOnBoarding: $isGoingToOnBoarding");
+      log("isOnBoardingWatched: $isOnBoardingWatched");
+      log("isValidAuthenticated: $isValidAuthenticated");
 
       if (isGoingToOnBoarding) {
         if (!isOnBoardingWatched) {
           return null; // allow onboarding
         }
 
-        if (!isAuthenticated) {
+        if (!isValidAuthenticated) {
           FlutterNativeSplash.remove();
           return PRouter.auth.path;
+        } else {
+          return PRouter.home.path;
         }
-
-        FlutterNativeSplash.remove();
-        return PRouter.home.path;
       }
-
       return null;
     },
   );

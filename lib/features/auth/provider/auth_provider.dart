@@ -1,10 +1,8 @@
 import 'dart:developer';
-import 'package:pillowtalk/utils/constant/router.dart';
+import 'package:pillowtalk/features/auth/model/auth/auth_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-
 import 'package:pillowtalk/common/providers/hive_provider.dart';
 import 'package:pillowtalk/features/auth/repository/auth_repository.dart';
-
 part 'auth_provider.g.dart';
 
 @riverpod
@@ -14,7 +12,7 @@ class AuthNotifier extends _$AuthNotifier {
 
   // Initial state for the AsyncNotifier: nothing loaded yet.
   @override
-  Future<String?> build() async => null;
+  Future<SendOtpResponse?> build() async => null;
 
   Future<void> sendOtp(String phone) async {
     state = const AsyncLoading();
@@ -27,6 +25,8 @@ class AuthNotifier extends _$AuthNotifier {
     } catch (e, st) {
       log('sendOtp error: $e');
       state = AsyncError(e, st);
+    } finally {
+      state = state;
     }
   }
 
@@ -35,24 +35,22 @@ class AuthNotifier extends _$AuthNotifier {
     try {
       log("phone: $phone, otp: $otp");
       final res = await _repo.verifyOtp(phone, otp);
-      log('verifyOtp response: $res');
 
       // Store access token from the response
       final hiveService = ref.read(hiveServiceProvider);
       await hiveService.put('accessToken', res.accessToken);
-      log('Access token stored successfully: ${res.accessToken}');
 
       // Store refresh token as well
       await hiveService.put('refreshToken', res.refreshToken);
-      log('Refresh token stored successfully');
 
       //store onboarding status
       await hiveService.put('isOnBoardingAlreadyWatched', true);
 
+      state = AsyncData(res); //
+
       // You can also store user info if needed
       // await hiveService.put('user', res.user.toJson());
 
-      state = AsyncData(res.accessToken);
       return true;
     } catch (e, st) {
       log('verifyOtp error: $e');
@@ -89,6 +87,7 @@ class AuthNotifier extends _$AuthNotifier {
   Future<String?> getAccessToken() async {
     try {
       final hiveService = ref.read(hiveServiceProvider);
+
       return await hiveService.get('accessToken');
     } catch (e) {
       log('getAccessToken error: $e');
@@ -100,7 +99,7 @@ class AuthNotifier extends _$AuthNotifier {
   Future<String?> getRefreshToken() async {
     try {
       final hiveService = ref.read(hiveServiceProvider);
-      return await hiveService.get('refreshToken');
+      return await hiveService.get('refreshToken') as String;
     } catch (e) {
       log('getRefreshToken error: $e');
       return null;
@@ -117,6 +116,50 @@ class AuthNotifier extends _$AuthNotifier {
     } catch (e, st) {
       log('logout error: $e');
       state = AsyncError(e, st);
+    }
+  }
+
+  /// Refresh the access token using refresh token
+  Future<bool> refreshAccessToken() async {
+    try {
+      final refreshToken = await getRefreshToken();
+
+      final response = await _repo.refreshToken(refreshToken!);
+      log('response: $response');
+
+      if (response.accessToken.isNotEmpty) {
+        final hiveService = ref.read(hiveServiceProvider);
+        await hiveService.put('accessToken', response.accessToken);
+
+        if (response.refreshToken.isNotEmpty) {
+          await hiveService.put('refreshToken', response.refreshToken);
+        }
+
+        log('Token refreshed successfully');
+        return true;
+      }
+
+      return false;
+    } catch (e) {
+      log('Token refresh error: $e');
+      return false;
+    }
+  }
+
+  /// Check if user is authenticated with valid token
+  Future<bool> isValidTokenAuthenticated() async {
+    try {
+      final String? token = await getAccessToken();
+
+      if (token == null || token.isEmpty) {}
+
+      // Try to refresh the token preemptively
+      final refreshed = await refreshAccessToken();
+      log("refresh $refreshed");
+      return refreshed;
+    } catch (e) {
+      log('Token validation error: $e');
+      return false;
     }
   }
 }
