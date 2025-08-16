@@ -59,16 +59,6 @@ Provide project context and coding guidelines that AI should follow when generat
             
 ## General Requirements
 	Use modern technologies as described below for all code suggestions. Prioritize clean, maintainable code with appropriate comments.
-            
-### Accessibility
-	- Ensure compliance with **WCAG 2.1** AA level minimum, AAA whenever feasible.
-	- Always suggest:
-	- Labels for form fields.
-	- Proper **ARIA** roles and attributes.
-	- Adequate color contrast.
-	- Alternative texts (`alt`, `aria-label`) for media elements.
-	- Semantic HTML for clear structure.
-	- Tools like **Lighthouse** for audits.
         
 ## Mobile Compatibility both IOS and Android
     - Ensure responsive design using Flutter's layout widgets.
