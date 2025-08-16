@@ -322,12 +322,17 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                         color: context.pColor.neutral.n10,
                       ),
                     ),
-                    const SizedBox(height: PSizes.s4),
-                    Text(
-                      'Tap to explore conversation topics',
-                      style: TextStyle(
-                        fontSize: responsive(context, PSizes.s14),
-                        color: context.pColor.neutral.n10.withOpacity(0.8),
+                    const SizedBox(height: PSizes.s2),
+                    Flexible(
+                      child: Text(
+                        'Tap to explore conversation topic',
+                        style: TextStyle(
+                          fontSize: responsive(context, PSizes.s12),
+                          color: context.pColor.neutral.n10.withOpacity(0.8),
+                          height: 1.2,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   ],

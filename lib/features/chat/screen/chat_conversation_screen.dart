@@ -4,6 +4,7 @@ import 'package:pillowtalk/common/ui/screen_container.dart';
 import 'package:pillowtalk/utils/helpers/responsive_size.dart';
 import 'package:pillowtalk/utils/theme/theme_extension.dart';
 import 'package:pillowtalk/utils/constant/sizes.dart';
+import 'package:pillowtalk/features/chat/screen/ai_voice_chat_screen.dart';
 
 class ChatConversationScreen extends StatefulWidget {
   final String? chatId;
@@ -15,10 +16,8 @@ class ChatConversationScreen extends StatefulWidget {
   State<ChatConversationScreen> createState() => _ChatConversationScreenState();
 }
 
-class _ChatConversationScreenState extends State<ChatConversationScreen>
-    with TickerProviderStateMixin {
+class _ChatConversationScreenState extends State<ChatConversationScreen> {
   final TextEditingController _messageController = TextEditingController();
-  bool isVoiceRecording = false;
 
   @override
   Widget build(BuildContext context) {
@@ -165,32 +164,34 @@ class _ChatConversationScreenState extends State<ChatConversationScreen>
               ),
               child: Row(
                 children: [
-                  // Voice recording button with pulse animation
+                  // AI Voice Chat button
                   GestureDetector(
-                    onTapDown: (_) => _startVoiceRecording(),
-                    onTapUp: (_) => _stopVoiceRecording(),
-                    onTapCancel: () => _cancelVoiceRecording(),
+                    onTap: () => _navigateToAIVoiceChat(),
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
                       width: 44,
                       height: 44,
                       decoration: BoxDecoration(
-                        color: isVoiceRecording
-                            ? context.pColor.error.base
-                            : context.pColor.secondary.base.withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(22),
-                        border: Border.all(
-                          color: isVoiceRecording
-                              ? context.pColor.error.base
-                              : context.pColor.secondary.base.withOpacity(0.3),
-                          width: 2,
+                        gradient: LinearGradient(
+                          colors: [
+                            context.pColor.primary.base,
+                            context.pColor.secondary.base,
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
                         ),
+                        borderRadius: BorderRadius.circular(22),
+                        boxShadow: [
+                          BoxShadow(
+                            color: context.pColor.primary.base.withOpacity(0.3),
+                            blurRadius: 8,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
                       ),
                       child: Icon(
-                        isVoiceRecording ? Icons.stop : Icons.mic,
-                        color: isVoiceRecording
-                            ? context.pColor.neutral.n10
-                            : context.pColor.secondary.base,
+                        Icons.smart_toy_outlined,
+                        color: context.pColor.neutral.n10,
                         size: 20,
                       ),
                     ),
@@ -231,7 +232,9 @@ class _ChatConversationScreenState extends State<ChatConversationScreen>
                           },
                         ),
                       ),
-                      maxLines: null,
+                      maxLines: 3,
+                      minLines: 1,
+                      textInputAction: TextInputAction.newline,
                       onChanged: (text) {
                         // Could add typing indicators here
                       },
@@ -457,27 +460,6 @@ class _ChatConversationScreenState extends State<ChatConversationScreen>
     );
   }
 
-  void _startVoiceRecording() {
-    setState(() {
-      isVoiceRecording = true;
-    });
-    // Start voice recording logic
-  }
-
-  void _stopVoiceRecording() {
-    setState(() {
-      isVoiceRecording = false;
-    });
-    // Stop and send voice message
-  }
-
-  void _cancelVoiceRecording() {
-    setState(() {
-      isVoiceRecording = false;
-    });
-    // Cancel recording
-  }
-
   void _sendMessage() {
     if (_messageController.text.trim().isNotEmpty) {
       // Send message logic
@@ -495,6 +477,19 @@ class _ChatConversationScreenState extends State<ChatConversationScreen>
       return title;
     }
     return '${title.substring(0, 8)}...';
+  }
+
+  // Navigation method for AI Voice Chat
+  void _navigateToAIVoiceChat() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AIVoiceChatScreen(
+          chatId: widget.chatId,
+          topic: widget.extraData?['topic'],
+        ),
+      ),
+    );
   }
 
   @override
