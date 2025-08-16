@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pillowtalk/common/common/snackBar.dart';
+import 'package:pillowtalk/common/ui/snackBar.dart';
 import 'package:pillowtalk/utils/constant/sizes.dart';
 import 'package:pillowtalk/utils/helpers/responsive_size.dart';
 import 'package:pillowtalk/utils/theme/theme_extension.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pillowtalk/common/common/input/input.dart';
+import 'package:pillowtalk/common/ui/input/input.dart';
 
-class PPasswordInput extends StatelessWidget {
+class PPhoneInput extends StatelessWidget {
   final String? label;
   final String? hintText;
   final String? helperText;
@@ -14,7 +14,7 @@ class PPasswordInput extends StatelessWidget {
   final InputVariant variant;
   final InputSize size;
 
-  const PPasswordInput({
+  const PPhoneInput({
     super.key,
     this.label,
     this.hintText,
@@ -33,7 +33,7 @@ class PPasswordInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return PInput(
       label: label,
-      hintText: hintText ?? 'Enter password',
+      hintText: hintText ?? 'Enter phone number',
       helperText: helperText,
       errorText: errorText,
       controller: controller,
@@ -43,10 +43,9 @@ class PPasswordInput extends StatelessWidget {
       focusNode: focusNode,
       variant: variant,
       size: size,
-      obscureText: true,
-      keyboardType: TextInputType.visiblePassword,
-      textInputAction: TextInputAction.done,
-      prefixIcon: const Icon(Icons.lock_outline),
+      keyboardType: TextInputType.phone,
+      textInputAction: TextInputAction.next,
+      prefixIcon: const Icon(Icons.phone_outlined),
     );
   }
 }

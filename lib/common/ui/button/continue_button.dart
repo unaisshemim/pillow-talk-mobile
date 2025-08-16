@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pillowtalk/common/common/button/button.dart';
+import 'package:pillowtalk/common/ui/button/button.dart';
 
 class ContinueButton extends StatelessWidget {
   final bool isLoading;

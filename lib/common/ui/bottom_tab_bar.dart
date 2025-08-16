@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pillowtalk/common/config/env_config.dart';
-import 'package:pillowtalk/common/common/svg.dart';
+import 'package:pillowtalk/common/ui/svg.dart';
 import 'package:pillowtalk/utils/constant/icons.dart';
 import 'package:pillowtalk/utils/constant/sizes.dart';
 import 'package:pillowtalk/utils/helpers/device_utility.dart';

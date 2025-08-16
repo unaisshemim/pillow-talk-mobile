@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pillowtalk/common/common/snackBar.dart';
+import 'package:pillowtalk/common/ui/snackBar.dart';
 import 'package:pillowtalk/features/profile/model/profile_model.dart';
 import 'package:pillowtalk/features/profile/provider/profile_provider.dart';
 import 'package:pillowtalk/features/profile/widget/profile_onboarding_stepper.dart';

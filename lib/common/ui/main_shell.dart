@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:pillowtalk/common/common/bottom_tab_bar.dart';
+import 'package:pillowtalk/common/ui/bottom_tab_bar.dart';
 import 'package:pillowtalk/features/chat/screen/chat_screen.dart';
 import 'package:pillowtalk/features/home/screen/home_screen.dart';
 import 'package:pillowtalk/features/partner/screen/partner_screen.dart';

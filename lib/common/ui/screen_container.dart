@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pillowtalk/common/layout/regular_layout.dart';
-import 'package:pillowtalk/common/common/appbar.dart';
+import 'package:pillowtalk/common/ui/appbar.dart';
 import 'package:pillowtalk/utils/theme/theme_extension.dart';
 
 class PScreenContainer extends StatelessWidget {

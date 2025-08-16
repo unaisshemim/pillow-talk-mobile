@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pillowtalk/common/common/cards/card.dart';
-import 'package:pillowtalk/common/common/cards/mood_card.dart';
-import 'package:pillowtalk/common/common/cards/quick_action_card.dart';
-import 'package:pillowtalk/common/common/cards/activtiy_card.dart';
-import 'package:pillowtalk/common/common/cards/progress_card.dart';
+import 'package:pillowtalk/common/ui/cards/card.dart';
+import 'package:pillowtalk/common/ui/cards/mood_card.dart';
+import 'package:pillowtalk/common/ui/cards/quick_action_card.dart';
+import 'package:pillowtalk/common/ui/cards/activtiy_card.dart';
+import 'package:pillowtalk/common/ui/cards/progress_card.dart';
 import 'package:pillowtalk/utils/helpers/responsive_size.dart';
 import 'package:pillowtalk/utils/theme/theme_extension.dart';
 import 'package:pillowtalk/utils/constant/sizes.dart';

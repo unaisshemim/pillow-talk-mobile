@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pillowtalk/common/common/button/button.dart';
-import 'package:pillowtalk/common/common/input/input.dart';
-import 'package:pillowtalk/common/common/input/email_input.dart';
+import 'package:pillowtalk/common/ui/button/button.dart';
+import 'package:pillowtalk/common/ui/input/input.dart';
+import 'package:pillowtalk/common/ui/input/email_input.dart';
 import 'package:pillowtalk/utils/constant/sizes.dart';
 import 'package:pillowtalk/utils/helpers/responsive_size.dart';
 import 'package:pillowtalk/utils/theme/theme_extension.dart';

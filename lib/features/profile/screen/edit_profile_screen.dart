@@ -2,10 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pillowtalk/common/common/screen_container.dart';
-import 'package:pillowtalk/common/common/app_bar_title.dart';
-import 'package:pillowtalk/common/common/input/input.dart';
-import 'package:pillowtalk/common/common/button/button.dart';
+import 'package:pillowtalk/common/ui/screen_container.dart';
+import 'package:pillowtalk/common/ui/app_bar_title.dart';
+import 'package:pillowtalk/common/ui/input/input.dart';
+import 'package:pillowtalk/common/ui/button/button.dart';
 import 'package:pillowtalk/features/profile/model/profile_model.dart';
 import 'package:pillowtalk/features/profile/provider/profile_provider.dart';
 import 'package:pillowtalk/utils/helpers/responsive_size.dart';

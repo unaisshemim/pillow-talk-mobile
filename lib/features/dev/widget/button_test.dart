@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:pillowtalk/common/common/button/button.dart';
-import 'package:pillowtalk/common/common/button/continue_button.dart';
-import 'package:pillowtalk/common/common/button/icon_button.dart';
+import 'package:pillowtalk/common/ui/button/button.dart';
+import 'package:pillowtalk/common/ui/button/continue_button.dart';
+import 'package:pillowtalk/common/ui/button/icon_button.dart';
 
 import 'package:pillowtalk/utils/constant/sizes.dart';
 import 'package:pillowtalk/utils/helpers/responsive_size.dart';

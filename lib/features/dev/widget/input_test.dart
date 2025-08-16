@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pillowtalk/common/common/input/email_input.dart';
-import 'package:pillowtalk/common/common/input/input.dart';
-import 'package:pillowtalk/common/common/input/password_input.dart';
-import 'package:pillowtalk/common/common/input/phone_input.dart';
-import 'package:pillowtalk/common/common/input/text_area_input.dart';
+import 'package:pillowtalk/common/ui/input/email_input.dart';
+import 'package:pillowtalk/common/ui/input/input.dart';
+import 'package:pillowtalk/common/ui/input/password_input.dart';
+import 'package:pillowtalk/common/ui/input/phone_input.dart';
+import 'package:pillowtalk/common/ui/input/text_area_input.dart';
 
 import 'package:pillowtalk/utils/constant/sizes.dart';
 import 'package:pillowtalk/utils/helpers/responsive_size.dart';

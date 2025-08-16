@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pillowtalk/common/common/app_bar_title.dart';
-import 'package:pillowtalk/common/common/screen_container.dart';
+import 'package:pillowtalk/common/ui/app_bar_title.dart';
+import 'package:pillowtalk/common/ui/screen_container.dart';
 import 'package:pillowtalk/utils/helpers/responsive_size.dart';
 import 'package:pillowtalk/utils/theme/theme_extension.dart';
 import 'package:pillowtalk/utils/constant/sizes.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pillowtalk/common/common/input/input.dart';
+import 'package:pillowtalk/common/ui/input/input.dart';
 
 class PEmailInput extends StatelessWidget {
   final String? label;

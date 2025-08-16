@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pillowtalk/common/common/app_bar_title.dart';
-import 'package:pillowtalk/common/common/screen_container.dart';
+import 'package:pillowtalk/common/ui/app_bar_title.dart';
+import 'package:pillowtalk/common/ui/screen_container.dart';
 import 'package:pillowtalk/features/chat/screen/chat_conversation_screen.dart';
 import 'package:pillowtalk/utils/constant/router.dart';
 import 'package:pillowtalk/utils/helpers/responsive_size.dart';
