@@ -9,4 +9,5 @@ class ApiEndpoints {
 
   //users
   static const String postUserProfile = "/users/profile";
+  static const String updateUserProfile = "/users/profile";
 }

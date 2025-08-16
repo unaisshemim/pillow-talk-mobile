@@ -48,8 +48,10 @@ class AuthNotifier extends _$AuthNotifier {
 
       state = AsyncData(res); //
 
+      log("this is the res ${res.user.toJson()}");
+
       // You can also store user info if needed
-      // await hiveService.put('user', res.user.toJson());
+      await hiveService.put('userProfile', res.user.toJson());
 
       return true;
     } catch (e, st) {

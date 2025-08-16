@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pillowtalk/common/widget/snackBar.dart';
+import 'package:pillowtalk/common/common/snackBar.dart';
 import 'package:pillowtalk/features/auth/provider/auth_provider.dart';
 import 'package:pillowtalk/features/auth/utils/phone_mask.dart';
 import 'package:pillowtalk/features/auth/widget/auth_header.dart';
@@ -25,12 +25,12 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
   final _phoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
-  late String _selectedCountryCode = '+1';
+  late String _selectedCountryCode = '+91';
 
   final List<Map<String, String>> _countryCodes = [
+    {'code': '+91', 'country': 'IN'},
     {'code': '+1', 'country': 'US/CA'},
     {'code': '+44', 'country': 'UK'},
-    {'code': '+91', 'country': 'IN'},
     {'code': '+86', 'country': 'CN'},
     {'code': '+81', 'country': 'JP'},
     {'code': '+49', 'country': 'DE'},

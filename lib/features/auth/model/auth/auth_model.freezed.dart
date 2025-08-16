@@ -534,7 +534,7 @@ as String,
 /// @nodoc
 mixin _$SendOtpResponse {
 
- String get message; String get accessToken; String get refreshToken; bool get isNewUser; UserModel get user;
+ String get message; String get accessToken; String get refreshToken; bool get isNewUser; ProfileModel get user;
 /// Create a copy of SendOtpResponse
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -567,11 +567,11 @@ abstract mixin class $SendOtpResponseCopyWith<$Res>  {
   factory $SendOtpResponseCopyWith(SendOtpResponse value, $Res Function(SendOtpResponse) _then) = _$SendOtpResponseCopyWithImpl;
 @useResult
 $Res call({
- String message, String accessToken, String refreshToken, bool isNewUser, UserModel user
+ String message, String accessToken, String refreshToken, bool isNewUser, ProfileModel user
 });
 
 
-$UserModelCopyWith<$Res> get user;
+$ProfileModelCopyWith<$Res> get user;
 
 }
 /// @nodoc
@@ -591,16 +591,16 @@ as String,accessToken: null == accessToken ? _self.accessToken : accessToken // 
 as String,refreshToken: null == refreshToken ? _self.refreshToken : refreshToken // ignore: cast_nullable_to_non_nullable
 as String,isNewUser: null == isNewUser ? _self.isNewUser : isNewUser // ignore: cast_nullable_to_non_nullable
 as bool,user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
-as UserModel,
+as ProfileModel,
   ));
 }
 /// Create a copy of SendOtpResponse
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$UserModelCopyWith<$Res> get user {
+$ProfileModelCopyWith<$Res> get user {
   
-  return $UserModelCopyWith<$Res>(_self.user, (value) {
+  return $ProfileModelCopyWith<$Res>(_self.user, (value) {
     return _then(_self.copyWith(user: value));
   });
 }
@@ -682,7 +682,7 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String message,  String accessToken,  String refreshToken,  bool isNewUser,  UserModel user)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String message,  String accessToken,  String refreshToken,  bool isNewUser,  ProfileModel user)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SendOtpResponse() when $default != null:
 return $default(_that.message,_that.accessToken,_that.refreshToken,_that.isNewUser,_that.user);case _:
@@ -703,7 +703,7 @@ return $default(_that.message,_that.accessToken,_that.refreshToken,_that.isNewUs
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String message,  String accessToken,  String refreshToken,  bool isNewUser,  UserModel user)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String message,  String accessToken,  String refreshToken,  bool isNewUser,  ProfileModel user)  $default,) {final _that = this;
 switch (_that) {
 case _SendOtpResponse():
 return $default(_that.message,_that.accessToken,_that.refreshToken,_that.isNewUser,_that.user);}
@@ -720,7 +720,7 @@ return $default(_that.message,_that.accessToken,_that.refreshToken,_that.isNewUs
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String message,  String accessToken,  String refreshToken,  bool isNewUser,  UserModel user)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String message,  String accessToken,  String refreshToken,  bool isNewUser,  ProfileModel user)?  $default,) {final _that = this;
 switch (_that) {
 case _SendOtpResponse() when $default != null:
 return $default(_that.message,_that.accessToken,_that.refreshToken,_that.isNewUser,_that.user);case _:
@@ -742,7 +742,7 @@ class _SendOtpResponse implements SendOtpResponse {
 @override final  String accessToken;
 @override final  String refreshToken;
 @override final  bool isNewUser;
-@override final  UserModel user;
+@override final  ProfileModel user;
 
 /// Create a copy of SendOtpResponse
 /// with the given fields replaced by the non-null parameter values.
@@ -777,11 +777,11 @@ abstract mixin class _$SendOtpResponseCopyWith<$Res> implements $SendOtpResponse
   factory _$SendOtpResponseCopyWith(_SendOtpResponse value, $Res Function(_SendOtpResponse) _then) = __$SendOtpResponseCopyWithImpl;
 @override @useResult
 $Res call({
- String message, String accessToken, String refreshToken, bool isNewUser, UserModel user
+ String message, String accessToken, String refreshToken, bool isNewUser, ProfileModel user
 });
 
 
-@override $UserModelCopyWith<$Res> get user;
+@override $ProfileModelCopyWith<$Res> get user;
 
 }
 /// @nodoc
@@ -801,7 +801,7 @@ as String,accessToken: null == accessToken ? _self.accessToken : accessToken // 
 as String,refreshToken: null == refreshToken ? _self.refreshToken : refreshToken // ignore: cast_nullable_to_non_nullable
 as String,isNewUser: null == isNewUser ? _self.isNewUser : isNewUser // ignore: cast_nullable_to_non_nullable
 as bool,user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
-as UserModel,
+as ProfileModel,
   ));
 }
 
@@ -809,9 +809,9 @@ as UserModel,
 /// with the given fields replaced by the non-null parameter values.
 @override
 @pragma('vm:prefer-inline')
-$UserModelCopyWith<$Res> get user {
+$ProfileModelCopyWith<$Res> get user {
   
-  return $UserModelCopyWith<$Res>(_self.user, (value) {
+  return $ProfileModelCopyWith<$Res>(_self.user, (value) {
     return _then(_self.copyWith(user: value));
   });
 }

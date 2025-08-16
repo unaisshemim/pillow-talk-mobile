@@ -8,14 +8,17 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import 'package:pillowtalk/features/auth/screen/auth_screen.dart';
 import 'package:pillowtalk/features/auth/screen/otp_screen.dart';
+import 'package:pillowtalk/features/chat/screen/chat_conversation_screen.dart';
 import 'package:pillowtalk/features/chat/screen/chat_screen.dart';
 import 'package:pillowtalk/features/dev/screen/dev_screen.dart';
 import 'package:pillowtalk/features/home/screen/home_screen.dart';
 import 'package:pillowtalk/features/notification/screen/notification_screen.dart';
 import 'package:pillowtalk/features/onboarding/screen/onboarding_screen.dart';
 import 'package:pillowtalk/features/partner/screen/partner_screen.dart';
+import 'package:pillowtalk/features/profile/screen/edit_profile_screen.dart';
 import 'package:pillowtalk/features/profile/screen/profile_screen.dart';
 import 'package:pillowtalk/features/profile/screen/profile_onboarding_screen.dart';
+import 'package:pillowtalk/features/profile/screen/settings_screen.dart';
 import 'package:pillowtalk/utils/constant/router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -62,11 +65,13 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             path: PRouter.chat.path,
             builder: (context, state) => const ChatScreen(),
           ),
+
           GoRoute(
             name: PRouter.profile.name,
             path: PRouter.profile.path,
             builder: (context, state) => const ProfileScreen(),
           ),
+
           GoRoute(
             name: PRouter.partner.name,
             path: PRouter.partner.path,
@@ -83,6 +88,28 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             builder: (context, state) => const DevScreen(),
           ),
         ],
+      ),
+      //settings
+      GoRoute(
+        name: PRouter.setting.name,
+        path: PRouter.setting.path,
+        builder: (context, state) => const SettingsScreen(),
+      ),
+      GoRoute(
+        name: PRouter.profileEdit.name,
+        path: PRouter.profileEdit.path,
+        builder: (context, state) => const EditProfileScreen(),
+      ),
+
+      //chat
+      GoRoute(
+        name: PRouter.chatConversation.name,
+        path: PRouter.chatConversation.path,
+        builder: (context, state) {
+          final chatId = state.pathParameters['id'];
+          final extraData = state.extra as Map<String, dynamic>?;
+          return ChatConversationScreen(chatId: chatId, extraData: extraData);
+        },
       ),
     ],
     redirect: (context, state) async {

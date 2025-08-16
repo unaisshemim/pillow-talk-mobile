@@ -1,4 +1,5 @@
 abstract class PRouter {
+  //onboarding
   static const PRouterDetail onBoarding = PRouterDetail(
     'OnBoarding',
     '/onboarding',
@@ -25,18 +26,41 @@ abstract class PRouter {
     'ForgotPasswordChangePassword',
     'forgot-password-change-password',
   );
+
+  //tab bar
   static const PRouterDetail home = PRouterDetail('Home', '/home');
+
+  //chat screen
   static const PRouterDetail chat = PRouterDetail('Chat', '/chat');
-  static const PRouterDetail profile = PRouterDetail('Profile', '/profile');
-  static const PRouterDetail partner = PRouterDetail('Partner', '/partner');
-  static const PRouterDetail notification = PRouterDetail(
-    'Notification',
-    '/notification',
+  static const PRouterDetail chatConversation = PRouterDetail(
+    'ChatConversation',
+    '/chat/:id',
   );
+
+  //profile
+  static const PRouterDetail profile = PRouterDetail('Profile', '/profile');
+
   static const PRouterDetail profileOnboarding = PRouterDetail(
     'ProfileOnboarding',
     '/profile-onboarding',
   );
+
+  static const PRouterDetail profileEdit = PRouterDetail(
+    'ProfileEdit',
+    '/profile-edit',
+  );
+
+  static const PRouterDetail setting = PRouterDetail('Setting', '/setting');
+
+  static const PRouterDetail partner = PRouterDetail('Partner', '/partner');
+
+  //notification
+  static const PRouterDetail notification = PRouterDetail(
+    'Notification',
+    '/notification',
+  );
+
+  //dev
   static const PRouterDetail dev = PRouterDetail('Dev', '/dev');
 }
 

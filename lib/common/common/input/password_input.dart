@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pillowtalk/common/widget/input/input.dart';
+import 'package:pillowtalk/common/common/input/input.dart';
 
 class PPasswordInput extends StatelessWidget {
   final String? label;

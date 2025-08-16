@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pillowtalk/common/widget/input/input.dart';
+import 'package:pillowtalk/common/common/input/input.dart';
 
-class PTextAreaInput extends StatelessWidget {
+class PEmailInput extends StatelessWidget {
   final String? label;
   final String? hintText;
   final String? helperText;
@@ -13,11 +13,8 @@ class PTextAreaInput extends StatelessWidget {
   final FocusNode? focusNode;
   final InputVariant variant;
   final InputSize size;
-  final int maxLines;
-  final int? maxLength;
-  final bool showCounter;
 
-  const PTextAreaInput({
+  const PEmailInput({
     super.key,
     this.label,
     this.hintText,
@@ -30,16 +27,13 @@ class PTextAreaInput extends StatelessWidget {
     this.focusNode,
     this.variant = InputVariant.outlined,
     this.size = InputSize.medium,
-    this.maxLines = 4,
-    this.maxLength,
-    this.showCounter = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return PInput(
       label: label,
-      hintText: hintText ?? 'Enter text',
+      hintText: hintText ?? 'Enter email address',
       helperText: helperText,
       errorText: errorText,
       controller: controller,
@@ -49,12 +43,10 @@ class PTextAreaInput extends StatelessWidget {
       focusNode: focusNode,
       variant: variant,
       size: size,
-      maxLines: maxLines,
-      maxLength: maxLength,
-      showCounter: showCounter,
-      keyboardType: TextInputType.multiline,
-      textInputAction: TextInputAction.newline,
-      textCapitalization: TextCapitalization.sentences,
+      keyboardType: TextInputType.emailAddress,
+      textInputAction: TextInputAction.next,
+      textCapitalization: TextCapitalization.none,
+      prefixIcon: const Icon(Icons.email_outlined),
     );
   }
 }

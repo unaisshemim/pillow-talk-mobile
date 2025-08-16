@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pillowtalk/common/widget/input/input.dart';
+import 'package:pillowtalk/common/common/input/input.dart';
 
-class PEmailInput extends StatelessWidget {
+class PPhoneInput extends StatelessWidget {
   final String? label;
   final String? hintText;
   final String? helperText;
@@ -14,7 +14,7 @@ class PEmailInput extends StatelessWidget {
   final InputVariant variant;
   final InputSize size;
 
-  const PEmailInput({
+  const PPhoneInput({
     super.key,
     this.label,
     this.hintText,
@@ -33,7 +33,7 @@ class PEmailInput extends StatelessWidget {
   Widget build(BuildContext context) {
     return PInput(
       label: label,
-      hintText: hintText ?? 'Enter email address',
+      hintText: hintText ?? 'Enter phone number',
       helperText: helperText,
       errorText: errorText,
       controller: controller,
@@ -43,10 +43,9 @@ class PEmailInput extends StatelessWidget {
       focusNode: focusNode,
       variant: variant,
       size: size,
-      keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.phone,
       textInputAction: TextInputAction.next,
-      textCapitalization: TextCapitalization.none,
-      prefixIcon: const Icon(Icons.email_outlined),
+      prefixIcon: const Icon(Icons.phone_outlined),
     );
   }
 }

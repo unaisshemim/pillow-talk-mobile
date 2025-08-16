@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pillowtalk/common/widget/input/input.dart';
+import 'package:pillowtalk/common/common/input/input.dart';
 
-class PPhoneInput extends StatelessWidget {
+class PTextAreaInput extends StatelessWidget {
   final String? label;
   final String? hintText;
   final String? helperText;
@@ -13,8 +13,11 @@ class PPhoneInput extends StatelessWidget {
   final FocusNode? focusNode;
   final InputVariant variant;
   final InputSize size;
+  final int maxLines;
+  final int? maxLength;
+  final bool showCounter;
 
-  const PPhoneInput({
+  const PTextAreaInput({
     super.key,
     this.label,
     this.hintText,
@@ -27,13 +30,16 @@ class PPhoneInput extends StatelessWidget {
     this.focusNode,
     this.variant = InputVariant.outlined,
     this.size = InputSize.medium,
+    this.maxLines = 4,
+    this.maxLength,
+    this.showCounter = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return PInput(
       label: label,
-      hintText: hintText ?? 'Enter phone number',
+      hintText: hintText ?? 'Enter text',
       helperText: helperText,
       errorText: errorText,
       controller: controller,
@@ -43,9 +49,12 @@ class PPhoneInput extends StatelessWidget {
       focusNode: focusNode,
       variant: variant,
       size: size,
-      keyboardType: TextInputType.phone,
-      textInputAction: TextInputAction.next,
-      prefixIcon: const Icon(Icons.phone_outlined),
+      maxLines: maxLines,
+      maxLength: maxLength,
+      showCounter: showCounter,
+      keyboardType: TextInputType.multiline,
+      textInputAction: TextInputAction.newline,
+      textCapitalization: TextCapitalization.sentences,
     );
   }
 }

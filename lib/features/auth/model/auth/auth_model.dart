@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:pillowtalk/features/profile/model/user_model.dart';
+import 'package:pillowtalk/features/profile/model/profile_model.dart';
 
 part 'auth_model.freezed.dart';
 part 'auth_model.g.dart';
@@ -32,7 +32,7 @@ sealed class SendOtpResponse with _$SendOtpResponse {
     required String accessToken,
     required String refreshToken,
     required bool isNewUser,
-    required UserModel user,
+    required ProfileModel user,
   }) = _SendOtpResponse;
 
   factory SendOtpResponse.fromJson(Map<String, dynamic> json) =>

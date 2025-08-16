@@ -27,7 +27,7 @@ _SendOtpResponse _$SendOtpResponseFromJson(Map<String, dynamic> json) =>
       accessToken: json['accessToken'] as String,
       refreshToken: json['refreshToken'] as String,
       isNewUser: json['isNewUser'] as bool,
-      user: UserModel.fromJson(json['user'] as Map<String, dynamic>),
+      user: ProfileModel.fromJson(json['user'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$SendOtpResponseToJson(_SendOtpResponse instance) =>

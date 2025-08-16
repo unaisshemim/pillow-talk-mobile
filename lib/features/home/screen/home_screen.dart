@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pillowtalk/common/widget/app_bar_title.dart';
-import 'package:pillowtalk/common/widget/screen_container.dart';
-import 'package:pillowtalk/common/widget/cards/mood_card.dart';
-import 'package:pillowtalk/common/widget/cards/quick_action_card.dart';
-import 'package:pillowtalk/common/widget/cards/activtiy_card.dart';
+import 'package:pillowtalk/common/common/app_bar_title.dart';
+import 'package:pillowtalk/common/common/screen_container.dart';
+import 'package:pillowtalk/common/common/cards/mood_card.dart';
+import 'package:pillowtalk/common/common/cards/quick_action_card.dart';
+import 'package:pillowtalk/common/common/cards/activtiy_card.dart';
 import 'package:pillowtalk/utils/constant/router.dart';
 import 'package:pillowtalk/utils/helpers/responsive_size.dart';
 import 'package:pillowtalk/utils/theme/theme_extension.dart';
 import 'package:pillowtalk/utils/constant/sizes.dart';
-import 'package:pillowtalk/common/widget/cards/progress_card.dart';
+import 'package:pillowtalk/common/common/cards/progress_card.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

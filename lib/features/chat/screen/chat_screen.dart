@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:pillowtalk/common/widget/app_bar_title.dart';
-import 'package:pillowtalk/common/widget/screen_container.dart';
+import 'package:go_router/go_router.dart';
+import 'package:pillowtalk/common/common/app_bar_title.dart';
+import 'package:pillowtalk/common/common/screen_container.dart';
+import 'package:pillowtalk/features/chat/screen/chat_conversation_screen.dart';
+import 'package:pillowtalk/utils/constant/router.dart';
 import 'package:pillowtalk/utils/helpers/responsive_size.dart';
 import 'package:pillowtalk/utils/theme/theme_extension.dart';
 import 'package:pillowtalk/utils/constant/sizes.dart';
@@ -12,11 +15,10 @@ class ChatScreen extends StatefulWidget {
   State<ChatScreen> createState() => _ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
-  final TextEditingController _messageController = TextEditingController();
-  bool isVoiceRecording = false;
-  String? currentChatId;
-  String? currentTopic;
+class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
+  final TextEditingController _newChatController = TextEditingController();
+  late AnimationController _pulseController;
+  late Animation<double> _pulseAnimation;
 
   // Sample chat sessions data
   final List<ChatSession> chatSessions = [
@@ -63,23 +65,26 @@ class _ChatScreenState extends State<ChatScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _pulseController = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    )..repeat(reverse: true);
+
+    _pulseAnimation = Tween<double>(begin: 1.0, end: 1.05).animate(
+      CurvedAnimation(parent: _pulseController, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (currentChatId != null) {
-      return _buildChatView();
-    }
     return _buildChatListView();
   }
 
   Widget _buildChatListView() {
     return Scaffold(
       backgroundColor: Colors.transparent,
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _showNewChatDialog(),
-        backgroundColor: context.pColor.primary.base,
-        foregroundColor: context.pColor.neutral.n10,
-        icon: const Icon(Icons.add_comment_outlined),
-        label: const Text('New Chat'),
-      ),
       body: PScreenContainer(
         backgroundColor: context.pColor.neutral.n10,
         appBar: PAppBarTitle(
@@ -94,237 +99,607 @@ class _ChatScreenState extends State<ChatScreen> {
             },
           ),
         ),
-        child: Column(
-          children: [
-            // Header Stats
-            Padding(
-              padding: EdgeInsets.all(20),
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(PSizes.s20),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      context.pColor.primary.base,
-                      context.pColor.secondary.base,
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                  borderRadius: BorderRadius.circular(PSizes.s16),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Your Conversation Journey 💬',
-                      style: TextStyle(
-                        fontSize: responsive(context, PSizes.s24),
-                        fontWeight: FontWeight.bold,
-                        color: context.pColor.neutral.n10,
-                      ),
-                    ),
-                    const SizedBox(height: PSizes.s8),
-                    Text(
-                      'How are you feeling as a couple today?',
-                      style: TextStyle(
-                        fontSize: responsive(context, PSizes.s16),
-                        color: context.pColor.neutral.n10.withOpacity(0.9),
-                      ),
-                    ),
-                    const SizedBox(height: PSizes.s16),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        _buildStatItem(
-                          context,
-                          '${chatSessions.length}',
-                          'Conversations',
-                        ),
-                        _buildStatItem(context, '77', 'Total Messages'),
-                        _buildStatItem(context, '92%', 'Positive Tone'),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ),
+        child: RefreshIndicator(
+          onRefresh: () async {
+            // Add refresh logic with animation
+            await Future.delayed(const Duration(seconds: 1));
+          },
+          child: CustomScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            slivers: [
+              // Hero Section (scrollable)
+              SliverToBoxAdapter(child: _buildHeroSection()),
 
-            // Chat Sessions List
-            Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.all(PSizes.s16),
-                itemCount: chatSessions.length,
-                itemBuilder: (context, index) {
-                  final session = chatSessions[index];
-                  return _buildChatSessionCard(session);
-                },
+              // Sticky New Chat Section
+              SliverPersistentHeader(
+                pinned: true,
+                delegate: _StickyNewChatDelegate(
+                  child: Container(
+                    color: context.pColor.neutral.n10,
+                    padding: const EdgeInsets.only(
+                      top: PSizes.s16,
+                      bottom: PSizes.s16,
+                    ),
+                    child: _buildNewChatSection(),
+                  ),
+                ),
               ),
-            ),
-          ],
+
+              // Recent Conversations Header
+              SliverToBoxAdapter(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 8, 20, 12),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Recent Conversations',
+                        style: TextStyle(
+                          fontSize: responsive(context, PSizes.s18),
+                          fontWeight: FontWeight.w600,
+                          color: context.pColor.neutral.n80,
+                        ),
+                      ),
+                      const Spacer(),
+                      TextButton(
+                        onPressed: () {
+                          // View all conversations
+                        },
+                        child: Text(
+                          'View All',
+                          style: TextStyle(
+                            color: context.pColor.primary.base,
+                            fontSize: responsive(context, PSizes.s14),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              // Chat Sessions List (scrollable)
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: PSizes.s16),
+                sliver: SliverList(
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    return AnimatedContainer(
+                      duration: Duration(milliseconds: 300 + (index * 100)),
+                      curve: Curves.easeOutBack,
+                      child: _buildChatSessionCard(chatSessions[index]),
+                    );
+                  }, childCount: chatSessions.length),
+                ),
+              ),
+
+              // Bottom spacing
+              const SliverToBoxAdapter(child: SizedBox(height: PSizes.s24)),
+            ],
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildChatView() {
-    return PScreenContainer(
-      backgroundColor: context.pColor.neutral.n10,
-      appBar: PAppBarTitle(
-        title: 'Sarah & John',
-        isBackButtonNeeded: true,
-        trailingAction: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              icon: Icon(
-                Icons.analytics_outlined,
-                color: context.pColor.neutral.n70,
-              ),
-              onPressed: () => _showChatAnalytics(),
-            ),
-            IconButton(
-              icon: Icon(Icons.more_vert, color: context.pColor.neutral.n70),
-              onPressed: () {
-                // More options
-              },
-            ),
+  Widget _buildHeroSection() {
+    return Container(
+      margin: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(PSizes.s24),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            context.pColor.primary.base.withOpacity(0.1),
+            context.pColor.secondary.base.withOpacity(0.1),
           ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(PSizes.s20),
+        border: Border.all(
+          color: context.pColor.primary.base.withOpacity(0.2),
+          width: 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'What do you want to talk about today? ❤️',
+                      style: TextStyle(
+                        fontSize: responsive(context, PSizes.s20),
+                        fontWeight: FontWeight.bold,
+                        color: context.pColor.neutral.n80,
+                      ),
+                    ),
+                    const SizedBox(height: PSizes.s8),
+                    Text(
+                      'Explore meaningful conversations with your partner',
+                      style: TextStyle(
+                        fontSize: responsive(context, PSizes.s14),
+                        color: context.pColor.neutral.n60,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              AnimatedBuilder(
+                animation: _pulseAnimation,
+                builder: (context, child) {
+                  return Transform.scale(
+                    scale: _pulseAnimation.value,
+                    child: Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: context.pColor.primary.base.withOpacity(0.2),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Icon(
+                        Icons.favorite,
+                        color: context.pColor.primary.base,
+                        size: 28,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+          const SizedBox(height: PSizes.s20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildStatItem(
+                context,
+                '${chatSessions.length}',
+                'Conversations',
+              ),
+              _buildStatItem(context, '77', 'Total Messages'),
+              _buildStatItem(context, '92%', 'Positive Tone'),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNewChatSection() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      child: GestureDetector(
+        onTap: _showNewChatModal,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: const EdgeInsets.all(PSizes.s20),
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                context.pColor.primary.base,
+                context.pColor.secondary.base,
+              ],
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+            ),
+            borderRadius: BorderRadius.circular(PSizes.s16),
+            boxShadow: [
+              BoxShadow(
+                color: context.pColor.primary.base.withOpacity(0.3),
+                blurRadius: 8,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  color: context.pColor.neutral.n10.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child: Icon(
+                  Icons.add_comment_outlined,
+                  color: context.pColor.neutral.n10,
+                  size: 24,
+                ),
+              ),
+              const SizedBox(width: PSizes.s16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Start New Conversation',
+                      style: TextStyle(
+                        fontSize: responsive(context, PSizes.s18),
+                        fontWeight: FontWeight.bold,
+                        color: context.pColor.neutral.n10,
+                      ),
+                    ),
+                    const SizedBox(height: PSizes.s4),
+                    Text(
+                      'Tap to explore conversation topics',
+                      style: TextStyle(
+                        fontSize: responsive(context, PSizes.s14),
+                        color: context.pColor.neutral.n10.withOpacity(0.8),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(
+                Icons.arrow_forward_ios,
+                color: context.pColor.neutral.n10,
+                size: 20,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showNewChatModal() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => _buildNewChatModal(),
+    );
+  }
+
+  Widget _buildNewChatModal() {
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.85,
+      decoration: BoxDecoration(
+        color: context.pColor.neutral.n10,
+        borderRadius: const BorderRadius.vertical(
+          top: Radius.circular(PSizes.s20),
         ),
       ),
       child: Column(
         children: [
-          // Messages
-          Expanded(
-            child: ListView(
-              padding: const EdgeInsets.all(PSizes.s16),
+          // Handle
+          Container(
+            margin: const EdgeInsets.only(top: PSizes.s12),
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: context.pColor.neutral.n40,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+
+          // Header
+          Padding(
+            padding: const EdgeInsets.all(PSizes.s20),
+            child: Row(
               children: [
-                _buildDateHeader('Today'),
-                _buildChatBubble(
-                  'Hey! How was your meeting today?',
-                  false,
-                  DateTime.now().subtract(const Duration(minutes: 30)),
+                Text(
+                  'Start New Conversation',
+                  style: TextStyle(
+                    fontSize: responsive(context, PSizes.s20),
+                    fontWeight: FontWeight.bold,
+                    color: context.pColor.neutral.n80,
+                  ),
                 ),
-                _buildChatBubble(
-                  'It went really well! The client loved our proposal 🎉',
-                  true,
-                  DateTime.now().subtract(const Duration(minutes: 25)),
-                ),
-                _buildChatBubble(
-                  'That\'s amazing! I\'m so proud of you ❤️',
-                  false,
-                  DateTime.now().subtract(const Duration(minutes: 20)),
-                ),
-                _buildVoiceMessage(
-                  true,
-                  '0:15',
-                  DateTime.now().subtract(const Duration(minutes: 15)),
-                ),
-                _buildChatBubble(
-                  'Your voice message made my day! Can\'t wait to celebrate with you tonight',
-                  false,
-                  DateTime.now().subtract(const Duration(minutes: 10)),
+                const Spacer(),
+                IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: Icon(Icons.close, color: context.pColor.neutral.n60),
                 ),
               ],
             ),
           ),
 
-          // Input Area
+          // Fixed Custom Topic Input Section
           Container(
-            padding: const EdgeInsets.all(PSizes.s16),
+            padding: const EdgeInsets.symmetric(horizontal: PSizes.s20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Input Section
+                Text(
+                  'Custom Topic',
+                  style: TextStyle(
+                    fontSize: responsive(context, PSizes.s16),
+                    fontWeight: FontWeight.w600,
+                    color: context.pColor.neutral.n80,
+                  ),
+                ),
+                const SizedBox(height: PSizes.s12),
+
+                TextField(
+                  controller: _newChatController,
+                  decoration: InputDecoration(
+                    hintText: 'What would you like to discuss?',
+                    prefixIcon: Icon(
+                      Icons.edit_outlined,
+                      color: context.pColor.primary.base,
+                    ),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(PSizes.s12),
+                      borderSide: BorderSide(color: context.pColor.neutral.n40),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(PSizes.s12),
+                      borderSide: BorderSide(
+                        color: context.pColor.primary.base,
+                        width: 2,
+                      ),
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: PSizes.s16,
+                      vertical: PSizes.s14,
+                    ),
+                  ),
+                  maxLines: 3,
+                  minLines: 1,
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: PSizes.s20),
+
+          // Scrollable Content (Illustration + Topics)
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: PSizes.s20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Illustration section
+                  Container(
+                    width: double.infinity,
+                    height: 180,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          context.pColor.primary.base.withOpacity(0.1),
+                          context.pColor.secondary.base.withOpacity(0.1),
+                        ],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(PSizes.s16),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(PSizes.s16),
+                          decoration: BoxDecoration(
+                            color: context.pColor.primary.base.withOpacity(0.2),
+                            borderRadius: BorderRadius.circular(40),
+                          ),
+                          child: Icon(
+                            Icons.chat_bubble_outline,
+                            size: 48,
+                            color: context.pColor.primary.base,
+                          ),
+                        ),
+                        const SizedBox(height: PSizes.s12),
+                        Text(
+                          'What\'s on your mind? 💭',
+                          style: TextStyle(
+                            fontSize: responsive(context, PSizes.s16),
+                            fontWeight: FontWeight.w600,
+                            color: context.pColor.neutral.n80,
+                          ),
+                        ),
+                        const SizedBox(height: PSizes.s4),
+                        Text(
+                          'Share thoughts, feelings, or start a meaningful conversation',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: responsive(context, PSizes.s12),
+                            color: context.pColor.neutral.n60,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: PSizes.s24),
+
+                  // Suggested Topics Header
+                  Text(
+                    'Suggested Topics',
+                    style: TextStyle(
+                      fontSize: responsive(context, PSizes.s16),
+                      fontWeight: FontWeight.w600,
+                      color: context.pColor.neutral.n80,
+                    ),
+                  ),
+
+                  const SizedBox(height: PSizes.s12),
+
+                  _buildModalSuggestedTopics(),
+                  const SizedBox(height: PSizes.s20),
+                ],
+              ),
+            ),
+          ),
+
+          // Bottom Action
+          Container(
+            padding: const EdgeInsets.all(PSizes.s20),
             decoration: BoxDecoration(
               color: context.pColor.neutral.n10,
               border: Border(
-                top: BorderSide(color: context.pColor.neutral.n30),
+                top: BorderSide(color: context.pColor.neutral.n30, width: 1),
               ),
             ),
-            child: Row(
-              children: [
-                // Voice recording button
-                GestureDetector(
-                  onTapDown: (_) => _startVoiceRecording(),
-                  onTapUp: (_) => _stopVoiceRecording(),
-                  onTapCancel: () => _cancelVoiceRecording(),
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: isVoiceRecording
-                          ? context.pColor.error.base
-                          : context.pColor.secondary.base.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Icon(
-                      isVoiceRecording ? Icons.stop : Icons.mic,
-                      color: isVoiceRecording
-                          ? context.pColor.neutral.n10
-                          : context.pColor.secondary.base,
-                    ),
+            child: SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  if (_newChatController.text.trim().isNotEmpty) {
+                    Navigator.pop(context);
+                    _startNewChat(_newChatController.text.trim());
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: context.pColor.primary.base,
+                  foregroundColor: context.pColor.neutral.n10,
+                  padding: const EdgeInsets.symmetric(vertical: PSizes.s16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(PSizes.s12),
                   ),
                 ),
-
-                const SizedBox(width: PSizes.s12),
-
-                // Text input
-                Expanded(
-                  child: TextField(
-                    controller: _messageController,
-                    decoration: InputDecoration(
-                      hintText: 'Type your message...',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(PSizes.s20),
-                        borderSide: BorderSide(
-                          color: context.pColor.neutral.n40,
-                        ),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(PSizes.s20),
-                        borderSide: BorderSide(
-                          color: context.pColor.primary.base,
-                        ),
-                      ),
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: PSizes.s16,
-                        vertical: PSizes.s12,
-                      ),
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          Icons.emoji_emotions_outlined,
-                          color: context.pColor.neutral.n60,
-                        ),
-                        onPressed: () {
-                          // Show emoji picker
-                        },
-                      ),
-                    ),
-                    maxLines: null,
+                child: Text(
+                  'Start Conversation',
+                  style: TextStyle(
+                    fontSize: responsive(context, PSizes.s16),
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-
-                const SizedBox(width: PSizes.s8),
-
-                // Send button
-                GestureDetector(
-                  onTap: _sendMessage,
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: context.pColor.primary.base,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Icon(
-                      Icons.send,
-                      color: context.pColor.neutral.n10,
-                      size: 20,
-                    ),
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildModalSuggestedTopics() {
+    final topics = [
+      {
+        'text': 'Daily Check-in',
+        'icon': '☀️',
+        'color': context.pColor.primary.p50,
+        'description': 'Share how your day went',
+      },
+      {
+        'text': 'Date Ideas',
+        'icon': '💕',
+        'color': context.pColor.primary.base,
+        'description': 'Plan something special together',
+      },
+      {
+        'text': 'Future Plans',
+        'icon': '🎯',
+        'color': context.pColor.secondary.base,
+        'description': 'Discuss your goals and dreams',
+      },
+      {
+        'text': 'Gratitude',
+        'icon': '🙏',
+        'color': context.pColor.success.base,
+        'description': 'Share what you\'re thankful for',
+      },
+      {
+        'text': 'Dreams & Goals',
+        'icon': '✨',
+        'color': context.pColor.secondary.s50,
+        'description': 'Talk about aspirations',
+      },
+      {
+        'text': 'Fun & Games',
+        'icon': '🎲',
+        'color': context.pColor.error.base,
+        'description': 'Lighthearted conversation',
+      },
+    ];
+
+    return Column(
+      children: topics
+          .map(
+            (topic) => _buildTopicCard(
+              topic['text'] as String,
+              topic['icon'] as String,
+              topic['description'] as String,
+              topic['color'] as Color,
+            ),
+          )
+          .toList(),
+    );
+  }
+
+  Widget _buildTopicCard(
+    String title,
+    String icon,
+    String description,
+    Color color,
+  ) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: PSizes.s12),
+      child: InkWell(
+        onTap: () {
+          Navigator.pop(context);
+          _startNewChat(title);
+        },
+        borderRadius: BorderRadius.circular(PSizes.s12),
+        child: Container(
+          padding: const EdgeInsets.all(PSizes.s16),
+          decoration: BoxDecoration(
+            color: color.withOpacity(0.05),
+            borderRadius: BorderRadius.circular(PSizes.s12),
+            border: Border.all(color: color.withOpacity(0.2), width: 1),
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: color.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Center(
+                  child: Text(icon, style: const TextStyle(fontSize: 24)),
+                ),
+              ),
+              const SizedBox(width: PSizes.s16),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: TextStyle(
+                        fontSize: responsive(context, PSizes.s16),
+                        fontWeight: FontWeight.w600,
+                        color: color,
+                      ),
+                    ),
+                    const SizedBox(height: PSizes.s4),
+                    Text(
+                      description,
+                      style: TextStyle(
+                        fontSize: responsive(context, PSizes.s12),
+                        color: context.pColor.neutral.n60,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Icon(Icons.arrow_forward_ios, size: 16, color: color),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _startNewChat(String topic) {
+    if (topic.trim().isEmpty) return;
+
+    // Clear the input
+    _newChatController.clear();
+
+    // Navigate to chat conversation screen
+    context.pushNamed(
+      PRouter.chatConversation.name,
+      pathParameters: {'id': DateTime.now().millisecondsSinceEpoch.toString()},
+      extra: {'topic': topic.trim()},
     );
   }
 
@@ -428,478 +803,13 @@ class _ChatScreenState extends State<ChatScreen> {
           Icons.analytics_outlined,
           color: context.pColor.primary.base,
         ),
-        onTap: () => _showSessionSummary(session),
-      ),
-    );
-  }
-
-  Widget _buildDateHeader(String date) {
-    return Center(
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: PSizes.s8),
-        padding: const EdgeInsets.symmetric(
-          horizontal: PSizes.s12,
-          vertical: PSizes.s4,
-        ),
-        decoration: BoxDecoration(
-          color: context.pColor.neutral.n30,
-          borderRadius: BorderRadius.circular(PSizes.s12),
-        ),
-        child: Text(
-          date,
-          style: TextStyle(
-            fontSize: responsive(context, PSizes.s12),
-            color: context.pColor.neutral.n70,
-          ),
+        onTap: () => context.pushNamed(
+          PRouter.chatConversation.name,
+          pathParameters: {'id': session.id},
+          extra: {'topic': session.topic},
         ),
       ),
     );
-  }
-
-  Widget _buildChatBubble(String message, bool isMe, DateTime timestamp) {
-    return Align(
-      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: PSizes.s4),
-        padding: const EdgeInsets.all(PSizes.s12),
-        constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.75,
-        ),
-        decoration: BoxDecoration(
-          color: isMe
-              ? context.pColor.primary.base
-              : context.pColor.neutral.n20,
-          borderRadius: BorderRadius.circular(PSizes.s16).copyWith(
-            bottomRight: isMe ? const Radius.circular(4) : null,
-            bottomLeft: !isMe ? const Radius.circular(4) : null,
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              message,
-              style: TextStyle(
-                fontSize: responsive(context, PSizes.s14),
-                color: isMe
-                    ? context.pColor.neutral.n10
-                    : context.pColor.neutral.n80,
-              ),
-            ),
-            const SizedBox(height: PSizes.s4),
-            Text(
-              _formatMessageTime(timestamp),
-              style: TextStyle(
-                fontSize: responsive(context, PSizes.s10),
-                color: isMe
-                    ? context.pColor.neutral.n10.withOpacity(0.7)
-                    : context.pColor.neutral.n50,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildVoiceMessage(bool isMe, String duration, DateTime timestamp) {
-    return Align(
-      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
-      child: Container(
-        margin: const EdgeInsets.symmetric(vertical: PSizes.s4),
-        padding: const EdgeInsets.all(PSizes.s12),
-        constraints: BoxConstraints(
-          maxWidth: MediaQuery.of(context).size.width * 0.6,
-        ),
-        decoration: BoxDecoration(
-          color: isMe
-              ? context.pColor.primary.base
-              : context.pColor.neutral.n20,
-          borderRadius: BorderRadius.circular(PSizes.s16).copyWith(
-            bottomRight: isMe ? const Radius.circular(4) : null,
-            bottomLeft: !isMe ? const Radius.circular(4) : null,
-          ),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.play_arrow,
-              color: isMe
-                  ? context.pColor.neutral.n10
-                  : context.pColor.primary.base,
-            ),
-            const SizedBox(width: PSizes.s8),
-            Expanded(
-              child: Container(
-                height: 2,
-                decoration: BoxDecoration(
-                  color: isMe
-                      ? context.pColor.neutral.n10.withOpacity(0.3)
-                      : context.pColor.neutral.n40,
-                  borderRadius: BorderRadius.circular(1),
-                ),
-              ),
-            ),
-            const SizedBox(width: PSizes.s8),
-            Text(
-              duration,
-              style: TextStyle(
-                fontSize: responsive(context, PSizes.s12),
-                color: isMe
-                    ? context.pColor.neutral.n10
-                    : context.pColor.neutral.n60,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _showNewChatDialog() {
-    final TextEditingController topicController = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          'Start New Conversation',
-          style: TextStyle(
-            fontSize: responsive(context, PSizes.s18),
-            fontWeight: FontWeight.bold,
-            color: context.pColor.neutral.n80,
-          ),
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'What would you like to discuss?',
-              style: TextStyle(
-                fontSize: responsive(context, PSizes.s14),
-                color: context.pColor.neutral.n60,
-              ),
-            ),
-            const SizedBox(height: PSizes.s16),
-            TextField(
-              controller: topicController,
-              decoration: InputDecoration(
-                hintText: 'e.g., Weekend plans, Future goals...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(PSizes.s8),
-                ),
-              ),
-              maxLines: 2,
-            ),
-            const SizedBox(height: PSizes.s16),
-            Text(
-              'Suggested Topics:',
-              style: TextStyle(
-                fontSize: responsive(context, PSizes.s12),
-                fontWeight: FontWeight.w500,
-                color: context.pColor.neutral.n70,
-              ),
-            ),
-            const SizedBox(height: PSizes.s8),
-            Wrap(
-              spacing: 8,
-              children: [
-                _buildTopicChip('Daily Check-in'),
-                _buildTopicChip('Future Plans'),
-                _buildTopicChip('Relationship Goals'),
-                _buildTopicChip('Date Ideas'),
-              ],
-            ),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Text(
-              'Cancel',
-              style: TextStyle(color: context.pColor.neutral.n60),
-            ),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              Navigator.pop(context);
-              setState(() {
-                currentChatId = 'new';
-                currentTopic = topicController.text.isNotEmpty
-                    ? topicController.text
-                    : 'General Chat';
-              });
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: context.pColor.primary.base,
-              foregroundColor: context.pColor.neutral.n10,
-            ),
-            child: const Text('Start Chat'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTopicChip(String topic) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.pop(context);
-        setState(() {
-          currentChatId = 'new';
-          currentTopic = topic;
-        });
-      },
-      child: Chip(
-        label: Text(
-          topic,
-          style: TextStyle(
-            fontSize: responsive(context, PSizes.s12),
-            color: context.pColor.primary.base,
-          ),
-        ),
-        backgroundColor: context.pColor.primary.base.withOpacity(0.1),
-        side: BorderSide(color: context.pColor.primary.base.withOpacity(0.3)),
-      ),
-    );
-  }
-
-  void _showSessionSummary(ChatSession session) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(PSizes.s16)),
-      ),
-      builder: (context) => DraggableScrollableSheet(
-        initialChildSize: 0.7,
-        maxChildSize: 0.9,
-        minChildSize: 0.5,
-        builder: (context, scrollController) => Container(
-          padding: const EdgeInsets.all(PSizes.s16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Handle
-              Center(
-                child: Container(
-                  width: 40,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: context.pColor.neutral.n40,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: PSizes.s16),
-
-              // Title
-              Text(
-                session.topic,
-                style: TextStyle(
-                  fontSize: responsive(context, PSizes.s20),
-                  fontWeight: FontWeight.bold,
-                  color: context.pColor.neutral.n80,
-                ),
-              ),
-
-              const SizedBox(height: PSizes.s16),
-
-              // Analytics Cards
-              Row(
-                children: [
-                  Expanded(
-                    child: _buildAnalyticsCard(
-                      'Messages',
-                      '${session.messageCount}',
-                      Icons.chat_outlined,
-                      context.pColor.primary.base,
-                    ),
-                  ),
-                  const SizedBox(width: PSizes.s12),
-                  Expanded(
-                    child: _buildAnalyticsCard(
-                      'Sentiment',
-                      session.sentiment,
-                      Icons.sentiment_satisfied,
-                      _getSentimentColor(session.sentiment),
-                    ),
-                  ),
-                ],
-              ),
-
-              const SizedBox(height: PSizes.s16),
-
-              // Summary
-              Text(
-                'Summary',
-                style: TextStyle(
-                  fontSize: responsive(context, PSizes.s16),
-                  fontWeight: FontWeight.w600,
-                  color: context.pColor.neutral.n80,
-                ),
-              ),
-
-              const SizedBox(height: PSizes.s8),
-
-              Text(
-                session.summary,
-                style: TextStyle(
-                  fontSize: responsive(context, PSizes.s14),
-                  color: context.pColor.neutral.n60,
-                  height: 1.5,
-                ),
-              ),
-
-              const SizedBox(height: PSizes.s24),
-
-              // Action Buttons
-              Row(
-                children: [
-                  Expanded(
-                    child: OutlinedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        setState(() {
-                          currentChatId = session.id;
-                          currentTopic = session.topic;
-                        });
-                      },
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide(color: context.pColor.primary.base),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(PSizes.s8),
-                        ),
-                      ),
-                      child: Text(
-                        'Continue Chat',
-                        style: TextStyle(color: context.pColor.primary.base),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: PSizes.s12),
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                        // Show detailed analytics
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: context.pColor.primary.base,
-                        foregroundColor: context.pColor.neutral.n10,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(PSizes.s8),
-                        ),
-                      ),
-                      child: const Text('View Analytics'),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildAnalyticsCard(
-    String title,
-    String value,
-    IconData icon,
-    Color color,
-  ) {
-    return Container(
-      padding: const EdgeInsets.all(PSizes.s12),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(PSizes.s8),
-        border: Border.all(color: color.withOpacity(0.3)),
-      ),
-      child: Column(
-        children: [
-          Icon(icon, color: color, size: PSizes.s24),
-          const SizedBox(height: PSizes.s4),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: responsive(context, PSizes.s16),
-              fontWeight: FontWeight.bold,
-              color: color,
-            ),
-          ),
-          Text(
-            title,
-            style: TextStyle(
-              fontSize: responsive(context, PSizes.s12),
-              color: context.pColor.neutral.n60,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _showChatAnalytics() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(
-          'Chat Analytics',
-          style: TextStyle(
-            fontSize: responsive(context, PSizes.s18),
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        content: const Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('📊 This conversation shows positive sentiment'),
-            SizedBox(height: PSizes.s8),
-            Text('💬 Active discussion with balanced participation'),
-            SizedBox(height: PSizes.s8),
-            Text('❤️ High emotional connection detected'),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Close'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _startVoiceRecording() {
-    setState(() {
-      isVoiceRecording = true;
-    });
-    // Start voice recording logic
-  }
-
-  void _stopVoiceRecording() {
-    setState(() {
-      isVoiceRecording = false;
-    });
-    // Stop and send voice message
-  }
-
-  void _cancelVoiceRecording() {
-    setState(() {
-      isVoiceRecording = false;
-    });
-    // Cancel recording
-  }
-
-  void _sendMessage() {
-    if (_messageController.text.trim().isNotEmpty) {
-      // Send message logic
-      _messageController.clear();
-    }
   }
 
   Color _getSentimentColor(String sentiment) {
@@ -945,14 +855,38 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  String _formatMessageTime(DateTime timestamp) {
-    return '${timestamp.hour.toString().padLeft(2, '0')}:${timestamp.minute.toString().padLeft(2, '0')}';
+  @override
+  void dispose() {
+    _newChatController.dispose();
+    _pulseController.dispose();
+    super.dispose();
+  }
+}
+
+// Custom delegate for sticky header
+class _StickyNewChatDelegate extends SliverPersistentHeaderDelegate {
+  final Widget child;
+
+  _StickyNewChatDelegate({required this.child});
+
+  @override
+  double get minExtent => 136.0; // Minimum height when sticky (120 + 16 top padding)
+
+  @override
+  double get maxExtent => 136.0; // Maximum height
+
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    return child;
   }
 
   @override
-  void dispose() {
-    _messageController.dispose();
-    super.dispose();
+  bool shouldRebuild(covariant SliverPersistentHeaderDelegate oldDelegate) {
+    return false;
   }
 }
 
