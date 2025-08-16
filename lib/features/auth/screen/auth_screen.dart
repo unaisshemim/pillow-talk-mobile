@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:fl_country_code_picker/fl_country_code_picker.dart';
-import 'package:pillowtalk/common/ui/phone_input_field.dart';
+import 'package:pillowtalk/common/ui/input/phone_input_field.dart';
+
 import 'package:pillowtalk/common/ui/snackBar.dart';
 import 'package:pillowtalk/features/auth/provider/auth_provider.dart';
 import 'package:pillowtalk/features/auth/utils/phone_mask.dart';
@@ -141,14 +142,8 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
 
                 const SizedBox(height: PSizes.s32),
 
+                PhoneInputField(controller: _phoneController),
                 // Phone Input Field
-                PhoneInputField(
-                  controller: _phoneController,
-                  initialCountryCode: _selectedCountryCode,
-                  onCountryCodeChanged: _onCountryCodeChanged,
-                  hintText: 'Phone number',
-                ),
-
                 const SizedBox(height: PSizes.s32),
 
                 // Continue Button
