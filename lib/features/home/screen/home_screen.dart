@@ -70,30 +70,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Widget _buildMoodSelectionBottomSheet() {
     final moods = [
-      {
-        'title': 'Happy',
-        'icon': '😊',
-        'color': context.pColor.success.base,
-        'description': 'Feeling joyful and positive',
-      },
+      {'title': 'Happy', 'icon': '😊', 'color': context.pColor.success.base},
       {
         'title': 'Thoughtful',
         'icon': '🤔',
         'color': context.pColor.secondary.base,
-        'description': 'In a reflective mood',
       },
-      {
-        'title': 'Excited',
-        'icon': '🤩',
-        'color': context.pColor.primary.base,
-        'description': 'Full of energy and enthusiasm',
-      },
-      {
-        'title': 'Calm',
-        'icon': '😌',
-        'color': context.pColor.neutral.n60,
-        'description': 'Peaceful and relaxed',
-      },
+      {'title': 'Excited', 'icon': '🤩', 'color': context.pColor.primary.base},
+      {'title': 'Calm', 'icon': '😌', 'color': context.pColor.neutral.n60},
     ];
 
     return StatefulBuilder(
@@ -179,7 +163,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       child: _buildHorizontalMoodCard(
                         mood['title'] as String,
                         mood['icon'] as String,
-                        mood['description'] as String,
                         mood['color'] as Color,
                         setModalState, // Pass the modal setState
                       ),
@@ -254,7 +237,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget _buildHorizontalMoodCard(
     String title,
     String icon,
-    String description,
+
     Color color,
     StateSetter setModalState,
   ) {
@@ -325,19 +308,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               textAlign: TextAlign.center,
             ),
 
-            const SizedBox(height: PSizes.s4),
-
             // Description
-            Text(
-              description,
-              style: TextStyle(
-                fontSize: responsive(context, PSizes.s10),
-                color: context.pColor.neutral.n60,
-              ),
-              textAlign: TextAlign.center,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
           ],
         ),
       ),
@@ -446,6 +417,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   icon: Icons.chat_bubble_outline,
                   label: 'Chat',
                   color: context.pColor.primary.base,
+                  onTap: () => context.pushNamed(PRouter.chat.name),
                 ),
                 QuickActionCard(
                   icon: Icons.favorite_outline,
@@ -456,6 +428,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   icon: Icons.psychology_outlined,
                   label: 'Exercises',
                   color: context.pColor.secondary.base,
+                  onTap: () => context.pushNamed(PRouter.exercises.name),
                 ),
                 QuickActionCard(
                   icon: Icons.insights_outlined,

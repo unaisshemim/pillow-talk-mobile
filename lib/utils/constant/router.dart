@@ -60,6 +60,12 @@ abstract class PRouter {
     '/notification',
   );
 
+  //exercises
+  static const PRouterDetail exercises = PRouterDetail(
+    'Exercises',
+    '/exercises',
+  );
+
   //dev
   static const PRouterDetail dev = PRouterDetail('Dev', '/dev');
 }

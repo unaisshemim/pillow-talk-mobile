@@ -11,6 +11,7 @@ import 'package:pillowtalk/features/auth/screen/otp_screen.dart';
 import 'package:pillowtalk/features/chat/screen/chat_conversation_screen.dart';
 import 'package:pillowtalk/features/chat/screen/chat_screen.dart';
 import 'package:pillowtalk/features/dev/screen/dev_screen.dart';
+import 'package:pillowtalk/features/exercises/screen/exercises_screen.dart';
 import 'package:pillowtalk/features/home/screen/home_screen.dart';
 import 'package:pillowtalk/features/notification/screen/notification_screen.dart';
 import 'package:pillowtalk/features/onboarding/screen/onboarding_screen.dart';
@@ -82,6 +83,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             path: PRouter.home.path,
             builder: (context, state) => const HomeScreen(),
           ),
+
           GoRoute(
             name: PRouter.dev.name,
             path: PRouter.dev.path,
@@ -110,6 +112,11 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           final extraData = state.extra as Map<String, dynamic>?;
           return ChatConversationScreen(chatId: chatId, extraData: extraData);
         },
+      ),
+      GoRoute(
+        name: PRouter.exercises.name,
+        path: PRouter.exercises.path,
+        builder: (context, state) => const ExercisesScreen(),
       ),
     ],
     redirect: (context, state) async {
