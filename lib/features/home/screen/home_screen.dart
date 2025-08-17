@@ -209,7 +209,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       PSnackBar.showSuccess(
                         context,
                         message: 'Mood updated to $tempSelectedMood! 🎉',
-                        duration: const Duration(seconds: 3),
+                        duration: const Duration(seconds: 2),
                       );
                     },
                     style: ElevatedButton.styleFrom(
@@ -262,11 +262,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     return GestureDetector(
       onTap: () {
+        print('Tapping mood: $title'); // Debug print
         setModalState(() {
           tempSelectedMood = title;
           tempSelectedMoodEmoji = icon;
           tempSelectedMoodColor = color;
         });
+        print('Updated tempSelectedMood to: $tempSelectedMood'); // Debug print
         // Only update temporary state, not the actual home state
       },
       child: AnimatedContainer(
