@@ -1,18 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pillowtalk/common/ui/app_bar_title.dart';
 import 'package:pillowtalk/common/ui/screen_container.dart';
 import 'package:pillowtalk/common/ui/cards/mood_card.dart';
 import 'package:pillowtalk/common/ui/cards/quick_action_card.dart';
 import 'package:pillowtalk/common/ui/cards/activtiy_card.dart';
+
+import 'package:pillowtalk/features/profile/provider/profile_provider.dart';
 import 'package:pillowtalk/utils/constant/router.dart';
 import 'package:pillowtalk/utils/helpers/responsive_size.dart';
 import 'package:pillowtalk/utils/theme/theme_extension.dart';
 import 'package:pillowtalk/utils/constant/sizes.dart';
 import 'package:pillowtalk/common/ui/cards/progress_card.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  // Add any state variables or controllers you’ll need here.
+  // e.g. int _selectedIndex = 0;
+
+  String userName = "";
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.microtask(_loadProfileIntoControllers);
+  }
+
+  Future<void> _loadProfileIntoControllers() async {
+    final profile = await ref
+        .read(profileNotifierProvider.notifier)
+        .getUserProfile();
+
+    if (!mounted || profile == null) return;
+    setState(() {
+      userName = (profile.name?.isNotEmpty ?? false)
+          ? '${profile.name![0].toUpperCase()}${profile.name!.substring(1)}'
+          : '';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +88,7 @@ class HomeScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Good Morning, Sarah & John! 💕',
+                    'Hello $userName... ',
                     style: TextStyle(
                       fontSize: responsive(context, PSizes.s24),
                       fontWeight: FontWeight.bold,
@@ -179,6 +212,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  /// Helper for section headers
   Widget _buildSectionTitle(BuildContext context, String title) {
     return Text(
       title,

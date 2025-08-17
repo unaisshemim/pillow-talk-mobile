@@ -5,7 +5,6 @@ import 'package:pillowtalk/common/ui/screen_container.dart';
 import 'package:pillowtalk/common/ui/app_bar_title.dart';
 import 'package:pillowtalk/common/ui/alert_dialog.dart';
 import 'package:pillowtalk/features/auth/provider/auth_provider.dart';
-import 'package:pillowtalk/features/profile/screen/edit_profile_screen.dart';
 import 'package:pillowtalk/utils/constant/router.dart';
 import 'package:pillowtalk/utils/helpers/responsive_size.dart';
 import 'package:pillowtalk/utils/theme/theme_extension.dart';

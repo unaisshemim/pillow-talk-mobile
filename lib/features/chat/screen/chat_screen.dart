@@ -250,19 +250,6 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
               ),
             ],
           ),
-          const SizedBox(height: PSizes.s20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _buildStatItem(
-                context,
-                '${chatSessions.length}',
-                'Conversations',
-              ),
-              _buildStatItem(context, '77', 'Total Messages'),
-              _buildStatItem(context, '92%', 'Positive Tone'),
-            ],
-          ),
         ],
       ),
     );

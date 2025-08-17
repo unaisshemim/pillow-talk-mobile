@@ -27,7 +27,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
   final _phoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
-  CountryCode _selectedCountryCode = const CountryCode(
+  final CountryCode _selectedCountryCode = const CountryCode(
     name: 'India',
     code: 'IN',
     dialCode: '+91',
@@ -88,12 +88,6 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
         });
       }
     }
-  }
-
-  void _onCountryCodeChanged(CountryCode countryCode) {
-    setState(() {
-      _selectedCountryCode = countryCode;
-    });
   }
 
   @override

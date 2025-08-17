@@ -13,7 +13,7 @@ class PartnerScreen extends StatefulWidget {
 }
 
 class _PartnerScreenState extends State<PartnerScreen> {
-  bool isConnected = true; // Set to false to show search/connect UI
+  bool isConnected = false; // Set to false to show search/connect UI
   final TextEditingController _searchController = TextEditingController();
 
   @override
@@ -88,7 +88,7 @@ class _PartnerScreenState extends State<PartnerScreen> {
           TextField(
             controller: _searchController,
             decoration: InputDecoration(
-              hintText: 'Enter partner\'s email or username',
+              hintText: 'Enter partner Name',
               prefixIcon: Icon(Icons.search, color: context.pColor.neutral.n60),
               suffixIcon: IconButton(
                 icon: Icon(
