@@ -59,13 +59,7 @@ class _ChatConversationScreenState extends State<ChatConversationScreen> {
                 ),
               ),
               const SizedBox(width: 8),
-              IconButton(
-                icon: Icon(
-                  Icons.analytics_outlined,
-                  color: context.pColor.neutral.n70,
-                ),
-                onPressed: () => _showChatAnalytics(),
-              ),
+
               IconButton(
                 icon: Icon(Icons.more_vert, color: context.pColor.neutral.n70),
                 onPressed: () {
