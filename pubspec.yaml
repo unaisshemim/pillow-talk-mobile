@@ -28,8 +28,11 @@ dependencies:
   riverpod_annotation: ^2.6.1
   freezed_annotation: ^3.1.0
   json_annotation: ^4.9.0
-  dart_jsonwebtoken: ^2.14.0
   fl_country_code_picker: ^0.1.9+1
+  jwt_decode: ^0.3.1
+ 
+
+
 
 
 

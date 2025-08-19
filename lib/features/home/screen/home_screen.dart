@@ -434,6 +434,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   icon: Icons.insights_outlined,
                   label: 'Insights',
                   color: context.pColor.success.base,
+                  onTap: () => context.pushNamed(PRouter.insights.name),
                 ),
               ],
             ),

@@ -66,6 +66,9 @@ abstract class PRouter {
     '/exercises',
   );
 
+  //insights
+  static const PRouterDetail insights = PRouterDetail('Insights', '/insights');
+
   //dev
   static const PRouterDetail dev = PRouterDetail('Dev', '/dev');
 }
