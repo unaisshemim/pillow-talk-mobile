@@ -695,6 +695,597 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
     );
   }
 
+  void _showChatAnalytics(ChatSession session) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => _buildChatAnalyticsModal(session),
+    );
+  }
+
+  Widget _buildChatAnalyticsModal(ChatSession session) {
+    final sentimentColor = _getSentimentColor(session.sentiment);
+
+    // Mock analytics data - in real app, this would come from your backend
+    final analytics = _generateAnalyticsData(session);
+
+    return Container(
+      height: MediaQuery.of(context).size.height * 0.85,
+      decoration: BoxDecoration(
+        color: context.pColor.neutral.n10,
+        borderRadius: const BorderRadius.vertical(
+          top: Radius.circular(PSizes.s20),
+        ),
+      ),
+      child: Column(
+        children: [
+          // Handle
+          Container(
+            margin: const EdgeInsets.only(top: PSizes.s12),
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+              color: context.pColor.neutral.n40,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+
+          // Header
+          Padding(
+            padding: const EdgeInsets.all(PSizes.s20),
+            child: Row(
+              children: [
+                Container(
+                  width: 40,
+                  height: 40,
+                  decoration: BoxDecoration(
+                    color: sentimentColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(PSizes.s10),
+                  ),
+                  child: Icon(
+                    Icons.analytics_outlined,
+                    color: sentimentColor,
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(width: PSizes.s12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Analytics',
+                        style: TextStyle(
+                          fontSize: responsive(context, PSizes.s20),
+                          fontWeight: FontWeight.bold,
+                          color: context.pColor.neutral.n80,
+                        ),
+                      ),
+                      Text(
+                        session.topic,
+                        style: TextStyle(
+                          fontSize: responsive(context, PSizes.s14),
+                          color: context.pColor.neutral.n60,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  onPressed: () => Navigator.pop(context),
+                  icon: Icon(Icons.close, color: context.pColor.neutral.n60),
+                ),
+              ],
+            ),
+          ),
+
+          // Scrollable Content
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: PSizes.s20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Summary Card
+                  _buildAnalyticsSummaryCard(session, analytics),
+
+                  const SizedBox(height: PSizes.s20),
+
+                  // Emotion Analysis
+                  _buildEmotionAnalysisSection(analytics),
+
+                  const SizedBox(height: PSizes.s20),
+
+                  // Communication Insights
+                  _buildCommunicationInsights(analytics),
+
+                  const SizedBox(height: PSizes.s20),
+
+                  // Conversation Health
+                  _buildConversationHealth(analytics),
+
+                  const SizedBox(height: PSizes.s20),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAnalyticsSummaryCard(
+    ChatSession session,
+    Map<String, dynamic> analytics,
+  ) {
+    final sentimentColor = _getSentimentColor(session.sentiment);
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(PSizes.s20),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            sentimentColor.withOpacity(0.1),
+            sentimentColor.withOpacity(0.05),
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(PSizes.s16),
+        border: Border.all(color: sentimentColor.withOpacity(0.2), width: 1),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(PSizes.s8),
+                decoration: BoxDecoration(
+                  color: sentimentColor.withOpacity(0.2),
+                  borderRadius: BorderRadius.circular(PSizes.s8),
+                ),
+                child: Icon(
+                  _getSentimentIcon(session.sentiment),
+                  color: sentimentColor,
+                  size: 20,
+                ),
+              ),
+              const SizedBox(width: PSizes.s12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Overall Sentiment',
+                      style: TextStyle(
+                        fontSize: responsive(context, PSizes.s14),
+                        color: context.pColor.neutral.n60,
+                      ),
+                    ),
+                    Text(
+                      session.sentiment.toUpperCase(),
+                      style: TextStyle(
+                        fontSize: responsive(context, PSizes.s18),
+                        fontWeight: FontWeight.bold,
+                        color: sentimentColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Text(
+                '${analytics['sentimentScore']}%',
+                style: TextStyle(
+                  fontSize: responsive(context, PSizes.s24),
+                  fontWeight: FontWeight.bold,
+                  color: sentimentColor,
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: PSizes.s16),
+
+          Text(
+            session.summary,
+            style: TextStyle(
+              fontSize: responsive(context, PSizes.s14),
+              color: context.pColor.neutral.n70,
+              height: 1.4,
+            ),
+          ),
+
+          const SizedBox(height: PSizes.s16),
+
+          Row(
+            children: [
+              Expanded(
+                child: _buildQuickStat(
+                  'Messages',
+                  '${session.messageCount}',
+                  Icons.chat_bubble_outline,
+                  context.pColor.primary.base,
+                ),
+              ),
+              Expanded(
+                child: _buildQuickStat(
+                  'Duration',
+                  analytics['duration'],
+                  Icons.access_time,
+                  context.pColor.secondary.base,
+                ),
+              ),
+              Expanded(
+                child: _buildQuickStat(
+                  'Engagement',
+                  '${analytics['engagementScore']}%',
+                  Icons.trending_up,
+                  context.pColor.success.base,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildQuickStat(
+    String label,
+    String value,
+    IconData icon,
+    Color color,
+  ) {
+    return Column(
+      children: [
+        Icon(icon, color: color, size: 20),
+        const SizedBox(height: PSizes.s4),
+        Text(
+          value,
+          style: TextStyle(
+            fontSize: responsive(context, PSizes.s16),
+            fontWeight: FontWeight.bold,
+            color: context.pColor.neutral.n80,
+          ),
+        ),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: responsive(context, PSizes.s12),
+            color: context.pColor.neutral.n60,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildEmotionAnalysisSection(Map<String, dynamic> analytics) {
+    final emotions = analytics['emotions'] as List<Map<String, dynamic>>;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Emotion Analysis',
+          style: TextStyle(
+            fontSize: responsive(context, PSizes.s18),
+            fontWeight: FontWeight.bold,
+            color: context.pColor.neutral.n80,
+          ),
+        ),
+        const SizedBox(height: PSizes.s12),
+
+        ...emotions.map((emotion) => _buildEmotionItem(emotion)),
+      ],
+    );
+  }
+
+  Widget _buildEmotionItem(Map<String, dynamic> emotion) {
+    final percentage = emotion['percentage'] as int;
+    final color = emotion['color'] as Color;
+
+    return Container(
+      margin: const EdgeInsets.only(bottom: PSizes.s12),
+      padding: const EdgeInsets.all(PSizes.s16),
+      decoration: BoxDecoration(
+        color: color.withOpacity(0.05),
+        borderRadius: BorderRadius.circular(PSizes.s12),
+        border: Border.all(color: color.withOpacity(0.2), width: 1),
+      ),
+      child: Row(
+        children: [
+          Text(emotion['emoji'], style: const TextStyle(fontSize: 24)),
+          const SizedBox(width: PSizes.s12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      emotion['name'],
+                      style: TextStyle(
+                        fontSize: responsive(context, PSizes.s16),
+                        fontWeight: FontWeight.w600,
+                        color: color,
+                      ),
+                    ),
+                    Text(
+                      '$percentage%',
+                      style: TextStyle(
+                        fontSize: responsive(context, PSizes.s14),
+                        fontWeight: FontWeight.bold,
+                        color: color,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: PSizes.s8),
+                LinearProgressIndicator(
+                  value: percentage / 100,
+                  backgroundColor: color.withOpacity(0.1),
+                  valueColor: AlwaysStoppedAnimation<Color>(color),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCommunicationInsights(Map<String, dynamic> analytics) {
+    final insights = analytics['insights'] as List<Map<String, dynamic>>;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Communication Insights',
+          style: TextStyle(
+            fontSize: responsive(context, PSizes.s18),
+            fontWeight: FontWeight.bold,
+            color: context.pColor.neutral.n80,
+          ),
+        ),
+        const SizedBox(height: PSizes.s12),
+
+        ...insights.map((insight) => _buildInsightItem(insight)),
+      ],
+    );
+  }
+
+  Widget _buildInsightItem(Map<String, dynamic> insight) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: PSizes.s12),
+      padding: const EdgeInsets.all(PSizes.s16),
+      decoration: BoxDecoration(
+        color: context.pColor.neutral.n20,
+        borderRadius: BorderRadius.circular(PSizes.s12),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: insight['color'].withOpacity(0.1),
+              borderRadius: BorderRadius.circular(PSizes.s10),
+            ),
+            child: Icon(insight['icon'], color: insight['color'], size: 20),
+          ),
+          const SizedBox(width: PSizes.s12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  insight['title'],
+                  style: TextStyle(
+                    fontSize: responsive(context, PSizes.s16),
+                    fontWeight: FontWeight.w600,
+                    color: context.pColor.neutral.n80,
+                  ),
+                ),
+                const SizedBox(height: PSizes.s4),
+                Text(
+                  insight['description'],
+                  style: TextStyle(
+                    fontSize: responsive(context, PSizes.s14),
+                    color: context.pColor.neutral.n60,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildConversationHealth(Map<String, dynamic> analytics) {
+    final healthScore = analytics['healthScore'] as int;
+    final healthColor = healthScore >= 80
+        ? context.pColor.success.base
+        : healthScore >= 60
+        ? context.pColor.secondary.base
+        : context.pColor.error.base;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Conversation Health',
+          style: TextStyle(
+            fontSize: responsive(context, PSizes.s18),
+            fontWeight: FontWeight.bold,
+            color: context.pColor.neutral.n80,
+          ),
+        ),
+        const SizedBox(height: PSizes.s12),
+
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(PSizes.s20),
+          decoration: BoxDecoration(
+            color: healthColor.withOpacity(0.05),
+            borderRadius: BorderRadius.circular(PSizes.s16),
+            border: Border.all(color: healthColor.withOpacity(0.2), width: 1),
+          ),
+          child: Column(
+            children: [
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  SizedBox(
+                    width: 100,
+                    height: 100,
+                    child: CircularProgressIndicator(
+                      value: healthScore / 100,
+                      strokeWidth: 8,
+                      backgroundColor: healthColor.withOpacity(0.1),
+                      valueColor: AlwaysStoppedAnimation<Color>(healthColor),
+                    ),
+                  ),
+                  Column(
+                    children: [
+                      Text(
+                        '$healthScore%',
+                        style: TextStyle(
+                          fontSize: responsive(context, PSizes.s24),
+                          fontWeight: FontWeight.bold,
+                          color: healthColor,
+                        ),
+                      ),
+                      Text(
+                        'Health Score',
+                        style: TextStyle(
+                          fontSize: responsive(context, PSizes.s12),
+                          color: context.pColor.neutral.n60,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+
+              const SizedBox(height: PSizes.s16),
+
+              Text(
+                _getHealthMessage(healthScore),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: responsive(context, PSizes.s14),
+                  color: context.pColor.neutral.n70,
+                  height: 1.4,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Map<String, dynamic> _generateAnalyticsData(ChatSession session) {
+    // Mock data - in real app, this would come from your backend
+    return {
+      'sentimentScore': _getSentimentScore(session.sentiment),
+      'duration': _getRandomDuration(),
+      'engagementScore': _getRandomRange(75, 95),
+      'healthScore': _getRandomRange(65, 90),
+      'emotions': [
+        {
+          'name': 'Joy',
+          'emoji': '😊',
+          'percentage': _getRandomRange(30, 50),
+          'color': context.pColor.success.base,
+        },
+        {
+          'name': 'Love',
+          'emoji': '❤️',
+          'percentage': _getRandomRange(20, 40),
+          'color': context.pColor.primary.base,
+        },
+        {
+          'name': 'Gratitude',
+          'emoji': '🙏',
+          'percentage': _getRandomRange(15, 25),
+          'color': context.pColor.secondary.base,
+        },
+        {
+          'name': 'Excitement',
+          'emoji': '🎉',
+          'percentage': _getRandomRange(10, 20),
+          'color': context.pColor.error.base,
+        },
+      ],
+      'insights': [
+        {
+          'title': 'Active Listening',
+          'description':
+              'Both partners showed great listening skills with thoughtful responses',
+          'icon': Icons.hearing,
+          'color': context.pColor.success.base,
+        },
+        {
+          'title': 'Emotional Support',
+          'description':
+              'Strong emotional support demonstrated throughout the conversation',
+          'icon': Icons.favorite,
+          'color': context.pColor.primary.base,
+        },
+        {
+          'title': 'Future Planning',
+          'description':
+              'Good alignment on future goals and shared aspirations',
+          'icon': Icons.trending_up,
+          'color': context.pColor.secondary.base,
+        },
+      ],
+    };
+  }
+
+  int _getSentimentScore(String sentiment) {
+    switch (sentiment) {
+      case 'positive':
+        return _getRandomRange(80, 95);
+      case 'excited':
+        return _getRandomRange(85, 95);
+      case 'constructive':
+        return _getRandomRange(70, 85);
+      case 'grateful':
+        return _getRandomRange(85, 95);
+      default:
+        return _getRandomRange(60, 80);
+    }
+  }
+
+  String _getRandomDuration() {
+    final durations = ['15min', '23min', '31min', '18min', '26min'];
+    return durations[DateTime.now().millisecond % durations.length];
+  }
+
+  int _getRandomRange(int min, int max) {
+    return min + (DateTime.now().millisecond % (max - min + 1));
+  }
+
+  String _getHealthMessage(int healthScore) {
+    if (healthScore >= 80) {
+      return 'Excellent! Your conversation shows strong emotional connection and healthy communication patterns.';
+    } else if (healthScore >= 60) {
+      return 'Good progress! There are opportunities to deepen emotional connection and improve communication flow.';
+    } else {
+      return 'Consider focusing on active listening and emotional support to strengthen your connection.';
+    }
+  }
+
   Widget _buildStatItem(BuildContext context, String value, String label) {
     return Column(
       children: [
@@ -791,9 +1382,12 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
             ),
           ],
         ),
-        trailing: Icon(
-          Icons.analytics_outlined,
-          color: context.pColor.primary.base,
+        trailing: IconButton(
+          icon: Icon(
+            Icons.analytics_outlined,
+            color: context.pColor.primary.base,
+          ),
+          onPressed: () => _showChatAnalytics(session),
         ),
         onTap: () => context.pushNamed(
           PRouter.chatConversation.name,
