@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pillowtalk/common/widget/snackBar.dart';
+import 'package:fl_country_code_picker/fl_country_code_picker.dart';
+import 'package:pillowtalk/common/ui/input/phone_input_field.dart';
+
+import 'package:pillowtalk/common/ui/snackBar.dart';
 import 'package:pillowtalk/features/auth/provider/auth_provider.dart';
 import 'package:pillowtalk/features/auth/utils/phone_mask.dart';
 import 'package:pillowtalk/features/auth/widget/auth_header.dart';
-import 'package:pillowtalk/features/auth/widget/phonenumber_form.dart';
 import 'package:pillowtalk/utils/constant/router.dart';
 import 'package:pillowtalk/utils/constant/sizes.dart';
 import 'package:pillowtalk/utils/helpers/responsive_size.dart';
@@ -25,20 +27,11 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
   final _phoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
-  late String _selectedCountryCode = '+1';
-
-  final List<Map<String, String>> _countryCodes = [
-    {'code': '+1', 'country': 'US/CA'},
-    {'code': '+44', 'country': 'UK'},
-    {'code': '+91', 'country': 'IN'},
-    {'code': '+86', 'country': 'CN'},
-    {'code': '+81', 'country': 'JP'},
-    {'code': '+49', 'country': 'DE'},
-    {'code': '+33', 'country': 'FR'},
-    {'code': '+39', 'country': 'IT'},
-    {'code': '+34', 'country': 'ES'},
-    {'code': '+61', 'country': 'AU'},
-  ];
+  final CountryCode _selectedCountryCode = const CountryCode(
+    name: 'India',
+    code: 'IN',
+    dialCode: '+91',
+  );
 
   void _sendOTP() async {
     if (!_formKey.currentState!.validate()) return;
@@ -47,7 +40,8 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
       _isLoading = true;
     });
 
-    final fullPhoneNumber = '$_selectedCountryCode${_phoneController.text}';
+    final fullPhoneNumber =
+        '${_selectedCountryCode.dialCode}${_phoneController.text}';
     try {
       // Call the sendOtp method from AuthNotifier
       await ref.read(authNotifierProvider.notifier).sendOtp(fullPhoneNumber);
@@ -73,7 +67,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
         extra: {
           'phoneNumber': fullPhoneNumber,
           'maskedNumber': maskPhone(
-            _selectedCountryCode,
+            _selectedCountryCode.dialCode,
             _phoneController.text,
           ),
         },
@@ -142,27 +136,8 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
 
                 const SizedBox(height: PSizes.s32),
 
+                PhoneInputField(controller: _phoneController),
                 // Phone Input Field
-                Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: context.pColor.neutral.n30,
-                      width: 1.5,
-                    ),
-                    borderRadius: BorderRadius.circular(PSizes.s12),
-                  ),
-                  child: PhoneNumberForm(
-                    controller: _phoneController,
-                    selectedCode: _selectedCountryCode,
-                    countryCodes: _countryCodes,
-                    onCountryChanged: (value) {
-                      setState(() {
-                        _selectedCountryCode = value;
-                      });
-                    },
-                  ),
-                ),
-
                 const SizedBox(height: PSizes.s32),
 
                 // Continue Button

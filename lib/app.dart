@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fl_country_code_picker/fl_country_code_picker.dart' as flc;
 import 'package:pillowtalk/common/services/notification_service.dart';
 import 'package:pillowtalk/router.dart';
 import 'package:pillowtalk/utils/theme/theme.dart';
@@ -33,6 +34,15 @@ class _MainAppState extends ConsumerState<MainApp> {
       darkTheme: darkTheme,
       themeMode: ThemeMode.system,
       routerConfig: goRouter,
+      // Add localization support for fl_country_code_picker
+      supportedLocales: flc.CountryLocalizations.supportedLocales.map(
+        Locale.new,
+      ),
+      localizationsDelegates: const [
+        // Package's localization delegate
+        flc.CountryLocalizations.delegate,
+        // Add other delegates if needed
+      ],
     );
   }
 }

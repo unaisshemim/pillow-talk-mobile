@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:pillowtalk/features/auth/model/auth/auth_model.dart';
+import 'package:pillowtalk/utils/helpers/jwt_decode.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:pillowtalk/common/providers/hive_provider.dart';
 import 'package:pillowtalk/features/auth/repository/auth_repository.dart';
@@ -48,8 +49,10 @@ class AuthNotifier extends _$AuthNotifier {
 
       state = AsyncData(res); //
 
+      log("this is the res ${res.user.toJson()}");
+
       // You can also store user info if needed
-      // await hiveService.put('user', res.user.toJson());
+      await hiveService.put('userProfile', res.user.toJson());
 
       return true;
     } catch (e, st) {
@@ -147,19 +150,19 @@ class AuthNotifier extends _$AuthNotifier {
   }
 
   /// Check if user is authenticated with valid token
-  Future<bool> isValidTokenAuthenticated() async {
-    try {
-      final String? token = await getAccessToken();
 
-      if (token == null || token.isEmpty) {}
+  Future<bool> isTokenValidLocally() async {
+    final token = await getAccessToken();
+    return isTokenStillValid(token);
+  }
 
-      // Try to refresh the token preemptively
-      final refreshed = await refreshAccessToken();
-      log("refresh $refreshed");
-      return refreshed;
-    } catch (e) {
-      log('Token validation error: $e');
-      return false;
-    }
+  /// Slow path, only when you really need to refresh.
+  Future<bool> tryRefreshToken() async => await refreshAccessToken();
+
+  /// Keep the old public name but expose both behaviours.
+  Future<bool> isValidTokenAuthenticated({bool forceRefresh = false}) async {
+    if (await isTokenValidLocally()) return true;
+    if (!forceRefresh) return false; // ← router passes false
+    return await tryRefreshToken(); // ← API-layer may call true
   }
 }

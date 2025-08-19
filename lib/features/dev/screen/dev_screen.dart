@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:pillowtalk/common/widget/app_bar_title.dart';
-import 'package:pillowtalk/common/widget/screen_container.dart';
-import 'package:pillowtalk/common/widget/bottom_sheet.dart';
+import 'package:pillowtalk/common/ui/app_bar_title.dart';
+import 'package:pillowtalk/common/ui/screen_container.dart';
+import 'package:pillowtalk/common/ui/bottom_sheet.dart';
 import 'package:pillowtalk/features/dev/widget/button_test.dart';
 import 'package:pillowtalk/features/dev/widget/input_test.dart';
 import 'package:pillowtalk/features/dev/widget/notification_test_widget.dart';

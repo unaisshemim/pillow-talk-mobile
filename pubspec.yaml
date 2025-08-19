@@ -4,7 +4,7 @@ description: "A new Flutter project."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 
-version: 1.0.0+1
+version: 1.0.0+2
 
 environment:
   sdk: ^3.8.1
@@ -28,7 +28,11 @@ dependencies:
   riverpod_annotation: ^2.6.1
   freezed_annotation: ^3.1.0
   json_annotation: ^4.9.0
-  dart_jsonwebtoken: ^2.14.0
+  fl_country_code_picker: ^0.1.9+1
+  jwt_decode: ^0.3.1
+ 
+
+
 
 
 
@@ -45,6 +49,7 @@ dev_dependencies:
   json_serializable: ^6.9.5
   mockito: ^5.4.4
   patrol: ^3.11.1
+  patrol_finders: ^2.9.0
   
 
 
@@ -68,6 +73,10 @@ flutter_launcher_icons:
   image_path: "assets/logo/icon.png"
   min_sdk_android: 23 # android min sdk min:16, default 21
 
-  
 
-  
+patrol:
+  app_name: pillowtalk
+  android:
+    package_name: com.example.pillowtalk
+  ios:
+    bundle_id: com.example.pillowtalk

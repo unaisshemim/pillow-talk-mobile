@@ -2,11 +2,16 @@ PODS:
   - awesome_notifications (0.10.0):
     - Flutter
     - IosAwnCore (~> 0.10.0)
+  - CocoaAsyncSocket (7.6.5)
   - Flutter (1.0.0)
   - flutter_native_splash (2.4.3):
     - Flutter
   - IosAwnCore (0.10.0)
   - path_provider_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
+  - patrol (0.0.1):
+    - CocoaAsyncSocket (~> 7.6)
     - Flutter
     - FlutterMacOS
   - permission_handler_apple (9.3.0):
@@ -17,10 +22,12 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
+  - patrol (from `.symlinks/plugins/patrol/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
 
 SPEC REPOS:
   trunk:
+    - CocoaAsyncSocket
     - IosAwnCore
 
 EXTERNAL SOURCES:
@@ -32,15 +39,19 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_native_splash/ios"
   path_provider_foundation:
     :path: ".symlinks/plugins/path_provider_foundation/darwin"
+  patrol:
+    :path: ".symlinks/plugins/patrol/darwin"
   permission_handler_apple:
     :path: ".symlinks/plugins/permission_handler_apple/ios"
 
 SPEC CHECKSUMS:
   awesome_notifications: 0f432b28098d193920b11a44cfa9d2d9313a3888
+  CocoaAsyncSocket: 065fd1e645c7abab64f7a6a2007a48038fdc6a99
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
   flutter_native_splash: c32d145d68aeda5502d5f543ee38c192065986cf
   IosAwnCore: 653786a911089012092ce831f2945cd339855a89
   path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
+  patrol: 5df5d241d7f95f0df12a6906bbf45acb43a1e537
   permission_handler_apple: 4ed2196e43d0651e8ff7ca3483a069d469701f2d
 
 PODFILE CHECKSUM: 92fa006fdfd318434c6f63653a22ade173b6acd6

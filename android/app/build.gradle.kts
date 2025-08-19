@@ -12,7 +12,15 @@ android {
     compileSdk = 35
 
 
+  buildTypes {
+    getByName("release") {
 
+    }
+    getByName("debug") {
+        isMinifyEnabled = false
+        isShrinkResources = false
+    }
+  }
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -21,6 +29,10 @@ android {
 
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_11.toString()
+    }
+    dependencies{
+          androidTestUtil("androidx.test:orchestrator:1.5.1")
+
     }
 
     defaultConfig {
@@ -35,8 +47,16 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+
+        //patrol test
+        testInstrumentationRunner = "pl.leancode.patrol.PatrolJUnitRunner"
+        testInstrumentationRunnerArguments["clearPackageData"] = "true"
+
     
     }
+     testOptions {
+            execution = "ANDROIDX_TEST_ORCHESTRATOR"
+        }
 
     buildTypes {
         release {

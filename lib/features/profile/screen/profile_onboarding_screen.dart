@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:pillowtalk/common/widget/snackBar.dart';
-import 'package:pillowtalk/features/profile/provider/user_profile_provider.dart';
+import 'package:pillowtalk/common/ui/snackBar.dart';
+import 'package:pillowtalk/features/profile/model/profile_model.dart';
+import 'package:pillowtalk/features/profile/provider/profile_provider.dart';
 import 'package:pillowtalk/features/profile/widget/profile_onboarding_stepper.dart';
 import 'package:pillowtalk/utils/constant/router.dart';
 import 'package:pillowtalk/utils/constant/sizes.dart';
@@ -136,15 +137,15 @@ class _ProfileOnboardingScreenState
       });
       return;
     }
-
+    final profileData = ProfileModel(
+      name: _name!,
+      age: _age!,
+      gender: _gender!,
+      email: _email!,
+    );
     final success = await ref
-        .read(userNotifierProvider.notifier)
-        .setupProfile(
-          name: _name!,
-          age: _age!,
-          gender: _gender!,
-          email: _email!,
-        );
+        .read(profileNotifierProvider.notifier)
+        .setupProfile(profile: profileData);
 
     if (success) {
       if (mounted) {

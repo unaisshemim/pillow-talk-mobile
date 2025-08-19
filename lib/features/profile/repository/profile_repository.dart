@@ -1,7 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:pillowtalk/features/profile/model/user_model.dart';
+import 'package:pillowtalk/common/services/result.dart';
+import 'package:pillowtalk/features/profile/model/profile_model.dart';
 import 'package:pillowtalk/utils/constant/api.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:dio/dio.dart';
@@ -20,26 +21,37 @@ class ProfileRepository {
 
   ProfileRepository(this.api);
 
-  Future<ProfileModel> setupUserProfile({
-    required String name,
-    required int age,
-    required String gender,
-    required String email,
+  Future<Result<ProfileModel, Exception>> setupUserProfile({
+    required ProfileModel profile,
   }) async {
-    final request = ProfileModel(
-      name: name,
-      age: age,
-      gender: gender,
-      email: email,
-    );
+    try {
+      log("Setting up user profile: ${profile.toJson()}");
+      final response = await api.post(
+        ApiEndpoints.postUserProfile,
+        data: profile.toJson(),
+      );
 
-    final response = await api.post(
-      ApiEndpoints.postUserProfile,
-      data: request.toJson(),
-    );
+      return Success(ProfileModel.fromJson(response.data));
+    } on Exception catch (e) {
+      return Failure(e);
+    }
+  }
 
-    log('Profile setup response: ${response.statusMessage}');
+  Future<Result<ProfileModel, Exception>> updateUserProfile({
+    required ProfileUpdateRequest profile,
+  }) async {
+    try {
+      log("Updating user profile: ${profile.toJson()}");
+      final response = await api.put(
+        ApiEndpoints.updateUserProfile,
+        data: profile.toJson(),
+      );
+      log("profile model updated: ${ProfileModel.fromJson(response.data)}");
 
-    return ProfileModel.fromJson(response.data);
+      final profileModel = ProfileModel.fromJson(response.data['data']);
+      return Success(profileModel);
+    } on Exception catch (e) {
+      return Failure(e);
+    }
   }
 }

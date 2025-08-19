@@ -8,14 +8,19 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import 'package:pillowtalk/features/auth/screen/auth_screen.dart';
 import 'package:pillowtalk/features/auth/screen/otp_screen.dart';
+import 'package:pillowtalk/features/chat/screen/chat_conversation_screen.dart';
 import 'package:pillowtalk/features/chat/screen/chat_screen.dart';
 import 'package:pillowtalk/features/dev/screen/dev_screen.dart';
+import 'package:pillowtalk/features/exercises/screen/exercises_screen.dart';
+import 'package:pillowtalk/features/insights/screen/insights_screen.dart';
 import 'package:pillowtalk/features/home/screen/home_screen.dart';
 import 'package:pillowtalk/features/notification/screen/notification_screen.dart';
 import 'package:pillowtalk/features/onboarding/screen/onboarding_screen.dart';
 import 'package:pillowtalk/features/partner/screen/partner_screen.dart';
+import 'package:pillowtalk/features/profile/screen/edit_profile_screen.dart';
 import 'package:pillowtalk/features/profile/screen/profile_screen.dart';
 import 'package:pillowtalk/features/profile/screen/profile_onboarding_screen.dart';
+import 'package:pillowtalk/features/profile/screen/settings_screen.dart';
 import 'package:pillowtalk/utils/constant/router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -62,11 +67,13 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             path: PRouter.chat.path,
             builder: (context, state) => const ChatScreen(),
           ),
+
           GoRoute(
             name: PRouter.profile.name,
             path: PRouter.profile.path,
             builder: (context, state) => const ProfileScreen(),
           ),
+
           GoRoute(
             name: PRouter.partner.name,
             path: PRouter.partner.path,
@@ -77,6 +84,7 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             path: PRouter.home.path,
             builder: (context, state) => const HomeScreen(),
           ),
+
           GoRoute(
             name: PRouter.dev.name,
             path: PRouter.dev.path,
@@ -84,32 +92,65 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           ),
         ],
       ),
+      //settings
+      GoRoute(
+        name: PRouter.setting.name,
+        path: PRouter.setting.path,
+        builder: (context, state) => const SettingsScreen(),
+      ),
+      GoRoute(
+        name: PRouter.profileEdit.name,
+        path: PRouter.profileEdit.path,
+        builder: (context, state) => const EditProfileScreen(),
+      ),
+
+      //chat
+      GoRoute(
+        name: PRouter.chatConversation.name,
+        path: PRouter.chatConversation.path,
+        builder: (context, state) {
+          final chatId = state.pathParameters['id'];
+          final extraData = state.extra as Map<String, dynamic>?;
+          return ChatConversationScreen(chatId: chatId, extraData: extraData);
+        },
+      ),
+      GoRoute(
+        name: PRouter.exercises.name,
+        path: PRouter.exercises.path,
+        builder: (context, state) => const ExercisesScreen(),
+      ),
+      GoRoute(
+        name: PRouter.insights.name,
+        path: PRouter.insights.path,
+        builder: (context, state) => const InsightsScreen(),
+      ),
     ],
     redirect: (context, state) async {
-      final authState = ref.read(authNotifierProvider.notifier);
-      final isOnBoardingWatched = await authState.hasWatchedOnboarding();
-      final isValidAuthenticated = await authState.isValidTokenAuthenticated();
+      final auth = ref.read(authNotifierProvider.notifier);
 
-      final bool isGoingToOnBoarding =
-          state.uri.toString() == PRouter.onBoarding.path;
+      final watchedOnboarding = await auth.hasWatchedOnboarding();
+      final authed = await auth.isValidTokenAuthenticated();
 
-      log("isGoingToOnBoarding: $isGoingToOnBoarding");
-      log("isOnBoardingWatched: $isOnBoardingWatched");
-      log("isValidAuthenticated: $isValidAuthenticated");
+      final goingToOnboarding =
+          state.matchedLocation == PRouter.onBoarding.path;
+      final goingToAuth = state.matchedLocation == PRouter.auth.path;
+      final goingToOtp = state.matchedLocation == PRouter.otp.path;
 
-      if (isGoingToOnBoarding) {
-        if (!isOnBoardingWatched) {
-          return null; // allow onboarding
-        }
-
-        if (!isValidAuthenticated) {
-          FlutterNativeSplash.remove();
-          return PRouter.auth.path;
-        } else {
-          return PRouter.home.path;
-        }
+      // 1️⃣ On-boarding flow
+      if (!watchedOnboarding) {
+        return goingToOnboarding ? null : PRouter.onBoarding.path;
       }
-      return null;
+
+      // 2️⃣ Auth flow
+      if (!authed) {
+        if (goingToAuth || goingToOtp) return null; // ← allow /auth and /otp
+        FlutterNativeSplash.remove();
+        return PRouter.auth.path;
+      }
+
+      // 3️⃣ Logged-in flow
+      if (goingToOnboarding) return PRouter.home.path; // user typed /onBoarding
+      return null; // allow everything else
     },
   );
 });
