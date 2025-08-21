@@ -12,23 +12,22 @@ class AuthHeader extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            width: 120,
-            height: 120,
+            width: 130,
+            height: 130,
             decoration: BoxDecoration(
               gradient: LinearGradient(
-                colors: [
-                  context.pColor.primary.base,
-                  context.pColor.secondary.base,
-                ],
+                colors: [context.pColor.primary.base, Colors.white],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
               borderRadius: BorderRadius.circular(PSizes.s24),
             ),
-            child: Icon(
-              Icons.favorite,
-              size: 60,
-              color: context.pColor.neutral.n10,
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Image.asset(
+                'assets/logo/auth-logo.png',
+                fit: BoxFit.contain,
+              ),
             ),
           ),
           const SizedBox(height: PSizes.s24),

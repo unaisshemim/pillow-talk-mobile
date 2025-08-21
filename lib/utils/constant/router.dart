@@ -8,8 +8,7 @@ abstract class PRouter {
     'GetStarted',
     '/getstarted',
   );
-  static const PRouterDetail auth = PRouterDetail('Auth', '/auth');
-  static const PRouterDetail otp = PRouterDetail('OTP', '/otp');
+
   static const PRouterDetail signupVerification = PRouterDetail(
     'SignupVerification',
     'signup-verification',

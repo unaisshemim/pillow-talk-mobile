@@ -6,8 +6,6 @@ import 'package:pillowtalk/common/layout/main_layout.dart';
 import 'package:pillowtalk/features/auth/provider/auth_provider.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
-import 'package:pillowtalk/features/auth/screen/auth_screen.dart';
-import 'package:pillowtalk/features/auth/screen/otp_screen.dart';
 import 'package:pillowtalk/features/chat/screen/chat_conversation_screen.dart';
 import 'package:pillowtalk/features/chat/screen/chat_screen.dart';
 import 'package:pillowtalk/features/dev/screen/dev_screen.dart';
@@ -15,7 +13,8 @@ import 'package:pillowtalk/features/exercises/screen/exercises_screen.dart';
 import 'package:pillowtalk/features/insights/screen/insights_screen.dart';
 import 'package:pillowtalk/features/home/screen/home_screen.dart';
 import 'package:pillowtalk/features/notification/screen/notification_screen.dart';
-import 'package:pillowtalk/features/onboarding/screen/onboarding_screen.dart';
+import 'package:pillowtalk/features/onboarding/screen/on_boarding_screen.dart';
+
 import 'package:pillowtalk/features/partner/screen/partner_screen.dart';
 import 'package:pillowtalk/features/profile/screen/edit_profile_screen.dart';
 import 'package:pillowtalk/features/profile/screen/profile_screen.dart';
@@ -31,29 +30,14 @@ final goRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         name: PRouter.onBoarding.name,
         path: PRouter.onBoarding.path,
-        builder: (context, state) => const OnBoardingScreen(),
+        builder: (context, state) => const PillowTalkOnBoardingScreen(),
       ),
       GoRoute(
         name: PRouter.notification.name,
         path: PRouter.notification.path,
         builder: (context, state) => const NotificationScreen(),
       ),
-      GoRoute(
-        name: PRouter.auth.name,
-        path: PRouter.auth.path,
-        builder: (context, state) => const AuthScreen(),
-      ),
-      GoRoute(
-        name: PRouter.otp.name,
-        path: PRouter.otp.path,
-        builder: (context, state) {
-          final extra = state.extra as Map<String, dynamic>?;
-          return OtpScreen(
-            phoneNumber: extra?['phoneNumber'] ?? '',
-            maskedNumber: extra?['maskedNumber'] ?? '',
-          );
-        },
-      ),
+
       GoRoute(
         name: PRouter.profileOnboarding.name,
         path: PRouter.profileOnboarding.path,
@@ -127,30 +111,20 @@ final goRouterProvider = Provider<GoRouter>((ref) {
     ],
     redirect: (context, state) async {
       final auth = ref.read(authNotifierProvider.notifier);
-
-      final watchedOnboarding = await auth.hasWatchedOnboarding();
       final authed = await auth.isValidTokenAuthenticated();
 
       final goingToOnboarding =
           state.matchedLocation == PRouter.onBoarding.path;
-      final goingToAuth = state.matchedLocation == PRouter.auth.path;
-      final goingToOtp = state.matchedLocation == PRouter.otp.path;
-
-      // 1️⃣ On-boarding flow
-      if (!watchedOnboarding) {
-        return goingToOnboarding ? null : PRouter.onBoarding.path;
-      }
-
-      // 2️⃣ Auth flow
-      if (!authed) {
-        if (goingToAuth || goingToOtp) return null; // ← allow /auth and /otp
-        FlutterNativeSplash.remove();
-        return PRouter.auth.path;
-      }
 
       // 3️⃣ Logged-in flow
-      if (goingToOnboarding) return PRouter.home.path; // user typed /onBoarding
-      return null; // allow everything else
+      if (goingToOnboarding) {
+        if (authed) {
+          FlutterNativeSplash.remove();
+          return PRouter.home.path;
+        }
+      }
+
+      return null;
     },
   );
 });

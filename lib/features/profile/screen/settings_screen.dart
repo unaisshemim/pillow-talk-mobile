@@ -52,7 +52,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         ref.invalidate(authNotifierProvider);
 
         // 3) go to your auth route (adjust to your route name if different)
-        if (mounted) context.goNamed(PRouter.auth.name);
+        if (mounted) context.goNamed(PRouter.onBoarding.name);
       } catch (e) {
         if (!mounted) return;
         ScaffoldMessenger.of(context).showSnackBar(
