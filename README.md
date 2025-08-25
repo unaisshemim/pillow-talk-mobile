@@ -308,20 +308,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 💬 Support
 
 For support and questions:
-- **Email**: support@pillowtalk.com
-- **GitHub Issues**: [Create an issue](https://github.com/unaisshemim/pillow_talk_mobile/issues)
+- **Email**: hey@pillow-talk.live
+- **GitHub Issues**: [Create an issue](https://github.com/unaisshemim/pillow-talk-mobile/issues)
 - **Documentation**: [Wiki](https://github.com/unaisshemim/pillow_talk_mobile/wiki)
-
 ---
 
-## 🙏 Acknowledgments
 
-- Flutter team for the amazing framework
-- Material Design for UI guidelines
-- The open-source community for valuable packages
-- All contributors who helped build this project
-
----
 
 <div align="center">
   <p>Made with ❤️ for couples everywhere</p>
