@@ -2,9 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pillowtalk/common/ui/svg.dart';
+import 'package:pillowtalk/utils/constant/images.dart';
+import 'package:pillowtalk/utils/constant/sizes.dart';
 
 class Orbits extends StatefulWidget {
-  const Orbits();
+  const Orbits({super.key});
 
   @override
   State<Orbits> createState() => _OrbitsState();
@@ -88,60 +91,60 @@ class _OrbitsState extends State<Orbits> with SingleTickerProviderStateMixin {
                     height: 40,
 
                     alignment: Alignment.center,
-                    child: const Text('✨', style: TextStyle(fontSize: 32)),
+                    child: SVG(url: PImages.pillowtalk, size: PSizes.s40),
                   ),
                 ),
 
-                // Outer‑ring elements (angles in radians)
+                // Inner‑ring elements (3 images only)
                 _placedOnRing(
                   center,
-                  outerRadius,
-                  -pi / 3 + rotation,
-                  child: _avatar('👨‍💼'),
+                  innerRadius,
+                  -pi / 3.1 - rotation * 1.2,
+                  child: icon(PImages.couple),
                 ),
                 _placedOnRing(
                   center,
-                  outerRadius,
-                  -pi / 12 + rotation,
-                  child: icon('📍'),
+                  innerRadius,
+                  0.0 - rotation * 1.2,
+                  child: icon(PImages.woman),
                 ),
                 _placedOnRing(
                   center,
-                  outerRadius,
-                  pi / 5 + rotation,
-                  child: _avatar('👩‍🎨'),
-                ),
-                _placedOnRing(
-                  center,
-                  outerRadius,
-                  pi / 2.7 + rotation,
-                  child: _avatar('🧑‍💻'),
+                  innerRadius,
+                  pi / 3.1 - rotation * .7,
+                  child: icon(PImages.head),
                 ),
 
-                // Inner‑ring elements
+                // Outer‑ring elements (remaining images)
                 _placedOnRing(
                   center,
-                  innerRadius,
-                  -pi / 2.2 - rotation * 1.2,
-                  child: icon('🎫'),
+                  outerRadius,
+                  -pi / 2 + rotation,
+                  child: _avatar(PImages.ticket),
                 ),
                 _placedOnRing(
                   center,
-                  innerRadius,
-                  -pi / 6 - rotation * 1.2,
-                  child: icon('📅'),
+                  outerRadius,
+                  -pi / 6 + rotation,
+                  child: _avatar(PImages.calender),
                 ),
                 _placedOnRing(
                   center,
-                  innerRadius,
-                  pi / 8 - rotation * 1.2,
-                  child: icon('🎉'),
+                  outerRadius,
+                  pi / 8 + rotation,
+                  child: _avatar(PImages.gift),
                 ),
                 _placedOnRing(
                   center,
-                  innerRadius,
-                  pi / 2.5 - rotation * 1.2,
-                  child: icon('🌍'),
+                  outerRadius,
+                  pi / 2.5 + rotation,
+                  child: _avatar(PImages.sun),
+                ),
+                _placedOnRing(
+                  center,
+                  outerRadius,
+                  pi / 1.5 + rotation,
+                  child: _avatar(PImages.location),
                 ),
               ],
             );
@@ -175,7 +178,7 @@ class _OrbitsState extends State<Orbits> with SingleTickerProviderStateMixin {
   }
 
   // Avatar circle widget
-  Widget _avatar(String emoji) => Container(
+  Widget _avatar(String imagePath) => Container(
     width: 56,
     height: 56,
     decoration: BoxDecoration(
@@ -189,15 +192,15 @@ class _OrbitsState extends State<Orbits> with SingleTickerProviderStateMixin {
         ),
       ],
     ),
-    child: Center(child: Text(emoji, style: const TextStyle(fontSize: 32))),
+    child: Center(child: Image.asset(imagePath, fit: BoxFit.cover)),
   );
 
   // 3‑D style icon widget
-  Widget icon(String emoji) => Container(
-    width: 50,
-    height: 50,
+  Widget icon(String imagePath) => Container(
+    width: 80,
+    height: 80,
     alignment: Alignment.center,
-    child: Text(emoji, style: const TextStyle(fontSize: 36)),
+    child: Image.asset(imagePath, fit: BoxFit.cover),
   );
 }
 

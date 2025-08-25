@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pillowtalk/common/ui/svg.dart';
 import 'package:pillowtalk/features/auth/screen/bottom_sheet_auth_flow.dart';
+import 'package:pillowtalk/utils/constant/images.dart';
+import 'package:pillowtalk/utils/constant/sizes.dart';
 
 class ForegroundCallToAction extends StatelessWidget {
   const ForegroundCallToAction({super.key});
@@ -31,7 +34,7 @@ class ForegroundCallToAction extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text('⭐', style: TextStyle(fontSize: 20)),
+                // SVG(url: PImages.pillowtalk, size: PSizes.s40),
                 const SizedBox(width: 4),
                 Text(
                   'Pillow Talk',
